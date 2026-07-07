@@ -1,0 +1,64 @@
+{
+    "active_profile_index": 0,
+    "profiles": [
+        {
+            "profile_properties": {
+                "name": "Default Profile",
+                "SilentMode": true
+            },
+            "data": {
+                "windows_qol": [
+                    1,
+                    {
+                        "EnableTerminalLaunch": true,
+                        "TerminalStartPath": "C:\\Users\\<A_UserName>\\",
+                        "EnableScreenshotTool": true,
+                        "ScreenshotTargetDir": "C:\\Users\\<A_UserName>\\Pictures\\Sreenshots\\2026",
+                        "EnableCalcInstance": true,
+                        "EnableCtrlShiftW": true,
+                        "CloseWindowTargets": [
+                            "ahk_class CabinetWClass",
+                            "ahk_exe taskmgr.exe"
+                        ],
+                        "EnableRedactedPaste": true,
+                        "RedactedReplacements": [
+                            {
+                                "dirty": "your_private_string",
+                                "clean": "safe_string"
+                            }
+                        ]
+                    }
+                ],
+                "caps_modifier_keys": [
+                    1,
+                    {
+                        "x": {
+                            "action": "window_focus",
+                            "payload": [
+                                "*",
+                                "",
+                                "",
+                                "",
+                                ""
+                            ]
+                        },
+                        "LButton": {
+                            "action": "shortcut_remap",
+                            "payload": "{Enter}"
+                        },
+                        "e": {
+                            "action": "window_focus",
+                            "payload": [
+                                "ahk_class CabinetWClass",
+                                "explorer.exe",
+                                "",
+                                "",
+                                ""
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
