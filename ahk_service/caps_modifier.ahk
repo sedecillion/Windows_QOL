@@ -15,63 +15,51 @@ SetupCapsHotkeys() {
     HotIf (*) => GetKeyState("CapsLock", "P")
     
     if (EnableCapsModifiers) {
-        for key, config in CapsKeysMap {
-            Hotkey("*" . key, ExecuteCapsRouting.Bind(key))
+        for key, payload in CapsFocusMap {
+            Hotkey("*" . key, ExecuteCapsWindow.Bind(payload))
+        }
+        for key, payload in CapsRemapMap {
+            Hotkey("*" . key, ExecuteCapsShortcut.Bind(key, payload))
         }
     }
     
     HotIf
 }
 
-ExecuteCapsRouting(key, *) {
+ExecuteCapsWindow(payload, *) {
     if !EnableCapsModifiers
         return
-        
-    conf := CapsKeysMap[key]
-    act := conf["action"]
-    payload := conf["payload"]
+
+    success := SmartSwitch(payload["TargetExe"], payload["Command"], payload["RequiredTitle"], payload["ExcludeTitle"])
     
-    if (act == "window_focus") {
-        ExecuteCapsWindow(payload)
-    } 
-    else if (act == "shortcut_remap") {
-        if (InStr(key, "Wheel") && !TS_CanSwitchTabs())
+    if (!success && payload.Has("Fallback") && payload["Fallback"] != "") {
+        if WinExist(payload["Fallback"])
+            WinActivate(payload["Fallback"])
+    }
+}
+
+ExecuteCapsShortcut(key, payload, *) {
+    if !EnableCapsModifiers
+        return
+
+    if (InStr(key, "Wheel") && !TS_CanSwitchTabs())
+        return
+        
+    for criteria, keysToSend in payload {
+        if (criteria == "*")
+            continue
+        
+        checkStr := (SubStr(criteria, 1, 4) = "ahk_") ? criteria : "ahk_exe " . criteria
+        
+        if WinActive(checkStr) {
+            if (keysToSend != "")
+                Send(keysToSend)
             return
-        ExecuteCapsShortcut(payload)
+        }
     }
-}
-
-ExecuteCapsWindow(payload) {
-    success := SmartSwitch(payload[1], payload[2], payload[3], payload[4])
     
-    if (!success && payload.Has(5) && payload[5] != "") {
-        if WinExist(payload[5])
-            WinActivate(payload[5])
-    }
-}
-
-ExecuteCapsShortcut(payload) {
-    if (Type(payload) == "String") {
-        if (payload != "")
-            Send(payload)
-    } 
-    else if (Type(payload) == "Map") {
-        for criteria, keysToSend in payload {
-            if (criteria == "*")
-                continue
-            
-            checkStr := (SubStr(criteria, 1, 4) = "ahk_") ? criteria : "ahk_exe " . criteria
-            
-            if WinActive(checkStr) {
-                if (keysToSend != "")
-                    Send(keysToSend)
-                return
-            }
-        }
-        
-        if payload.Has("*") && payload["*"] != "" {
-            Send(payload["*"])
-        }
+    if payload.Has("*") && payload["*"] != "" {
+        Send(payload["*"])
     }
 }
 
@@ -80,11 +68,8 @@ IsRecognizedWindow(hwnd) {
         exe := WinGetProcessName("ahk_id " hwnd)
         cls := WinGetClass("ahk_id " hwnd)
         
-        for key, conf in CapsKeysMap {
-            if (conf["action"] != "window_focus")
-                continue
-            
-            criteria := conf["payload"][1]
+        for key, conf in CapsFocusMap {
+            criteria := conf["TargetExe"]
             if (criteria == "*")
                 continue
                 
@@ -163,10 +148,10 @@ $Esc:: {
     }
 }
 
-SmartSwitch(winCriteria, runCmd := "", requireTitleMatch := "", excludeTitleMatch := "") {
+SmartSwitch(winCriteria, runCmd := "", requireTitleMatch := "", ExcludeTitleMatch := "") {
     global SwitcherActive, SwitcherCanceled, SwitcherGUI, SwitcherHwnds, SwitcherCtrls, CurrentIndex, SwitcherCurrentGroup
 
-    groupId := winCriteria . "|" . requireTitleMatch . "|" . excludeTitleMatch
+    groupId := winCriteria . "|" . requireTitleMatch . "|" . ExcludeTitleMatch
 
     if (SwitcherActive) {
         if (SwitcherCurrentGroup == groupId) {
@@ -217,7 +202,7 @@ SmartSwitch(winCriteria, runCmd := "", requireTitleMatch := "", excludeTitleMatc
                 continue
             if (requireTitleMatch != "" && !InStr(title, requireTitleMatch))
                 continue
-            if (excludeTitleMatch != "" && InStr(title, excludeTitleMatch))
+            if (ExcludeTitleMatch != "" && InStr(title, ExcludeTitleMatch))
                 continue
             validHwnds.Push(hwnd)
         }

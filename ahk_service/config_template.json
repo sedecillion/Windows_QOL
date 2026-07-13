@@ -1,63 +1,127 @@
 {
-    "active_profile_index": 0,
-    "profiles": [
+    "ActiveProfileIndex": 0,
+    "Profiles": [
         {
-            "profile_properties": {
-                "name": "Default Profile",
+            "ProfileProperties": {
+                "Name": "Default Profile",
                 "SilentMode": true
             },
-            "data": {
-                "windows_qol": [
-                    1,
+            "TerminalLaunch": {
+                "IsEnabled": true,
+                "StartPath": "C:\\Users\\<A_UserName>\\"
+            },
+            "ScreenshotTool": {
+                "IsEnabled": true,
+                "TargetDir": "D:\\LAPTOP\\Pictures"
+            },
+            "CalcSingleInstance": {
+                "IsEnabled": true
+            },
+            "CtrlShiftW": {
+                "IsEnabled": true,
+                "CloseWindowTargets": [
+                    "ahk_class CabinetWClass",
+                    "ahk_exe taskmgr.exe",
+                    "Settings ahk_class ApplicationFrameWindow",
+                    "ahk_exe control.exe",
+                    "Control Panel"
+                ]
+            },
+            "RedactedPaste": {
+                "IsEnabled": true,
+                "Replacements": [
                     {
-                        "EnableTerminalLaunch": true,
-                        "TerminalStartPath": "C:\\Users\\<A_UserName>\\",
-                        "EnableScreenshotTool": true,
-                        "ScreenshotTargetDir": "C:\\Users\\<A_UserName>\\Pictures\\Sreenshots\\2026",
-                        "EnableCalcInstance": true,
-                        "EnableCtrlShiftW": true,
-                        "CloseWindowTargets": [
-                            "ahk_class CabinetWClass",
-                            "ahk_exe taskmgr.exe"
-                        ],
-                        "EnableRedactedPaste": true,
-                        "RedactedReplacements": [
-                            {
-                                "dirty": "your_private_string",
-                                "clean": "safe_string"
-                            }
-                        ]
-                    }
-                ],
-                "caps_modifier_keys": [
-                    1,
+                        "Dirty": "user1lname",
+                        "Clean": "fullname"
+                    },
                     {
-                        "x": {
-                            "action": "window_focus",
-                            "payload": [
-                                "*",
-                                "",
-                                "",
-                                "",
-                                ""
-                            ]
-                        },
-                        "LButton": {
-                            "action": "shortcut_remap",
-                            "payload": "{Enter}"
-                        },
-                        "e": {
-                            "action": "window_focus",
-                            "payload": [
-                                "ahk_class CabinetWClass",
-                                "explorer.exe",
-                                "",
-                                "",
-                                ""
-                            ]
-                        }
+                        "Dirty": "<A_UserName>",
+                        "Clean": "user1"
                     }
                 ]
+            },
+            "CapsModifiers": {
+                "IsEnabled": true,
+                "WindowFocusMappings": {
+                    "X": {
+                        "TargetExe": "*",
+                        "Command": "",
+                        "RequiredTitle": "",
+                        "ExcludeTitle": "",
+                        "Fallback": ""
+                    },
+                    "E": {
+                        "TargetExe": "ahk_class CabinetWClass",
+                        "Command": "explorer.exe",
+                        "RequiredTitle": "",
+                        "ExcludeTitle": "",
+                        "Fallback": ""
+                    },
+                    "d": {
+                        "TargetExe": "ahk_exe notepad.exe",
+                        "Command": "notepad.exe",
+                        "RequiredTitle": "",
+                        "ExcludeTitle": "",
+                        "Fallback": ""
+                    },
+                    "c": {
+                        "TargetExe": "ahk_exe Code.exe",
+                        "Command": "",
+                        "RequiredTitle": "",
+                        "ExcludeTitle": "",
+                        "Fallback": "Visual Studio ahk_exe devenv.exe"
+                    },
+                    "w": {
+                        "TargetExe": "ahk_exe WINWORD.EXE",
+                        "Command": "",
+                        "RequiredTitle": "",
+                        "ExcludeTitle": "",
+                        "Fallback": ""
+                    }
+                },
+                "ShortcutRemapMappings": {
+                    "LButton": {
+                        "*": "{Enter}"
+                    },
+                    "RButton": {
+                        "*": "{Delete}"
+                    },
+                    "XButton1": {
+                        "*": "#d"
+                    },
+                    "XButton2": {
+                        "*": "!{F4}"
+                    },
+                    "MButton": {
+                        "*": "^+{Esc}"
+                    },
+                    "WheelUp": {
+                        "Code.exe": "^{PgUp}",
+                        "*": "^+{Tab}"
+                    },
+                    "WheelDown": {
+                        "Code.exe": "^{PgDn}",
+                        "*": "^{Tab}"
+                    },
+                    "Space": {
+                        "ahk_class CabinetWClass": "!{Up}",
+                        "Code.exe": "^{vkC0}",
+                        "brave.exe": "{F12}",
+                        "Obsidian.exe": "{Tab}"
+                    },
+                    "I": {
+                        "*": "{Up}"
+                    },
+                    "J": {
+                        "*": "{Left}"
+                    },
+                    "K": {
+                        "*": "{Down}"
+                    },
+                    "L": {
+                        "*": "{Right}"
+                    }
+                }
             }
         }
     ]
