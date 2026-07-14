@@ -65,5 +65,11 @@ if (SilentMode) {
 
 SetupCapsHotkeys()
 
-#Esc::ExitApp
-^!r::Reload
+^!r:: {
+    if (A_IsCompiled) {
+        Run('"' A_ScriptFullPath '" /restart')
+        ExitApp()
+    } else {
+        Reload()
+    }
+}
