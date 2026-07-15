@@ -35,22 +35,6 @@ $Launch_App2::
     }
 }
 
-IsWindowInTargets() {
-    if !EnableCtrlShiftW
-        return false
-    for target in CloseWindowTargets {
-        if WinActive(target)
-            return true
-    }
-    return false
-}
-
-#HotIf IsWindowInTargets()
-
-^+w:: 
-{
-    Send("!{F4}")
-}
 
 #HotIf
 

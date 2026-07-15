@@ -37,8 +37,9 @@ LoadConfig() {
     
     global EnableCalcInstance := profile["CalcSingleInstance"]["IsEnabled"]
     
-    global EnableCtrlShiftW := profile["CtrlShiftW"]["IsEnabled"]
-    global CloseWindowTargets := profile["CtrlShiftW"]["CloseWindowTargets"]
+    waremap := profile["WindowAwareShortcutRemap"]
+    global EnableWindowAwareRemaps := waremap["IsEnabled"]
+    global WindowAwareList := waremap.Has("Remaps") && waremap["Remaps"] != "" ? waremap["Remaps"] : []
     
     global EnableRedactedPaste := profile["RedactedPaste"]["IsEnabled"]
     global RedactedReplacements := profile["RedactedPaste"]["Replacements"]
@@ -55,6 +56,7 @@ LoadConfig() {
 LoadConfig()
 
 #Include caps_modifier.ahk
+#Include window_aware_remaps.ahk
 #Include misc_qol.ahk
 
 if (SilentMode) {
@@ -64,6 +66,7 @@ if (SilentMode) {
 }
 
 SetupCapsHotkeys()
+SetupWindowAwareShortcuts()
 
 ^!r:: {
     if (A_IsCompiled) {
