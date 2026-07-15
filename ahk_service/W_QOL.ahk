@@ -48,8 +48,8 @@ LoadConfig() {
 
     caps := profile["CapsModifiers"]
     global EnableCapsModifiers := caps["IsEnabled"]
-    global CapsFocusMap := caps["WindowFocusMappings"]
-    global CapsRemapMap := caps["ShortcutRemapMappings"]
+    
+    global CapsModifierMappings := caps.Has("ModifierMappings") && caps["ModifierMappings"] != "" ? caps["ModifierMappings"] : []
 }
 
 LoadConfig()

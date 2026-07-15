@@ -1,128 +1,238 @@
 {
-    "ActiveProfileIndex": 0,
-    "Profiles": [
-        {
-            "ProfileProperties": {
-                "Name": "Default Profile",
-                "SilentMode": true
+  "ActiveProfileIndex": 0,
+  "Profiles": [
+    {
+      "ProfileProperties": {
+        "Name": "Default Profile",
+        "SilentMode": true
+      },
+      "TerminalLaunch": {
+        "IsEnabled": true,
+        "StartPath": "C:\\Users\\<A_UserName>\\"
+      },
+      "ScreenshotTool": {
+        "IsEnabled": true,
+        "TargetDir": "D:\\Pictures"
+      },
+      "CalcSingleInstance": {
+        "IsEnabled": true
+      },
+      "CtrlShiftW": {
+        "IsEnabled": true,
+        "CloseWindowTargets": [
+          "ahk_exe explorer.exe",
+          "ahk_exe taskmgr.exe",
+          "Settings ahk_class ApplicationFrameWindow",
+          "ahk_exe control.exe"
+        ]
+      },
+      "RedactedPaste": {
+        "IsEnabled": true,
+        "Replacements": [
+          {
+            "Dirty": "fnamelname",
+            "Clean": "fullname"
+          },
+          {
+            "Dirty": "<A_UserName>",
+            "Clean": "username"
+          }
+        ]
+      },
+      "CapsModifiers": {
+        "IsEnabled": true,
+        "ModifierMappings": [
+          {
+            "Action": "WindowFocus",
+            "TriggerKey": "x",
+            "WindowFocusPayload": {
+              "TargetExe": "*",
+              "Command": "",
+              "RequiredTitle": "",
+              "ExcludeTitle": "",
+              "Fallback": ""
             },
-            "TerminalLaunch": {
-                "IsEnabled": true,
-                "StartPath": "C:\\Users\\<A_UserName>\\"
+            "RemappedKeys": null
+          },
+          {
+            "Action": "WindowFocus",
+            "TriggerKey": "e",
+            "WindowFocusPayload": {
+              "TargetExe": "ahk_exe explorer.exe",
+              "Command": "explorer.exe",
+              "RequiredTitle": "",
+              "ExcludeTitle": "",
+              "Fallback": ""
             },
-            "ScreenshotTool": {
-                "IsEnabled": true,
-                "TargetDir": "D:\\LAPTOP\\Pictures"
+            "RemappedKeys": null
+          },
+          {
+            "Action": "WindowFocus",
+            "TriggerKey": "d",
+            "WindowFocusPayload": {
+              "TargetExe": "ahk_exe notepad.exe",
+              "Command": "notepad.exe",
+              "RequiredTitle": "",
+              "ExcludeTitle": "",
+              "Fallback": ""
             },
-            "CalcSingleInstance": {
-                "IsEnabled": true
+            "RemappedKeys": null
+          },
+          {
+            "Action": "WindowFocus",
+            "TriggerKey": "c",
+            "WindowFocusPayload": {
+              "TargetExe": "ahk_exe Code.exe",
+              "Command": "",
+              "RequiredTitle": "",
+              "ExcludeTitle": "",
+              "Fallback": "ahk_exe devenv.exe"
             },
-            "CtrlShiftW": {
-                "IsEnabled": true,
-                "CloseWindowTargets": [
-                    "ahk_class CabinetWClass",
-                    "ahk_exe taskmgr.exe",
-                    "Settings ahk_class ApplicationFrameWindow",
-                    "ahk_exe control.exe",
-                    "Control Panel"
-                ]
+            "RemappedKeys": null
+          },
+          {
+            "Action": "WindowFocus",
+            "TriggerKey": "w",
+            "WindowFocusPayload": {
+              "TargetExe": "ahk_exe WINWORD.EXE",
+              "Command": "",
+              "RequiredTitle": "",
+              "ExcludeTitle": "",
+              "Fallback": ""
             },
-            "RedactedPaste": {
-                "IsEnabled": true,
-                "Replacements": [
-                    {
-                        "Dirty": "user1lname",
-                        "Clean": "fullname"
-                    },
-                    {
-                        "Dirty": "<A_UserName>",
-                        "Clean": "user1"
-                    }
-                ]
-            },
-            "CapsModifiers": {
-                "IsEnabled": true,
-                "WindowFocusMappings": {
-                    "X": {
-                        "TargetExe": "*",
-                        "Command": "",
-                        "RequiredTitle": "",
-                        "ExcludeTitle": "",
-                        "Fallback": ""
-                    },
-                    "E": {
-                        "TargetExe": "ahk_class CabinetWClass",
-                        "Command": "explorer.exe",
-                        "RequiredTitle": "",
-                        "ExcludeTitle": "",
-                        "Fallback": ""
-                    },
-                    "d": {
-                        "TargetExe": "ahk_exe notepad.exe",
-                        "Command": "notepad.exe",
-                        "RequiredTitle": "",
-                        "ExcludeTitle": "",
-                        "Fallback": ""
-                    },
-                    "c": {
-                        "TargetExe": "ahk_exe Code.exe",
-                        "Command": "",
-                        "RequiredTitle": "",
-                        "ExcludeTitle": "",
-                        "Fallback": "Visual Studio ahk_exe devenv.exe"
-                    },
-                    "w": {
-                        "TargetExe": "ahk_exe WINWORD.EXE",
-                        "Command": "",
-                        "RequiredTitle": "",
-                        "ExcludeTitle": "",
-                        "Fallback": ""
-                    }
-                },
-                "ShortcutRemapMappings": {
-                    "LButton": {
-                        "*": "{Enter}"
-                    },
-                    "RButton": {
-                        "*": "{Delete}"
-                    },
-                    "XButton1": {
-                        "*": "#d"
-                    },
-                    "XButton2": {
-                        "*": "!{F4}"
-                    },
-                    "MButton": {
-                        "*": "^+{Esc}"
-                    },
-                    "WheelUp": {
-                        "Code.exe": "^{PgUp}",
-                        "*": "^+{Tab}"
-                    },
-                    "WheelDown": {
-                        "Code.exe": "^{PgDn}",
-                        "*": "^{Tab}"
-                    },
-                    "Space": {
-                        "ahk_class CabinetWClass": "!{Up}",
-                        "Code.exe": "^{vkC0}",
-                        "brave.exe": "{F12}",
-                        "Obsidian.exe": "{Tab}"
-                    },
-                    "I": {
-                        "*": "{Up}"
-                    },
-                    "J": {
-                        "*": "{Left}"
-                    },
-                    "K": {
-                        "*": "{Down}"
-                    },
-                    "L": {
-                        "*": "{Right}"
-                    }
-                }
-            }
-        }
-    ]
+            "RemappedKeys": null
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "RButton",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "*",
+                "ShortcutToEmit": "{Delete}"
+              }
+            ]
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "XButton1",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "*",
+                "ShortcutToEmit": "#d"
+              }
+            ]
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "XButton2",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "*",
+                "ShortcutToEmit": "!{F4}"
+              }
+            ]
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "MButton",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "*",
+                "ShortcutToEmit": "^+{Esc}"
+              }
+            ]
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "WheelUp",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "Code.exe",
+                "ShortcutToEmit": "^{PgUp}"
+              },
+              {
+                "TargetWindow": "*",
+                "ShortcutToEmit": "^+{Tab}"
+              }
+            ]
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "WheelDown",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "Code.exe",
+                "ShortcutToEmit": "^{PgDn}"
+              },
+              {
+                "TargetWindow": "*",
+                "ShortcutToEmit": "^{Tab}"
+              }
+            ]
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "Space",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "ahk_exe explorer.exe",
+                "ShortcutToEmit": "!{Up}"
+              }
+            ]
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "I",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "*",
+                "ShortcutToEmit": "{Up}"
+              }
+            ]
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "J",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "*",
+                "ShortcutToEmit": "{Left}"
+              }
+            ]
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "K",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "*",
+                "ShortcutToEmit": "{Down}"
+              }
+            ]
+          },
+          {
+            "Action": "ShortcutRemap",
+            "TriggerKey": "L",
+            "WindowFocusPayload": null,
+            "RemappedKeys": [
+              {
+                "TargetWindow": "*",
+                "ShortcutToEmit": "{Right}"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }

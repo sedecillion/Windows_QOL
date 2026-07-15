@@ -15,11 +15,16 @@ SetupCapsHotkeys() {
     HotIf (*) => GetKeyState("CapsLock", "P")
     
     if (EnableCapsModifiers) {
-        for key, payload in CapsFocusMap {
-            Hotkey("*" . key, ExecuteCapsWindow.Bind(payload))
-        }
-        for key, payload in CapsRemapMap {
-            Hotkey("*" . key, ExecuteCapsShortcut.Bind(key, payload))
+        for _, mapping in CapsModifierMappings {
+            key := mapping["TriggerKey"]
+            action := mapping["Action"]
+            
+            if (action == "WindowFocus" && mapping["WindowFocusPayload"] != "") {
+                Hotkey("*" . key, ExecuteCapsWindow.Bind(mapping["WindowFocusPayload"]))
+            }
+            else if (action == "ShortcutRemap" && mapping["RemappedKeys"] != "") {
+                Hotkey("*" . key, ExecuteCapsShortcut.Bind(key, mapping["RemappedKeys"]))
+            }
         }
     }
     
@@ -38,14 +43,17 @@ ExecuteCapsWindow(payload, *) {
     }
 }
 
-ExecuteCapsShortcut(key, payload, *) {
+ExecuteCapsShortcut(key, payloadArray, *) {
     if !EnableCapsModifiers
         return
 
     if (InStr(key, "Wheel") && !TS_CanSwitchTabs())
         return
         
-    for criteria, keysToSend in payload {
+    for _, item in payloadArray {
+        criteria := item["TargetWindow"]
+        keysToSend := item["ShortcutToEmit"]
+        
         if (criteria == "*")
             continue
         
@@ -58,8 +66,12 @@ ExecuteCapsShortcut(key, payload, *) {
         }
     }
     
-    if payload.Has("*") && payload["*"] != "" {
-        Send(payload["*"])
+    for _, item in payloadArray {
+        if (item["TargetWindow"] == "*") {
+            if (item["ShortcutToEmit"] != "")
+                Send(item["ShortcutToEmit"])
+            return
+        }
     }
 }
 
@@ -68,16 +80,29 @@ IsRecognizedWindow(hwnd) {
         exe := WinGetProcessName("ahk_id " hwnd)
         cls := WinGetClass("ahk_id " hwnd)
         
-        for key, conf in CapsFocusMap {
-            criteria := conf["TargetExe"]
-            if (criteria == "*")
+        for _, mapping in CapsModifierMappings {
+            if (mapping["Action"] != "WindowFocus" || mapping["WindowFocusPayload"] == "")
                 continue
-                
-            if (exe != "" && InStr(criteria, "ahk_exe " . exe))
-                return true
-                
-            if (cls != "" && InStr(criteria, "ahk_class " . cls))
-                return true
+
+            payload := mapping["WindowFocusPayload"]
+            criteria := payload["TargetExe"]
+            fallback := payload.Has("Fallback") ? payload["Fallback"] : ""
+            
+            if (criteria != "*") {
+                if (exe != "" && InStr(criteria, "ahk_exe " . exe))
+                    return true
+                    
+                if (cls != "" && InStr(criteria, "ahk_class " . cls))
+                    return true
+            }
+            
+            if (fallback != "") {
+                if (exe != "" && InStr(fallback, "ahk_exe " . exe))
+                    return true
+                    
+                if (cls != "" && InStr(fallback, "ahk_class " . cls))
+                    return true
+            }
         }
     }
     return false
