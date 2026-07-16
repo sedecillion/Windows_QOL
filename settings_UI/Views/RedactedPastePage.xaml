@@ -1,0 +1,81 @@
+<Page
+    x:Class="settings_UI.Views.RedactedPastePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:settings_UI.Models"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="30,0,30,30">
+        <StackPanel HorizontalAlignment="Stretch" Spacing="3">
+
+            <!-- Master Toggle Card -->
+            <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" 
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                    BorderThickness="1" CornerRadius="8" Margin="0,0,0,20" Padding="16,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Enable Redacted Paste" 
+                               VerticalAlignment="Center" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" />
+
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsEnabled, Mode=TwoWay}" 
+                                  Grid.Column="1" 
+                                  Margin="0" 
+                                  MinWidth="0" 
+                                  OnContent="{x:Null}" 
+                                  OffContent="{x:Null}"/>
+                </Grid>
+            </Border>
+
+            <Button Click="AddReplacement_Click">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="Add New Replacement"/>
+                    <FontIcon Glyph="&#xE710;" FontSize="14"/>
+                </StackPanel>
+            </Button>
+
+            <MenuFlyoutSeparator Margin="0,0,0,10" />
+
+            <!-- Dynamic List of Replacements -->
+            <ItemsControl ItemsSource="{x:Bind ViewModel.redactedPasteReplacements, Mode=OneWay}" HorizontalAlignment="Stretch">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:ReplacementEntryDto">
+                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                                BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,12"
+                                HorizontalAlignment="Stretch">
+
+                            <Grid ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox Header="Target Text (Dirty)" Text="{x:Bind Dirty, Mode=TwoWay}" Grid.Column="0" />
+                                <TextBox Header="Replacement (Clean)" Text="{x:Bind Clean, Mode=TwoWay}" Grid.Column="1" />
+
+                                <Button Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,0,2" 
+                                        Click="DeleteReplacement_Click" ToolTipService.ToolTip="Delete Replacement">
+                                    <Button.Resources>
+                                        <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemFillColorCriticalBackground}"/>
+                                    </Button.Resources>
+                                    <FontIcon Glyph="&#xE74D;" FontSize="14"/>
+                                </Button>
+                            </Grid>
+
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

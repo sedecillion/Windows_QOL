@@ -1,0 +1,210 @@
+<Page
+    x:Class="settings_UI.Views.CapsModifierPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:settings_UI.ViewModels"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="30,0,30,30">
+        <StackPanel HorizontalAlignment="Stretch">
+
+            <!-- Master Toggle Card -->
+            <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" 
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                    BorderThickness="1" CornerRadius="8" Padding="16,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Enable Caps Modifiers" 
+                               VerticalAlignment="Center" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" />
+
+                    <ToggleSwitch IsOn="{x:Bind CapsViewModel.IsEnabled, Mode=TwoWay}" 
+                                  Grid.Column="1" 
+                                  Margin="0" 
+                                  MinWidth="0" 
+                                  OnContent="{x:Null}" 
+                                  OffContent="{x:Null}"/>
+                </Grid>
+            </Border>
+
+            <Button Margin="0,20,0,3" Click="NewCapsModiferItem_Click" >
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="Add New Modifier Key"/>
+                    <FontIcon Glyph="&#xE710;"/>
+                </StackPanel>
+            </Button>
+            <MenuFlyoutSeparator Margin="0,0,0,5" />
+
+            <!-- Dynamic Key List -->
+            <ItemsControl ItemsSource="{x:Bind CapsViewModel.ModifierMappings, Mode=OneWay}" HorizontalAlignment="Stretch">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:CapsKeyConfig">
+                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                                BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,0,16"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Spacing="10">
+
+                                <!-- Header Layer -->
+                                <Grid ColumnSpacing="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button Content="{x:Bind DisplayKey, Mode=OneWay}" Grid.Column="0" Margin="0,0,40,0"
+                                            Background="{ThemeResource HyperlinkButtonBackgroundThemeBrush}" BorderThickness="2"
+                                            FontWeight="Bold" Click="ChangeTriggerKey_Click"
+                                            Foreground="{ThemeResource AccentAAFillColorSecondaryBrush}" />
+
+                                    <TextBlock Text="Action:" Grid.Row="0" Grid.Column="1" FontWeight="SemiBold" VerticalAlignment="Center"/>
+
+                                    <ComboBox Grid.Row="0" Grid.Column="2"
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                              SelectedIndex="{x:Bind ActionIndex, Mode=TwoWay}">
+                                        <ComboBoxItem Content="Window Focus" />
+                                        <ComboBoxItem Content="Shortcut Remap" />
+                                    </ComboBox>
+
+                                    <Button Grid.Column="3" HorizontalAlignment="Right" Click="DeleteCapsModifierEntry_Click"
+                                            
+                                            >
+                                        <Button.Resources>
+                                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemFillColorCriticalBackground}"/>
+                                        </Button.Resources>
+                                        <FontIcon Glyph="&#xE74D;"/>
+                                    </Button>
+                                </Grid>
+
+                                <MenuFlyoutSeparator Margin="0,0" />
+
+                                <!-- Window Focus Layout -->
+                                <StackPanel x:Name="WindowFocus" x:Load="{x:Bind IsFocusMode, Mode=OneWay}" Spacing="12">
+                                    <Grid ColumnSpacing="20" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" ColumnSpacing="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                <ColumnDefinition ></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Header="Target Window" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.TargetExe, Mode=TwoWay}"  />
+                                            <Button Grid.Column="1" VerticalAlignment="Bottom" Click="OpenPickWindow_Click" Tag="TargetExe">
+                                                <StackPanel Spacing="5" Orientation="Horizontal" >
+                                                    <FontIcon Glyph="&#xE8A7;"/>
+                                                    <TextBlock Text="Pick Window"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+                                        <Grid Grid.Column="1" ColumnSpacing="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                <ColumnDefinition ></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Header="Fallback Window" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.Fallback, Mode=TwoWay}"/>
+                                            <Button Grid.Column="1" VerticalAlignment="Bottom" Click="OpenPickWindow_Click" Tag="Fallback">
+                                                <StackPanel Spacing="5" Orientation="Horizontal" >
+                                                    <FontIcon Glyph="&#xE8A7;"/>
+                                                    <TextBlock Text="Pick Window"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnSpacing="16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox Header="Required Title" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.RequiredTitle, Mode=TwoWay}" Grid.Column="0" />
+                                        <TextBox Header="Exclude Title" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.ExcludeTitle, Mode=TwoWay}" Grid.Column="1" />
+                                    </Grid>
+
+                                    <TextBox Header="Command Line (Fallback Launch)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.Command, Mode=TwoWay}" />
+                                </StackPanel>
+
+                                <!-- Shortcut Remap Layout -->
+                                <StackPanel x:Name="ShortcutRemap" x:Load="{x:Bind IsRemapMode, Mode=OneWay}"
+                                             Spacing="12">
+                                    <ItemsControl ItemsSource="{x:Bind RemappedKeys, Mode=OneWay}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:RemappedKeyPayload">
+                                                <Grid ColumnSpacing="10" Margin="0,0,0,10" Padding="10,10,10,10"
+                                                      CornerRadius="10"
+                                                      Background="{ThemeResource CardBackgroundFillColorDefault}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Grid ColumnSpacing="5"
+                                                        Grid.Column="0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBox Header="Shortcut to Emit" Grid.Column="0"
+                                                                 FontWeight="Bold" IsSpellCheckEnabled="False"
+                                                                 Text="{x:Bind ShortcutToEmit, Mode=TwoWay}"  />
+                                                        <Button Grid.Column="1"
+                                                                VerticalAlignment="Bottom"
+                                                                Click="RemapEnterShorcut_Click" >
+                                                            <StackPanel Orientation="Horizontal" Spacing="3">
+                                                                <FontIcon Glyph="&#xE92E;"/>
+                                                                <TextBlock Text="Capture Input"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </Grid>
+                                                    <Grid Grid.Column="1" ColumnSpacing="10">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                            <ColumnDefinition ></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBox Header="Target Window (* for all)" IsSpellCheckEnabled="False" Text="{x:Bind TargetWindow, Mode=TwoWay}"  />
+                                                        <Button Grid.Column="1" VerticalAlignment="Bottom" Click="OpenPickWindow_Click" Tag="TargetWindow">
+                                                            <StackPanel Spacing="5" Orientation="Horizontal" >
+                                                                <FontIcon Glyph="&#xE8A7;"/>
+                                                                <TextBlock Text="Pick Window"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </Grid>
+                                                    <Button Grid.Column="2" Click="RemappedKeyDelete_Click"
+                                                            HorizontalAlignment="Right" VerticalAlignment="Stretch" >
+                                                        <Button.Resources>
+                                                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemFillColorCriticalBackground}"/> 
+                                                        </Button.Resources>
+                                                        <FontIcon Glyph="&#xE894;"  />
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <Button Content="Add Specific Window Override"
+                                            HorizontalAlignment="Left"
+                                            Click="AddOverride_Click" />
+                                </StackPanel>
+
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

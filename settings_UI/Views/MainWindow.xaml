@@ -1,0 +1,68 @@
+<Window
+    x:Class="settings_UI.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="using:settings_UI.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop Kind="Base" />
+    </Window.SystemBackdrop>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border x:Name="CustomAppTitleBar"
+        Grid.Row="0"
+        Grid.ColumnSpan="2"
+        Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
+        BorderThickness="0,0,0,0"
+        BorderBrush="{ThemeResource AccentControlElevationBorderBrush}">
+
+            <Grid Height="30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <!-- Space allocated automatically on the right for system caption controls (Min/Max/Close) -->
+                    <ColumnDefinition Width="140" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Application Title Text -->
+                <TextBlock Grid.Column="0" 
+                   Text="Windows QOL" 
+                   VerticalAlignment="Center" 
+                   Margin="16,0,0,0" 
+                   FontSize="12" 
+                   Style="{StaticResource CaptionTextBlockStyle}"/>
+
+                <Grid Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+            <views:TopBarControl x:Name="TopBar" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0" MainViewModel="{x:Bind ViewModel}" />
+            <views:SidebarControl x:Name="Sidebar" Grid.Row="1" Grid.Column="0" Margin="0,10,0,0" MainViewModel="{x:Bind ViewModel}" />
+            <views:CenterPaneControl x:Name="CenterPane" Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" MainViewModel="{x:Bind ViewModel}" />
+        </Grid>
+    </Grid>
+</Window>

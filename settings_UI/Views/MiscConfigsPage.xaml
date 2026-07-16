@@ -1,0 +1,74 @@
+<Page
+    x:Class="settings_UI.Views.MiscConfigsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="30,0,30,30">
+        <StackPanel HorizontalAlignment="Stretch" Spacing="20">
+
+            <!-- Terminal Launch Card -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                    BorderThickness="1" CornerRadius="8" Padding="20">
+                <StackPanel Spacing="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="Terminal Launch" FontSize="16" FontWeight="SemiBold" />
+                            <TextBlock Text="Enable shortcut to launch or toggle Windows Terminal" 
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12" Margin="0,4,0,0" />
+                        </StackPanel>
+
+                        <ToggleSwitch IsOn="{x:Bind ViewModel.IsTerminalLaunchEnabled, Mode=TwoWay}" 
+                                      Grid.Column="1" 
+                                      Margin="0" 
+                                      MinWidth="0" 
+                                      OnContent="{x:Null}" 
+                                      OffContent="{x:Null}"/>
+                    </Grid>
+
+                    <MenuFlyoutSeparator />
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Start Path" FontWeight="SemiBold" />
+                        <TextBox Text="{x:Bind ViewModel.TerminalStartPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 PlaceholderText="e.g., C:\Users\&lt;A_UserName&gt;\" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Calculator Single Instance Card -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                    BorderThickness="1" CornerRadius="8" Padding="20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Calculator Single Instance" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock Text="Prevents multiple instances of Windows Calculator from opening" 
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12" Margin="0,4,0,0" />
+                    </StackPanel>
+
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsCalcSingleInstanceEnabled, Mode=TwoWay}" 
+                                  Grid.Column="1" 
+                                  Margin="0" 
+                                  MinWidth="0" 
+                                  OnContent="{x:Null}" 
+                                  OffContent="{x:Null}"/>
+                </Grid>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>
