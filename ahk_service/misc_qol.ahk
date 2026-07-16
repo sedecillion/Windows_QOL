@@ -50,7 +50,7 @@ $Launch_App2::
     cleanText := rawText
     
     for item in RedactedReplacements {
-        cleanText := StrReplace(cleanText, item["dirty"], item["clean"])
+        cleanText := StrReplace(cleanText, item["Dirty"], item["Clean"])
     }
 
     A_Clipboard := "" 
