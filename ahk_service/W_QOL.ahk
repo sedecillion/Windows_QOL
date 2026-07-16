@@ -1,4 +1,6 @@
 ;@Ahk2Exe-UpdateManifest 0, , , 1
+;@Ahk2Exe-SetMainIcon ..\settings_UI\Assets\app_icon.ico
+
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
