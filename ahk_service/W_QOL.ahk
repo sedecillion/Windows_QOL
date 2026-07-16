@@ -76,3 +76,5 @@ SetupWindowAwareShortcuts()
         Reload()
     }
 }
+
+#Esc::ExitApp
