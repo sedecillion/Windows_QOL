@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
 using settings_UI.Models;
 using settings_UI.ViewModels;
+using settings_UI.Views.Modals;
 
 namespace settings_UI.Views
 {
@@ -39,6 +40,26 @@ namespace settings_UI.Views
             {
                 ViewModel.DeleteReplacement(entry);
             }
+        }
+
+        private async void RedactedPasteTriggerKeyPicker_Click(object sender, RoutedEventArgs e)
+        {
+            var config = new CaptureConfiguration
+            {
+                SingleKeyOnly = false,
+                AllowKeyboard = true,
+                AllowMouse = true,
+                IsEmitChord = false
+            };
+            ShortcutCaptureModal modal = new(App.MainWindow, config);
+
+            string capturedShortcut = await modal.ShowAsync();
+
+            if (!string.IsNullOrEmpty(capturedShortcut))
+            {
+                ViewModel.TriggerKey = capturedShortcut;
+            }
+
         }
     }
 }

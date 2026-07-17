@@ -1,7 +1,9 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using settings_UI.Models;
 using settings_UI.ViewModels;
+using settings_UI.Views.Modals;
 using System;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -57,6 +59,26 @@ namespace settings_UI.Views
 
                 button.IsEnabled = true;
             }
+        }
+
+        private async void SC_ToolTriggerKeyPicker_Click(object sender, RoutedEventArgs e)
+        {
+            var config = new CaptureConfiguration
+            {
+                SingleKeyOnly = false,
+                AllowKeyboard = true,
+                AllowMouse = true,
+                IsEmitChord = false
+            };
+            ShortcutCaptureModal modal = new(App.MainWindow,config);
+
+            string capturedShortcut = await modal.ShowAsync();
+
+            if (!string.IsNullOrEmpty(capturedShortcut))
+            {
+                SC_ToolViewModel.TriggerKey = capturedShortcut;
+            }
+
         }
     }
 }

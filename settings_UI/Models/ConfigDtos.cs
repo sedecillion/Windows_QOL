@@ -29,12 +29,14 @@ namespace settings_UI.Models
     {
         public bool IsEnabled { get; set; }
         public string StartPath { get; set; }
+        public string TriggerKey { get; set; }
     }
 
     public class ScreenshotToolDto
     {
         public bool IsEnabled { get; set; }
         public string TargetDir { get; set; }
+        public string TriggerKey { get; set; }
     }
 
     public class CalcSingleInstanceDto
@@ -59,6 +61,7 @@ namespace settings_UI.Models
     {
         public bool IsEnabled { get; set; }
         public List<ReplacementEntryDto> Replacements { get; set; } = [];
+        public string TriggerKey { get; set; }
     }
 
     public class ReplacementEntryDto

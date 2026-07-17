@@ -33,9 +33,11 @@ LoadConfig() {
     
     global EnableTerminalLaunch := profile["TerminalLaunch"]["IsEnabled"]
     global TerminalStartPath := StrReplace(profile["TerminalLaunch"]["StartPath"], "<A_UserName>", A_UserName)
+    global TerminalTriggerKey := profile["TerminalLaunch"]["TriggerKey"]
     
     global EnableScreenshotTool := profile["ScreenshotTool"]["IsEnabled"]
     global ScreenshotTargetDir := profile["ScreenshotTool"]["TargetDir"]
+    global ScreenshotTriggerKey := profile["ScreenshotTool"]["TriggerKey"]
     
     global EnableCalcInstance := profile["CalcSingleInstance"]["IsEnabled"]
     
@@ -45,6 +47,8 @@ LoadConfig() {
     
     global EnableRedactedPaste := profile["RedactedPaste"]["IsEnabled"]
     global RedactedReplacements := profile["RedactedPaste"]["Replacements"]
+    global RedactedPasteTriggerKey := profile["RedactedPaste"]["TriggerKey"]
+    
     for i, item in RedactedReplacements {
         item["Dirty"] := StrReplace(item["Dirty"], "<A_UserName>", A_UserName)
     }
@@ -69,6 +73,7 @@ if (SilentMode) {
 
 SetupCapsHotkeys()
 SetupWindowAwareShortcuts()
+SetupMiscQOL()
 
 ^!r:: {
     if (A_IsCompiled) {

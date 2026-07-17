@@ -10,6 +10,7 @@ namespace settings_UI.ViewModels
         [ObservableProperty] private bool _isEnabled;
 
         public ObservableCollection<ReplacementEntryDto> redactedPasteReplacements { get; } = [];
+        [ObservableProperty] private string _triggerKey;
 
         public void LoadFromLoadedConfig(RedactedPasteDto redactedPaste)
         {
@@ -18,6 +19,7 @@ namespace settings_UI.ViewModels
             if (redactedPaste == null) return;
 
             IsEnabled = redactedPaste.IsEnabled;
+            TriggerKey = redactedPaste.TriggerKey;
 
             if (redactedPaste.Replacements != null)
             {
@@ -33,7 +35,8 @@ namespace settings_UI.ViewModels
             return new RedactedPasteDto
             {
                 IsEnabled = IsEnabled,
-                Replacements = redactedPasteReplacements.ToList()
+                Replacements = redactedPasteReplacements.ToList(),
+                TriggerKey = TriggerKey
             };
         }
 

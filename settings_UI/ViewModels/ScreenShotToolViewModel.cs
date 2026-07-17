@@ -10,6 +10,9 @@ namespace settings_UI.ViewModels
 
         [ObservableProperty]
         private string _target_Dir;
+
+        [ObservableProperty]
+        private string _triggerKey;
         public ScreenShotToolViewModel()
         {
 
@@ -19,6 +22,7 @@ namespace settings_UI.ViewModels
         {
             IsEnabled = screenshotToolDto.IsEnabled;
             Target_Dir = screenshotToolDto.TargetDir;
+            TriggerKey = screenshotToolDto.TriggerKey;
         }
         
         public ScreenshotToolDto GetPackedSettings()
@@ -26,7 +30,8 @@ namespace settings_UI.ViewModels
             ScreenshotToolDto screenshotToolDto = new()
             {
                 IsEnabled = IsEnabled,
-                TargetDir = Target_Dir
+                TargetDir = Target_Dir,
+                TriggerKey = TriggerKey
             };
             return screenshotToolDto;
         }

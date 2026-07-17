@@ -33,6 +33,27 @@
                                   OffContent="{x:Null}"/>
                 </Grid>
             </Border>
+            
+            
+            <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" 
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                    BorderThickness="1" CornerRadius="8" Margin="0,0,0,20" Padding="16,12">
+                <Grid ColumnSpacing="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Header="Trigger Key" Text="{x:Bind ViewModel.TriggerKey, Mode=TwoWay}" />
+                    <Button Grid.Column="1"
+                        VerticalAlignment="Bottom"
+                        Click="RedactedPasteTriggerKeyPicker_Click">
+                        <StackPanel Orientation="Horizontal" Spacing="3">
+                            <FontIcon Glyph="&#xE92E;"/>
+                            <TextBlock Text="Capture Input"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
 
             <Button Click="AddReplacement_Click">
                 <StackPanel Orientation="Horizontal" Spacing="10">

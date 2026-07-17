@@ -1,9 +1,17 @@
 #Requires AutoHotkey v2.0
 
-^!t:: 
-{
-    if !EnableTerminalLaunch
-        return
+SetupMiscQOL() {
+    if EnableTerminalLaunch && TerminalTriggerKey
+        Hotkey(TerminalTriggerKey, LaunchTerminal)
+
+    if EnableRedactedPaste && RedactedPasteTriggerKey
+        Hotkey(RedactedPasteTriggerKey, PasteRedacted)
+
+    if EnableScreenshotTool && ScreenshotTriggerKey
+        Hotkey(ScreenshotTriggerKey, CaptureScreenshot)
+}
+
+LaunchTerminal(HotkeyName) {
     try {
         Run("cmd.exe", TerminalStartPath)
     }
@@ -35,14 +43,7 @@ $Launch_App2::
     }
 }
 
-
-#HotIf
-
-^!v:: 
-{
-    if !EnableRedactedPaste
-        return
-
+PasteRedacted(HotkeyName) {
     rawText := A_Clipboard
     if (rawText = "")
         return
@@ -68,11 +69,7 @@ $Launch_App2::
     Send("^v")
 }
 
-$PrintScreen::
-{
-    if !EnableScreenshotTool
-        return
-
+CaptureScreenshot(HotkeyName) {
     static isCapturing := false
     if (isCapturing)
         return
@@ -91,7 +88,7 @@ $PrintScreen::
     tempFile := ScreenshotTargetDir . "\~temp_capture_" . A_TickCount . ".png"
     SaveScreenToDisk(X, Y, W, H, tempFile)
 
-    InputBoxObj := InputBox("Enter Screenshot file name", "Save Screenshot", "w400 h130")
+    InputBoxObj := InputBox("Enter Screenshot file name `nClose this dialog box to discard screenshot", "Save Screenshot", "w400 h130")
     
     if (InputBoxObj.Result = "Cancel" || InputBoxObj.Value == "") {
         if FileExist(tempFile)
