@@ -8,6 +8,7 @@ namespace settings_UI.ViewModels
         [ObservableProperty] private bool _isCalcSingleInstanceEnabled;
         [ObservableProperty] private bool _isTerminalLaunchEnabled;
         [ObservableProperty] private string _terminalStartPath = "";
+        [ObservableProperty] private string _terminalLaunchTriggerKey = "";
 
         public void LoadFromLoadedConfig(CalcSingleInstanceDto calcConfig, TerminalLaunchDto terminalConfig)
         {
@@ -20,6 +21,7 @@ namespace settings_UI.ViewModels
             {
                 IsTerminalLaunchEnabled = terminalConfig.IsEnabled;
                 TerminalStartPath = terminalConfig.StartPath ?? "";
+                TerminalLaunchTriggerKey = terminalConfig.TriggerKey;
             }
         }
 
@@ -36,7 +38,8 @@ namespace settings_UI.ViewModels
             return new TerminalLaunchDto
             {
                 IsEnabled = IsTerminalLaunchEnabled,
-                StartPath = TerminalStartPath
+                StartPath = TerminalStartPath,
+                TriggerKey = TerminalLaunchTriggerKey
             };
         }
     }

@@ -96,7 +96,7 @@
 
                                 <!-- Target Windows Section -->
                                 <StackPanel Orientation="Horizontal" Spacing="10">
-                                    <TextBlock Text="Target Windows" VerticalAlignment="Center" FontWeight="SemiBold" />
+                                    <TextBlock Text="Target Windows (* for all)" VerticalAlignment="Center" FontWeight="SemiBold" />
                                     <Button Click="AddTargetWindow_Click" ToolTipService.ToolTip="Add window criteria">
                                         <FontIcon Glyph="&#xE710;" FontSize="12"/>
                                     </Button>

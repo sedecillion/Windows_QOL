@@ -112,7 +112,7 @@
                                                 <ColumnDefinition Width="1*"></ColumnDefinition>
                                                 <ColumnDefinition ></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
-                                            <TextBox Header="Target Window" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.TargetExe, Mode=TwoWay}"  />
+                                            <TextBox Header="Target Window (* for all)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.TargetExe, Mode=TwoWay}"  />
                                             <Button Grid.Column="1" VerticalAlignment="Bottom" Click="OpenPickWindow_Click" Tag="TargetExe">
                                                 <StackPanel Spacing="5" Orientation="Horizontal" >
                                                     <FontIcon Glyph="&#xE8A7;"/>
@@ -125,7 +125,7 @@
                                                 <ColumnDefinition Width="1*"></ColumnDefinition>
                                                 <ColumnDefinition ></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
-                                            <TextBox Header="Fallback Window" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.Fallback, Mode=TwoWay}"/>
+                                            <TextBox Header="Fallback Window (* for all)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.Fallback, Mode=TwoWay}"/>
                                             <Button Grid.Column="1" VerticalAlignment="Bottom" Click="OpenPickWindow_Click" Tag="Fallback">
                                                 <StackPanel Spacing="5" Orientation="Horizontal" >
                                                     <FontIcon Glyph="&#xE8A7;"/>

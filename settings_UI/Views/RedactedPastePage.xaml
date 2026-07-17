@@ -84,8 +84,8 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBox Header="Target Text" Text="{x:Bind Dirty, Mode=TwoWay}" Grid.Column="0" />
-                                <TextBox Header="Replacement" Text="{x:Bind Clean, Mode=TwoWay}" Grid.Column="1" />
+                                <TextBox Header="Target Text (Use &lt;A_UserName&gt; for current OS username)" Text="{x:Bind Dirty, Mode=TwoWay}" Grid.Column="0" />
+                                <TextBox Header="Replacement (Leave blank to remove Target Text)" Text="{x:Bind Clean, Mode=TwoWay}" Grid.Column="1" />
 
                                 <Button Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,0,2" 
                                         Click="DeleteReplacement_Click" ToolTipService.ToolTip="Delete Replacement">

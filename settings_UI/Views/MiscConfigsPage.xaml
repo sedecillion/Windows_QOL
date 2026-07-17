@@ -36,11 +36,33 @@
 
                     <MenuFlyoutSeparator />
 
-                    <StackPanel Spacing="8">
-                        <TextBlock Text="Start Path" FontWeight="SemiBold" />
-                        <TextBox Text="{x:Bind ViewModel.TerminalStartPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                 PlaceholderText="e.g., C:\Users\&lt;A_UserName&gt;\" />
-                    </StackPanel>
+                    <Grid ColumnSpacing="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Header="Trigger Key" Text="{x:Bind ViewModel.TerminalLaunchTriggerKey, Mode=TwoWay}" />
+                            <Button Grid.Column="1"
+                            VerticalAlignment="Bottom"
+                            Click="TerminalLaunchTriggerKeyCapture_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="3">
+                                    <FontIcon Glyph="&#xE92E;"/>
+                                    <TextBlock Text="Capture Input"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <StackPanel Spacing="8" Grid.Column="1">
+                            <TextBlock Text="Start Path (Use &lt;A_UserName&gt; for current OS username)" FontWeight="SemiBold" />
+                            <TextBox Text="{x:Bind ViewModel.TerminalStartPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                     PlaceholderText="e.g., C:\Users\&lt;A_UserName&gt;\" />
+                        </StackPanel>
+                        
+                    </Grid>
                 </StackPanel>
             </Border>
 
@@ -56,7 +78,7 @@
 
                     <StackPanel>
                         <TextBlock Text="Calculator Single Instance" FontSize="16" FontWeight="SemiBold" />
-                        <TextBlock Text="Prevents multiple instances of Windows Calculator from opening" 
+                        <TextBlock Text="Prevents multiple instances of Windows Calculator from opening from keyboard keys (Launch_App2 key)" 
                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12" Margin="0,4,0,0" />
                     </StackPanel>
 
