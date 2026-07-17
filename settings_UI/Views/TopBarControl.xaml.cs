@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using settings_UI.Models;
 using settings_UI.ViewModels;
 using settings_UI.Views.Modals;
 
@@ -54,6 +55,21 @@ namespace settings_UI.Views
             if (MainViewModel != null && sender is CheckBox cb && cb.IsChecked.HasValue)
             {
                 MainViewModel.ToggleStartup(cb.IsChecked.Value);
+            }
+        }
+
+        private async void ImportExportCurrentProfile_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainViewModel == null) return;
+
+            string currentJson = MainViewModel.GetDisplayedProfileJson();
+
+            JsonEditorModal editorModal = new JsonEditorModal(App.MainWindow, currentJson);
+            ProfileDto updatedProfile = await editorModal.ShowAsync();
+
+            if (updatedProfile != null)
+            {
+                MainViewModel.ApplyImportedProfile(updatedProfile);
             }
         }
     }

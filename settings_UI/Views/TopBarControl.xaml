@@ -24,10 +24,17 @@
 
             <StackPanel Spacing="0" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <!-- Profile Name -->
-                <TextBlock Text="{x:Bind MainViewModel.DisplayedProfileName, Mode=OneWay}" 
-                           Style="{ThemeResource BodyStrongTextBlockStyle}"
-                           FontSize="16"
-                           TextTrimming="CharacterEllipsis"/>
+                <StackPanel Orientation="Horizontal" Spacing="9">
+                    <TextBlock Text="{x:Bind MainViewModel.DisplayedProfileName, Mode=OneWay}" 
+                               Style="{ThemeResource BodyStrongTextBlockStyle}"
+                               FontSize="16"
+                               TextTrimming="CharacterEllipsis"/>
+                    <HyperlinkButton Padding="0" MinHeight="0" 
+                                     Click="ImportExportCurrentProfile_Click"
+                                     ToolTipService.ToolTip="Import/Export this profile">
+                        <FontIcon Glyph="&#xE72D;"/>
+                    </HyperlinkButton>
+                </StackPanel>
 
                 <!-- Activate / Status Indicator -->
                 <HyperlinkButton x:Name="ActivateProfileButton"

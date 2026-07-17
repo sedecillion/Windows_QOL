@@ -63,6 +63,7 @@
 	  <None Remove="Views\CapsModifierPage.xaml" />
 	  <None Remove="Views\CenterPaneControl.xaml" />
 	  <None Remove="Views\MiscConfigsPage.xaml" />
+	  <None Remove="Views\Modals\JsonEditorModal.xaml" />
 	  <None Remove="Views\Modals\ManageProfilesModal.xaml" />
 	  <None Remove="Views\Modals\SelectWindowModal.xaml" />
 	  <None Remove="Views\Modals\ShortcutCaptureModal.xaml" />
@@ -80,6 +81,11 @@
 	  <Content Update="Assets\app_icon.ico">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Modals\JsonEditorModal.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 	<ItemGroup>
 	  <Page Update="Views\Modals\SelectWindowModal.xaml">

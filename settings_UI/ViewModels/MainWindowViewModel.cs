@@ -10,6 +10,7 @@ using System.Linq;
 using WindowsInput;
 using WindowsInput.Native;
 using System.IO;
+using System.Text.Json;
 
 namespace settings_UI.ViewModels
 {
@@ -169,6 +170,8 @@ namespace settings_UI.ViewModels
             RedactedPasteVM.LoadFromLoadedConfig(selectedProfileData.RedactedPaste);
             WAShortcutVM.LoadFromLoadedConfig(selectedProfileData.WindowAwareShortcutRemap);
             MiscVM.LoadFromLoadedConfig(selectedProfileData.CalcSingleInstance, selectedProfileData.TerminalLaunch);
+
+            OnPropertyChanged(nameof(DisplayedProfileName));
         }
 
         partial void OnSelectedSettingCategoryChanged(NavigationItem value)
@@ -201,8 +204,8 @@ namespace settings_UI.ViewModels
             return new ProfileDto
             {
                 ProfileProperties = new ProfilePropertiesDto { Name = profileName, SilentMode = true },
-                TerminalLaunch = new TerminalLaunchDto { IsEnabled = true, StartPath = @"C:\Windows\System32" },
-                ScreenshotTool = new ScreenshotToolDto { IsEnabled = true, TargetDir = @"D:\Pictures" },
+                TerminalLaunch = new TerminalLaunchDto { IsEnabled = true, StartPath = @"C:\Windows\System32", TriggerKey = "^!t" },
+                ScreenshotTool = new ScreenshotToolDto { IsEnabled = true, TargetDir = @"D:\Pictures", TriggerKey= "PrintScreen" },
                 CalcSingleInstance = new CalcSingleInstanceDto { IsEnabled = true },
                 WindowAwareShortcutRemap = new WindowAwareShortcutRemapDto
                 {
@@ -212,6 +215,7 @@ namespace settings_UI.ViewModels
                 RedactedPaste = new RedactedPasteDto
                 {
                     IsEnabled = true,
+                    TriggerKey = "^!v",
                     Replacements = []
                 },
                 CapsModifiers = new CapsModifierDto
@@ -294,6 +298,43 @@ namespace settings_UI.ViewModels
             _configModel.CurrentConfig.Profiles[DisplayedProfileIndex].TerminalLaunch = MiscVM.GetPackedTerminalLaunch();
 
             _configModel.SaveConfig();
+        }
+
+        public string GetDisplayedProfileJson()
+        {
+            var profile = _configModel.CurrentConfig.Profiles[DisplayedProfileIndex];
+
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                // prevent + <> from turning to unicodes \u things
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+            return JsonSerializer.Serialize(profile, options);
+        }
+
+        public void ApplyImportedProfile(ProfileDto newProfile)
+        {
+            _configModel.CurrentConfig.Profiles[DisplayedProfileIndex] = newProfile;
+            OnDisplayedProfileIndexChanged(DisplayedProfileIndex);
+
+            SaveSettings();
+        }
+
+        public void OpenConfigFolder()
+        {
+            string folderPath = Path.GetDirectoryName(_configModel._configFilePath);
+
+            if (Directory.Exists(folderPath))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = folderPath,
+                    UseShellExecute = true,
+                    Verb = "open"
+                });
+            }
         }
     }
 }

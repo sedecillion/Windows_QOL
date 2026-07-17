@@ -190,4 +190,9 @@ public sealed partial class ManageProfilesModal : Window
 
     [DllImport("User32.dll", CharSet = CharSet.Auto, EntryPoint = "SetWindowLong")]
     public static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+    private void OpenConfigFolder_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.OpenConfigFolder();
+    }
 }
