@@ -20,10 +20,15 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Enable Window-Aware Shortcut Remaps" 
-                               VerticalAlignment="Center" 
-                               FontSize="16" 
-                               FontWeight="SemiBold" />
+                    <StackPanel>
+                        
+                        <TextBlock Text="Enable Window-Aware Shortcut Remaps" 
+                                   VerticalAlignment="Center" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold" />
+                        <TextBlock Text="Remap a shortcut based on active window" 
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12"/>
+                    </StackPanel>
 
                     <ToggleSwitch IsOn="{x:Bind ViewModel.IsEnabled, Mode=TwoWay}" 
                                   Grid.Column="1" 

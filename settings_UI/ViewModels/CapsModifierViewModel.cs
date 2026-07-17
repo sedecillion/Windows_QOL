@@ -65,8 +65,11 @@ namespace settings_UI.ViewModels
     {
         public ObservableCollection<CapsKeyConfig> ModifierMappings { get; } = [];
 
-        [ObservableProperty]
-        private bool _isEnabled;
+        [NotifyPropertyChangedFor(nameof(CapslockOverriddenInfoBarVisibility))]
+        [ObservableProperty] private bool _isEnabled;
+
+        public bool CapslockOverriddenInfoBarVisibility => IsEnabled;
+
 
         public CapsModifierViewModel()
         {

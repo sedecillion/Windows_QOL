@@ -20,10 +20,14 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Enable Redacted Paste" 
-                               VerticalAlignment="Center" 
-                               FontSize="16" 
-                               FontWeight="SemiBold" />
+                    <StackPanel>
+                        <TextBlock Text="Enable Redacted Paste" 
+                                   VerticalAlignment="Center" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold" />
+                        <TextBlock Text="Replace or remove desired text when pasting" 
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12"/>
+                    </StackPanel>
 
                     <ToggleSwitch IsOn="{x:Bind ViewModel.IsEnabled, Mode=TwoWay}" 
                                   Grid.Column="1" 
@@ -80,8 +84,8 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBox Header="Target Text (Dirty)" Text="{x:Bind Dirty, Mode=TwoWay}" Grid.Column="0" />
-                                <TextBox Header="Replacement (Clean)" Text="{x:Bind Clean, Mode=TwoWay}" Grid.Column="1" />
+                                <TextBox Header="Target Text" Text="{x:Bind Dirty, Mode=TwoWay}" Grid.Column="0" />
+                                <TextBox Header="Replacement" Text="{x:Bind Clean, Mode=TwoWay}" Grid.Column="1" />
 
                                 <Button Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,0,2" 
                                         Click="DeleteReplacement_Click" ToolTipService.ToolTip="Delete Replacement">

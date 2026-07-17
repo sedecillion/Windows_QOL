@@ -21,10 +21,15 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Enable Screenshot Tool" 
-                   VerticalAlignment="Center" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" />
+                    <StackPanel>
+                        <TextBlock Text="Enable Screenshot Tool" 
+                           VerticalAlignment="Center" 
+                           FontSize="16" 
+                           FontWeight="SemiBold" />
+                        
+                        <TextBlock Text="Capture screenshot, quickly Rename, Save or Delete in one go" 
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12"/>
+                    </StackPanel>
 
                     <ToggleSwitch IsOn="{x:Bind SC_ToolViewModel.IsEnabled, Mode=TwoWay}" 
                       Grid.Column="1" 
@@ -57,17 +62,17 @@
                     </Button>
                 </Grid>
                 <Grid ColumnSpacing="10" Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBox Header="Path to save screenshot" Text="{x:Bind SC_ToolViewModel.Target_Dir, Mode=TwoWay}"/>
-                <Button VerticalAlignment="Bottom" Grid.Column="1" Click="SCToolPickFolder">
-                    <StackPanel Orientation="Horizontal" Spacing="5">
-                        <FontIcon Glyph="&#xE8DA;"/>
-                        <TextBlock Text="Pick Folder"/>
-                    </StackPanel>
-                </Button>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Header="Path to save screenshot" Text="{x:Bind SC_ToolViewModel.Target_Dir, Mode=TwoWay}"/>
+                    <Button VerticalAlignment="Bottom" Grid.Column="1" Click="SCToolPickFolder">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <FontIcon Glyph="&#xE8DA;"/>
+                            <TextBlock Text="Pick Folder"/>
+                        </StackPanel>
+                    </Button>
                 </Grid>
             </Grid>
         </StackPanel>
