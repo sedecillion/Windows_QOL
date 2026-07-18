@@ -82,7 +82,33 @@ namespace settings_UI.ViewModels
 
         private List<ProfileDto> _profiles;
 
+        [ObservableProperty] private bool _isNotInstalledInTrustedLocation = false;
+
         public MainWindowViewModel()
+        {
+            IsInstalledInProgramFilesCheck();
+
+            InitConfigLoad();
+
+            InitSideBar();
+
+            InitializeServiceState();
+        }
+
+        private void IsInstalledInProgramFilesCheck()
+        {
+            string currentPath = AppContext.BaseDirectory;
+
+            string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            string programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+
+            bool inProgramFiles = currentPath.StartsWith(programFiles, StringComparison.OrdinalIgnoreCase);
+            bool inProgramFilesX86 = currentPath.StartsWith(programFilesX86, StringComparison.OrdinalIgnoreCase);
+
+            IsNotInstalledInTrustedLocation = !(inProgramFiles || inProgramFilesX86);
+        }
+
+        private void InitConfigLoad()
         {
             _configModel.LoadConfig();
 
@@ -95,9 +121,11 @@ namespace settings_UI.ViewModels
 
             ActiveProfileIndex = _configModel.CurrentConfig.ActiveProfileIndex;
 
-
             DisplayedProfileIndex = ActiveProfileIndex;
+        }
 
+        private void InitSideBar()
+        {
             SidebarItems.Add(new NavigationItem("Caps Modifiers", "\uE752", typeof(Views.CapsModifierPage)));
             SidebarItems.Add(new NavigationItem("Shortcut Remap", "\uEDA7", typeof(Views.WindowAwareShortcutPage)));
             SidebarItems.Add(new NavigationItem("ScreenShot Tool", "\uF406", typeof(Views.ScreenShotToolPage)));
@@ -105,8 +133,6 @@ namespace settings_UI.ViewModels
             SidebarItems.Add(new NavigationItem("Miscellaneous", "\uE8BC", typeof(Views.MiscConfigsPage)));
 
             SelectedSettingCategory = SidebarItems[0];
-
-            InitializeServiceState();
         }
 
 

@@ -56,7 +56,7 @@ namespace settings_UI.Models
 
                 File.WriteAllText(_configFilePath, jsonOutput);
                 InputSimulator saveInputTrigger = new();
-                saveInputTrigger.Keyboard.ModifiedKeyStroke([VirtualKeyCode.CONTROL, VirtualKeyCode.MENU], VirtualKeyCode.VK_R);
+                saveInputTrigger.Keyboard.ModifiedKeyStroke([VirtualKeyCode.CONTROL, VirtualKeyCode.MENU, VirtualKeyCode.SHIFT], VirtualKeyCode.ESCAPE);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using settings_UI.Helpers;
 using settings_UI.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,14 +17,15 @@ namespace settings_UI.ViewModels
         [NotifyPropertyChangedFor(nameof(DisplayTriggerKey))]
         private string _triggerKey = "";
 
-        public string DisplayTriggerKey => string.IsNullOrEmpty(TriggerKey) ? "Click to Set" : TriggerKey;
+        public string DisplayTriggerKey => string.IsNullOrEmpty(TriggerKey) ? "Click to Set" : AhkKeyTranslator.AhkKeysToString(TriggerKey,false);
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DisplayEmitKey))]
         private string _shortcutToEmit = "";
 
-        public string DisplayEmitKey => string.IsNullOrEmpty(ShortcutToEmit) ? "Click to Set" : ShortcutToEmit;
+        public string DisplayEmitKey => string.IsNullOrEmpty(ShortcutToEmit) ? "Click to Set" : AhkKeyTranslator.AhkKeysToString(ShortcutToEmit,true);
 
+        [ObservableProperty] private bool _isCardExapanded = false;
         public ObservableCollection<TargetWindowItem> TargetWindows { get; } = [];
     }
 
@@ -74,6 +76,10 @@ namespace settings_UI.ViewModels
 
             foreach (var remap in Remaps)
             {
+                if(remap.TriggerKey == "" || remap.ShortcutToEmit == "")
+                {
+                    continue;
+                }
                 var entryDto = new WindowAwareRemapEntryDto
                 {
                     TriggerKey = remap.TriggerKey,

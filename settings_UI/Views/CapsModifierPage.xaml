@@ -38,180 +38,190 @@
                 </Grid>
             </Border>
 
-            <InfoBar
+            <InfoBar Margin="0,5,0,5"
                 IsOpen="{x:Bind CapsViewModel.CapslockOverriddenInfoBarVisibility, Mode=OneWay}"
                 Severity="Informational"
                 Title="Note"
                 Message="CapsLock can be toggled by pressing [Win + CapsLock]" />
 
-            <Button Margin="0,20,0,3" Click="NewCapsModiferItem_Click" >
+            <Button Margin="0,30,0,3" Click="NewCapsModiferItem_Click" >
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <TextBlock Text="Add New Modifier Key"/>
                     <FontIcon Glyph="&#xE710;"/>
                 </StackPanel>
             </Button>
-            <MenuFlyoutSeparator Margin="0,0,0,5" />
+            <MenuFlyoutSeparator Margin="0,0,0,10" />
 
             <!-- Dynamic Key List -->
-            <ItemsControl ItemsSource="{x:Bind CapsViewModel.ModifierMappings, Mode=OneWay}" HorizontalAlignment="Stretch">
+            <ItemsControl ItemsSource="{x:Bind CapsViewModel.ModifierMappings, Mode=OneWay}"
+                          HorizontalAlignment="Stretch">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="vm:CapsKeyConfig">
-                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
-                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
-                                BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,0,16"
-                                HorizontalAlignment="Stretch">
-                            <StackPanel Spacing="10">
+                        <!--Content in expander-->
+                        <Expander IsExpanded="{x:Bind IsCardExapanded}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            Margin="0,0,0,10" CornerRadius="8"
+                            Padding="20">
 
+                            <Expander.Header>
                                 <!-- Header Layer -->
-                                <Grid ColumnSpacing="5">
+                                <Grid ColumnSpacing="5" Padding="15">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition MaxWidth="400" MinWidth="300" />
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Button Content="{x:Bind DisplayKey, Mode=OneWay}" Grid.Column="0" Margin="0,0,40,0"
-                                            Background="{ThemeResource HyperlinkButtonBackgroundThemeBrush}" BorderThickness="2"
-                                            FontWeight="Bold" Click="ChangeTriggerKey_Click"
-                                            Foreground="{ThemeResource AccentAAFillColorSecondaryBrush}" />
+                                    <Button Grid.Column="0" Margin="0,0,30,0" Padding="12,8"
+                                        BorderThickness="2" CornerRadius="10" Background="Transparent"
+                                        Click="ChangeTriggerKey_Click"
+                                        HorizontalAlignment="Stretch">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                                            <FontIcon Glyph="&#xE765;" FontSize="16" />
+                                            <TextBlock Text="{x:Bind DisplayTriggerKey, Mode=OneWay}" 
+                                               FontWeight="SemiBold" 
+                                               VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
 
                                     <TextBlock Text="Action:" Grid.Row="0" Grid.Column="1" FontWeight="SemiBold" VerticalAlignment="Center"/>
 
                                     <ComboBox Grid.Row="0" Grid.Column="2"
-                                              HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                              SelectedIndex="{x:Bind ActionIndex, Mode=TwoWay}">
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                        SelectedIndex="{x:Bind ActionIndex, Mode=TwoWay}">
                                         <ComboBoxItem Content="Window Focus" />
                                         <ComboBoxItem Content="Shortcut Remap" />
                                     </ComboBox>
 
-                                    <Button Grid.Column="3" HorizontalAlignment="Right" Click="DeleteCapsModifierEntry_Click"
-                                            
-                                            >
+                                    <Button Grid.Column="4" HorizontalAlignment="Right" Click="DeleteCapsModifierEntry_Click">
                                         <Button.Resources>
                                             <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemFillColorCriticalBackground}"/>
                                         </Button.Resources>
                                         <FontIcon Glyph="&#xE74D;"/>
                                     </Button>
                                 </Grid>
+                            </Expander.Header>
 
-                                <MenuFlyoutSeparator Margin="0,0" />
-
-                                <!-- Window Focus Layout -->
-                                <StackPanel x:Name="WindowFocus" x:Load="{x:Bind IsFocusMode, Mode=OneWay}" Spacing="12">
-                                    <Grid ColumnSpacing="20" >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid Grid.Column="0" ColumnSpacing="10">
+                            <Expander.Content>
+                                <StackPanel Spacing="10">
+                                    <!-- Action: Window Focus Layout -->
+                                    <StackPanel x:Name="WindowFocus" x:Load="{x:Bind IsFocusMode, Mode=OneWay}" Spacing="12">
+                                        <Grid ColumnSpacing="20" >
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"></ColumnDefinition>
-                                                <ColumnDefinition ></ColumnDefinition>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <TextBox Header="Target Window (* for all)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.TargetExe, Mode=TwoWay}"  />
-                                            <Button Grid.Column="1" VerticalAlignment="Bottom" Click="OpenPickWindow_Click" Tag="TargetExe">
-                                                <StackPanel Spacing="5" Orientation="Horizontal" >
+                                            <Grid Grid.Column="0" ColumnSpacing="10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBox Header="Target Window (* for all)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.TargetExe, Mode=TwoWay}"  />
+                                                <Button Grid.Column="1" VerticalAlignment="Bottom" 
+                                                    Click="OpenPickWindow_Click" Tag="TargetExe"
+                                                    ToolTipService.ToolTip="Open window picker">
                                                     <FontIcon Glyph="&#xE8A7;"/>
-                                                    <TextBlock Text="Pick Window"/>
-                                                </StackPanel>
-                                            </Button>
+                                                </Button>
+                                            </Grid>
+                                            <Grid Grid.Column="1" ColumnSpacing="10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBox Header="Fallback Window" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.Fallback, Mode=TwoWay}"/>
+                                                <Button Grid.Column="1" VerticalAlignment="Bottom"
+                                                    Click="OpenPickWindow_Click" Tag="Fallback"
+                                                    ToolTipService.ToolTip="Open window picker">
+                                                    <FontIcon Glyph="&#xE8A7;"/>
+                                                </Button>
+                                            </Grid>
                                         </Grid>
-                                        <Grid Grid.Column="1" ColumnSpacing="10">
+
+                                        <Grid ColumnSpacing="16">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"></ColumnDefinition>
-                                                <ColumnDefinition ></ColumnDefinition>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <TextBox Header="Fallback Window (* for all)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.Fallback, Mode=TwoWay}"/>
-                                            <Button Grid.Column="1" VerticalAlignment="Bottom" Click="OpenPickWindow_Click" Tag="Fallback">
-                                                <StackPanel Spacing="5" Orientation="Horizontal" >
-                                                    <FontIcon Glyph="&#xE8A7;"/>
-                                                    <TextBlock Text="Pick Window"/>
-                                                </StackPanel>
-                                            </Button>
+                                            <TextBox Header="Required Title" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.RequiredTitle, Mode=TwoWay}" Grid.Column="0" />
+                                            <TextBox Header="Exclude Title" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.ExcludeTitle, Mode=TwoWay}" Grid.Column="1" />
                                         </Grid>
-                                    </Grid>
 
-                                    <Grid ColumnSpacing="16">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Header="Required Title" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.RequiredTitle, Mode=TwoWay}" Grid.Column="0" />
-                                        <TextBox Header="Exclude Title" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.ExcludeTitle, Mode=TwoWay}" Grid.Column="1" />
-                                    </Grid>
+                                        <TextBox Header="Command Line (Fallback Launch)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.Command, Mode=TwoWay}" />
+                                    </StackPanel>
 
-                                    <TextBox Header="Command Line (Fallback Launch)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.Command, Mode=TwoWay}" />
-                                </StackPanel>
-
-                                <!-- Shortcut Remap Layout -->
-                                <StackPanel x:Name="ShortcutRemap" x:Load="{x:Bind IsRemapMode, Mode=OneWay}"
-                                             Spacing="12">
-                                    <ItemsControl ItemsSource="{x:Bind RemappedKeys, Mode=OneWay}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate x:DataType="vm:RemappedKeyPayload">
-                                                <Grid ColumnSpacing="10" Margin="0,0,0,10" Padding="10,10,10,10"
-                                                      CornerRadius="10"
-                                                      Background="{ThemeResource CardBackgroundFillColorDefault}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="1*" />
-                                                        <ColumnDefinition Width="1*" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <Grid ColumnSpacing="5"
-                                                        Grid.Column="0">
+                                    <!-- Action: Shortcut Remap Layout -->
+                                    <StackPanel x:Name="ShortcutRemap" x:Load="{x:Bind IsRemapMode, Mode=OneWay}" Spacing="12">
+                                        <ItemsControl ItemsSource="{x:Bind RemappedKeys, Mode=OneWay}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:RemappedKeyPayload">
+                                                    <Grid ColumnSpacing="30" Margin="0,0,0,10" Padding="10,10,10,10"
+                                                        CornerRadius="10" Background="{ThemeResource CardBackgroundFillColorDefault}">
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="1*"></ColumnDefinition>
-                                                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                            <ColumnDefinition Width="2*" />
+                                                            <ColumnDefinition Width="1*" />
+                                                            <ColumnDefinition Width="Auto" />
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBox Header="Shortcut to Emit" Grid.Column="0"
-                                                                 FontWeight="Bold" IsSpellCheckEnabled="False"
-                                                                 Text="{x:Bind ShortcutToEmit, Mode=TwoWay}"  />
-                                                        <Button Grid.Column="1"
-                                                                VerticalAlignment="Bottom"
-                                                                Click="RemapEnterShorcut_Click" >
-                                                            <StackPanel Orientation="Horizontal" Spacing="3">
-                                                                <FontIcon Glyph="&#xE92E;"/>
-                                                                <TextBlock Text="Capture Input"/>
-                                                            </StackPanel>
-                                                        </Button>
-                                                    </Grid>
-                                                    <Grid Grid.Column="1" ColumnSpacing="10">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="1*"></ColumnDefinition>
-                                                            <ColumnDefinition ></ColumnDefinition>
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBox Header="Target Window (* for all)" IsSpellCheckEnabled="False" Text="{x:Bind TargetWindow, Mode=TwoWay}"  />
-                                                        <Button Grid.Column="1" VerticalAlignment="Bottom" Click="OpenPickWindow_Click" Tag="TargetWindow">
-                                                            <StackPanel Spacing="5" Orientation="Horizontal" >
+
+                                                        <Grid Grid.Column="0" ColumnSpacing="10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBox Header="Target Window (* for all)" IsSpellCheckEnabled="False" Text="{x:Bind TargetWindow, Mode=TwoWay}"  />
+                                                            <Button Grid.Column="1" VerticalAlignment="Bottom"
+                                                                ToolTipService.ToolTip="Open Window Picker"
+                                                                Click="OpenPickWindow_Click"
+                                                                Tag="TargetWindow">
                                                                 <FontIcon Glyph="&#xE8A7;"/>
-                                                                <TextBlock Text="Pick Window"/>
-                                                            </StackPanel>
+                                                            </Button>
+                                                        </Grid>
+
+                                                        <StackPanel Grid.Column="1" Spacing="5">
+                                                            <TextBlock Text="Shortcut To Emit" VerticalAlignment="Center"/>
+                                                            <Button Grid.Column="1"
+                                                                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                                                Click="RemapEnterShorcut_Click"
+                                                                ToolTipService.ToolTip="Capture Input">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                                                                    <FontIcon Glyph="&#xE765;" FontSize="16" />
+                                                                    <TextBlock Text="{x:Bind DisplayShortcutToEmit, Mode=OneWay}" 
+                                                                       FontWeight="SemiBold"
+                                                                       VerticalAlignment="Center" />
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </StackPanel>
+
+                                                        <Button Grid.Column="2" Click="RemappedKeyDelete_Click"
+                                                            HorizontalAlignment="Right" VerticalAlignment="Stretch" >
+                                                            <Button.Resources>
+                                                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemFillColorCriticalBackground}"/>
+                                                            </Button.Resources>
+                                                            <FontIcon Glyph="&#xE894;"  />
                                                         </Button>
                                                     </Grid>
-                                                    <Button Grid.Column="2" Click="RemappedKeyDelete_Click"
-                                                            HorizontalAlignment="Right" VerticalAlignment="Stretch" >
-                                                        <Button.Resources>
-                                                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemFillColorCriticalBackground}"/> 
-                                                        </Button.Resources>
-                                                        <FontIcon Glyph="&#xE894;"  />
-                                                    </Button>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
 
-                                    <Button Content="Add Specific Window Override"
-                                            HorizontalAlignment="Left"
-                                            Click="AddOverride_Click" />
+                                        <MenuFlyoutSeparator Margin="0,0,0,5" />
+
+                                        <Button HorizontalAlignment="Left"
+                                            Click="AddOverride_Click" >
+                                            <StackPanel Spacing="5" Orientation="Horizontal">
+                                                <FontIcon Glyph="&#xE710;"/>
+                                                <TextBlock Text="Add Window Specific Override"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
                                 </StackPanel>
-
-                            </StackPanel>
-                        </Border>
+                            </Expander.Content>
+                        </Expander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

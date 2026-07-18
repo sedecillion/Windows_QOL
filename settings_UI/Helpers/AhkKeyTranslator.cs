@@ -140,5 +140,93 @@ namespace settings_UI.Helpers
                 return $"{modifiers}{ahkKeyName}"; //^Space or ^a
             }
         }
+
+        public static string AhkKeysToString(string ahkString, bool isEmitChord)
+        {
+            if (string.IsNullOrWhiteSpace(ahkString)) return string.Empty;
+
+            var parts = new List<string>();
+
+            if (!isEmitChord)
+            {
+                // Capture/Trigger keys : modifiers + one single key
+                string remaining = ahkString.Trim();
+                while (remaining.Length > 0)
+                {
+                    char c = remaining[0];
+                    if (c == '^') parts.Add("Ctrl");
+                    else if (c == '+') parts.Add("Shift");
+                    else if (c == '!') parts.Add("Alt");
+                    else if (c == '#') parts.Add("Win");
+                    else break;
+
+                    remaining = remaining.Substring(1);
+                }
+
+                if (remaining.Length > 0)
+                {
+                    parts.Add(FormatKeyName(remaining));
+                }
+            }
+            else
+            {
+                // Emit/Send keys: any order of keys
+                var currentModifiers = new List<string>();
+                for (int i = 0; i < ahkString.Length; i++)
+                {
+                    char c = ahkString[i];
+
+                    if (c == '^') { currentModifiers.Add("Ctrl"); }
+                    else if (c == '+') { currentModifiers.Add("Shift"); }
+                    else if (c == '!') { currentModifiers.Add("Alt"); }
+                    else if (c == '#') { currentModifiers.Add("Win"); }
+                    // start of a block {Space} or {Enter}
+                    else if (c == '{')
+                    {
+                        int end = ahkString.IndexOf('}', i);
+                        if (end != -1)
+                        {
+                            string key = ahkString.Substring(i + 1, end - i - 1);
+                            parts.AddRange(currentModifiers);
+                            parts.Add(FormatKeyName(key));
+                            currentModifiers.Clear();
+                            i = end;
+                        }
+                    }
+                    else
+                    {
+                        // Single literal character
+                        parts.AddRange(currentModifiers);
+                        parts.Add(c.ToString().ToUpper());
+                        currentModifiers.Clear();
+                    }
+                }
+            }
+
+            return string.Join(" + ", parts);
+        }
+
+        private static string FormatKeyName(string key)
+        {
+            if (string.IsNullOrEmpty(key)) return "";
+            if (key.Length == 1) return key.ToUpper();
+
+            string formatted = char.ToUpper(key[0]) + key.Substring(1).ToLower();
+
+            return formatted switch
+            {
+                "Pgup" => "PgUp",
+                "Pgdn" => "PgDn",
+                "Numlock" => "NumLock",
+                "Capslock" => "CapsLock",
+                "Scrolllock" => "ScrollLock",
+                "Lbutton" => "LButton",
+                "Rbutton" => "RButton",
+                "Mbutton" => "MButton",
+                "Xbutton1" => "XButton1",
+                "Xbutton2" => "XButton2",
+                _ => formatted
+            };
+        }
     }
 }

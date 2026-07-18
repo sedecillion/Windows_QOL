@@ -48,7 +48,14 @@
                         Background="{ThemeResource SmokeFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource SystemControlHighlightAccentBrush}"
                         BorderThickness="2" IsTabStop="True" KeyDown="KeyboardCaptureBorder_KeyDown">
-                    <TextBlock x:Name="KeyboardShortcutText" Text="No keys Captured..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
+                    <Grid VerticalAlignment="Center" RowSpacing="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="KeyboardShortcutText" Text="No keys Captured..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
+                        <TextBlock Grid.Row="1" Text="{x:Bind _keyboardInputHint}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
+                    </Grid>
                 </Border>
                 <ToggleButton x:Name="KeyboardRecordBtn" Content="Start Recording" HorizontalAlignment="Center" Width="150" Checked="RecordBtn_Checked" Unchecked="RecordBtn_Unchecked"/>
             </StackPanel>
@@ -62,7 +69,7 @@
                         BorderThickness="2" 
                         PointerPressed="MouseCaptureBorder_PointerPressed"
                         PointerWheelChanged="MouseCaptureBorder_PointerWheelChanged">
-                    <TextBlock x:Name="MouseShortcutText" Text="No keys Captured..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
+                    <TextBlock x:Name="MouseShortcutText" Text="No input Captured..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
                 </Border>
                 <ToggleButton x:Name="MouseRecordBtn" Content="Start Recording" HorizontalAlignment="Center" Width="150" Checked="RecordBtn_Checked" Unchecked="RecordBtn_Unchecked"/>
             </StackPanel>

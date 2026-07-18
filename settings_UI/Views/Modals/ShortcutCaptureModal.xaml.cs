@@ -2,8 +2,8 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using settings_UI.Helpers;
 using settings_UI.Models;
-using settings_UI.Helpers; // Added for AhkKeyTranslator
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +17,25 @@ public sealed partial class ShortcutCaptureModal : Window
 {
     private readonly Window _parentWindow;
     private readonly CaptureConfiguration _config;
-    private TaskCompletionSource<string> _tcs; // Changed to string
+    private TaskCompletionSource<string> _tcs;
     private List<VirtualKey> _capturedKeys = new();
     private bool _isRecording = false;
 
+    private string _keyboardInputHint = "";
     public ShortcutCaptureModal(Window parentWindow, CaptureConfiguration config)
     {
         this.InitializeComponent();
         _parentWindow = parentWindow;
         _config = config;
+
+        if (config.SingleKeyOnly)
+        {
+            _keyboardInputHint = "Only single Key allowed";
+        }
+        else
+        {
+            _keyboardInputHint = "Press all at once, or one by one.";
+        }
 
         this.ExtendsContentIntoTitleBar = true;
         this.SetTitleBar(ModalTitleBar);
@@ -165,11 +175,25 @@ public sealed partial class ShortcutCaptureModal : Window
         targetText.Text = string.Join(" + ", friendlyNames);
     }
 
-    private void OKButton_Click(object sender, RoutedEventArgs e)
+    private async void OKButton_Click(object sender, RoutedEventArgs e)
     {
         // Generate final AHK string and return it
         string finalAhkString = AhkKeyTranslator.GenerateAhkString(_capturedKeys, _config.IsEmitChord);
-
+        if(finalAhkString == "#Esc" || finalAhkString == "^!+Esc")
+        {
+            ContentDialog errorDialog = new ContentDialog
+            {
+                Title = "Disallowed key chord",
+                Content = $"{string.Join(" + ",_capturedKeys.Select(AhkKeyTranslator.GetUserFriendlyName))} is resereved key. Choose a different key",
+                CloseButtonText = "OK",
+                XamlRoot = this.Content.XamlRoot
+            };
+            await errorDialog.ShowAsync();
+            _capturedKeys.Clear();
+            UpdateDisplayText(KeyboardShortcutText);
+            KeyboardShortcutText.Text = "No keys Captured...";
+            return;
+        }
         _tcs.TrySetResult(string.IsNullOrEmpty(finalAhkString) ? null : finalAhkString);
         this.Close();
     }

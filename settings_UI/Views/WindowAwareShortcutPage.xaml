@@ -21,7 +21,7 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel>
-                        
+
                         <TextBlock Text="Enable Window-Aware Shortcut Remaps" 
                                    VerticalAlignment="Center" 
                                    FontSize="16" 
@@ -41,7 +41,7 @@
 
             <Button Click="AddNewRemap_Click" Margin="0,10,0,3">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Add New Context Shortcut"/>
+                    <TextBlock Text="Add New Remap"/>
                     <FontIcon Glyph="&#xE710;" FontSize="14"/>
                 </StackPanel>
             </Button>
@@ -52,15 +52,16 @@
             <ItemsControl ItemsSource="{x:Bind ViewModel.Remaps, Mode=OneWay}" HorizontalAlignment="Stretch">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="vm:WindowAwareRemapConfig">
-                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
-                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
-                                BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,0,16"
-                                HorizontalAlignment="Stretch">
+                        <!--Exapander content-->
+                        <Expander IsExpanded="{x:Bind IsCardExapanded, Mode=TwoWay}"
+                                  HorizontalAlignment="Stretch"
+                                  HorizontalContentAlignment="Stretch"
+                                  Margin="0,0,0,16" CornerRadius="8"
+                                  Padding="20">
 
-                            <StackPanel Spacing="16">
-
+                            <Expander.Header>
                                 <!-- Header Row: Input and Emit Keys -->
-                                <Grid>
+                                <Grid Padding="15">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
@@ -71,17 +72,33 @@
 
                                     <!-- Input Key -->
                                     <TextBlock Text="Input:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,10,0"/>
-                                    <Button Grid.Column="1" Content="{x:Bind DisplayTriggerKey, Mode=OneWay}" 
-                                            Background="{ThemeResource HyperlinkButtonBackgroundThemeBrush}" BorderThickness="2"
-                                            FontWeight="Bold" Click="ChangeTriggerKey_Click"
-                                            Foreground="{ThemeResource AccentAAFillColorSecondaryBrush}" />
+                                    <Button Grid.Column="1" Padding="12,8"
+                                            BorderThickness="2" CornerRadius="10" Background="Transparent"
+                                            BorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                                            Click="ChangeTriggerKey_Click"
+                                            HorizontalAlignment="Stretch">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                                            <FontIcon Glyph="&#xE765;" FontSize="16" />
+                                            <TextBlock Text="{x:Bind DisplayTriggerKey, Mode=OneWay}" 
+                                                       FontWeight="Bold" 
+                                                       VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
 
                                     <!-- EmitKey -->
                                     <TextBlock Grid.Column="2" Text="Shortcut to emit:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="40,0,10,0"/>
-                                    <Button Grid.Column="3" Content="{x:Bind DisplayEmitKey, Mode=OneWay}" 
-                                            Background="{ThemeResource HyperlinkButtonBackgroundThemeBrush}" BorderThickness="2"
-                                            FontWeight="Bold" Click="ChangeEmitKey_Click"
-                                            Foreground="{ThemeResource AccentAAFillColorSecondaryBrush}" />
+                                    <Button Grid.Column="3" Padding="12,8"
+                                            BorderThickness="2" CornerRadius="10" Background="Transparent"
+                                            BorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                                            Click="ChangeEmitKey_Click"
+                                            HorizontalAlignment="Stretch">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                                            <FontIcon Glyph="&#xE765;" FontSize="16" />
+                                            <TextBlock Text="{x:Bind DisplayEmitKey, Mode=OneWay}" 
+                                                       FontWeight="Bold" 
+                                                       VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
 
                                     <!-- Delete Remap Button -->
                                     <Button Grid.Column="4" HorizontalAlignment="Right" Click="DeleteRemap_Click" ToolTipService.ToolTip="Delete entire mapping">
@@ -91,52 +108,53 @@
                                         <FontIcon Glyph="&#xE74D;"/>
                                     </Button>
                                 </Grid>
+                            </Expander.Header>
 
-                                <MenuFlyoutSeparator />
+                            <Expander.Content>
+                                <StackPanel Spacing="16">
+                                    <!-- Target Windows Section -->
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <TextBlock Text="Target Windows (* for all)" VerticalAlignment="Center" FontWeight="SemiBold" />
+                                        <Button Click="AddTargetWindow_Click" ToolTipService.ToolTip="Add window criteria">
+                                            <FontIcon Glyph="&#xE710;" FontSize="12"/>
+                                        </Button>
+                                    </StackPanel>
 
-                                <!-- Target Windows Section -->
-                                <StackPanel Orientation="Horizontal" Spacing="10">
-                                    <TextBlock Text="Target Windows (* for all)" VerticalAlignment="Center" FontWeight="SemiBold" />
-                                    <Button Click="AddTargetWindow_Click" ToolTipService.ToolTip="Add window criteria">
-                                        <FontIcon Glyph="&#xE710;" FontSize="12"/>
-                                    </Button>
+                                    <!-- Grid of Target Window Textboxes-->
+                                    <ItemsControl ItemsSource="{x:Bind TargetWindows, Mode=OneWay}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VariableSizedWrapGrid Orientation="Horizontal" ItemWidth="280"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:TargetWindowItem">
+                                                <Grid ColumnSpacing="5" Margin="0,0,16,12" Padding="10,10,10,10" CornerRadius="5"
+                                                      Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBox Text="{x:Bind WindowString, Mode=TwoWay}" PlaceholderText="ahk_exe ... or *" Grid.Column="0" />
+                                                    <Button Grid.Column="1" VerticalAlignment="Stretch" Click="PickTargetWindow_Click"
+                                                            Tag="WindowAwareTargetWindow" Margin="0,0,0,2">
+                                                        <FontIcon Glyph="&#xE8A7;" ToolTipService.ToolTip="Open window picker" FontSize="14"/>
+                                                    </Button>
+                                                    <Button Grid.Column="2" Click="DeleteTargetWindow_Click" VerticalAlignment="Stretch" Margin="0,0,0,2">
+                                                        <Button.Resources>
+                                                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemFillColorCriticalBackground}"/>
+                                                        </Button.Resources>
+                                                        <FontIcon Glyph="&#xE894;" ToolTipService.ToolTip="Delete entry" FontSize="14"/>
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                 </StackPanel>
-
-                                <!-- Grid of Target Window Textboxes-->
-                                <ItemsControl ItemsSource="{x:Bind TargetWindows, Mode=OneWay}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VariableSizedWrapGrid Orientation="Horizontal" ItemWidth="280"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="vm:TargetWindowItem">
-                                            <Grid ColumnSpacing="5" Margin="0,0,16,12" Padding="10,10,10,10" CornerRadius="5"
-                                                  Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-
-                                                <TextBox Text="{x:Bind WindowString, Mode=TwoWay}" PlaceholderText="ahk_exe ... or *" Grid.Column="0" />
-                                                <Button Grid.Column="1" VerticalAlignment="Stretch" Click="PickTargetWindow_Click"
-                                                        Tag="WindowAwareTargetWindow" Margin="0,0,0,2">
-                                                    <FontIcon Glyph="&#xE8A7;" FontSize="14"/>
-                                                </Button>
-                                                <Button Grid.Column="2" Click="DeleteTargetWindow_Click" VerticalAlignment="Stretch" Margin="0,0,0,2">
-                                                    <Button.Resources>
-                                                        <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemFillColorCriticalBackground}"/>
-                                                    </Button.Resources>
-                                                    <FontIcon Glyph="&#xE894;" FontSize="14"/>
-                                                </Button>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-
-                            </StackPanel>
-                        </Border>
+                            </Expander.Content>
+                        </Expander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

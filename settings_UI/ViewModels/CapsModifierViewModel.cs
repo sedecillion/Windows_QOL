@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using settings_UI.Helpers;
 using settings_UI.Models;
 using System.Collections.ObjectModel;
 
@@ -23,16 +24,18 @@ namespace settings_UI.ViewModels
     public partial class RemappedKeyPayload : ObservableObject
     {
         [ObservableProperty] private string _targetWindow = "";
-        [ObservableProperty] private string _shortcutToEmit = "";
+        [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayShortcutToEmit))] private string _shortcutToEmit = "";
+
+        public string DisplayShortcutToEmit { get { return (ShortcutToEmit != "" ?AhkKeyTranslator.AhkKeysToString(ShortcutToEmit,true) : "No key assigned"); } }
     }
 
     public partial class CapsKeyConfig : ObservableObject
     {
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(DisplayKey))]
+        [NotifyPropertyChangedFor(nameof(DisplayTriggerKey))]
         private string _triggerKey = "";
 
-        public string DisplayKey => $"CAPS + {TriggerKey}";
+        public string DisplayTriggerKey => $"CapsLock + {AhkKeyTranslator.AhkKeysToString(TriggerKey, false)}";
 
         public WindowFocusData FocusPayload { get; } = new();
         public ObservableCollection<RemappedKeyPayload> RemappedKeys { get; } = [];
@@ -42,6 +45,8 @@ namespace settings_UI.ViewModels
         [NotifyPropertyChangedFor(nameof(IsRemapMode))]
         [NotifyPropertyChangedFor(nameof(ActionIndex))]
         private CapsActionType _action;
+
+        [ObservableProperty] private bool _isCardExapanded = false;
 
         public int ActionIndex
         {
@@ -80,7 +85,8 @@ namespace settings_UI.ViewModels
             CapsKeyConfig capsKeyConfig = new()
             {
                 Action = CapsActionType.ShortcutRemap,
-                TriggerKey = key
+                TriggerKey = key,
+                IsCardExapanded = true
             };
             capsKeyConfig.RemappedKeys.Add(new RemappedKeyPayload { ShortcutToEmit = "{Enter}", TargetWindow = "*" });
             ModifierMappings.Insert(0, capsKeyConfig);

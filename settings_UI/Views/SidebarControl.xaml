@@ -10,23 +10,44 @@
     <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
             >
-        <ListView ItemsSource="{x:Bind MainViewModel.SidebarItems}" 
-                  SelectedItem="{x:Bind MainViewModel.SelectedSettingCategory, Mode=TwoWay}"
-                  Margin="0,0,0,0">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="viewmodels:NavigationItem">
-                    <StackPanel Orientation="Horizontal" Padding="10,8" Spacing="15" VerticalAlignment="Center">
-                        <FontIcon Glyph="{x:Bind IconGlyph}" 
-                                  FontFamily="{StaticResource SymbolThemeFontFamily}" 
-                                  FontSize="16" 
-                                  Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                        <TextBlock Text="{x:Bind Title}" 
-                                   FontSize="14" 
-                                   VerticalAlignment="Center" 
-                                   Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+        <Grid>
+            <ListView ItemsSource="{x:Bind MainViewModel.SidebarItems}" 
+                      SelectedItem="{x:Bind MainViewModel.SelectedSettingCategory, Mode=TwoWay}"
+                      Margin="0,0,0,0">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodels:NavigationItem">
+                        <StackPanel Orientation="Horizontal" Padding="10,8" Spacing="15" VerticalAlignment="Center">
+                            <FontIcon Glyph="{x:Bind IconGlyph}" 
+                                      FontFamily="{StaticResource SymbolThemeFontFamily}" 
+                                      FontSize="16" 
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Text="{x:Bind Title}" 
+                                       FontSize="14" 
+                                       VerticalAlignment="Center" 
+                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            
+            <Grid VerticalAlignment="Bottom" Margin="10,10,10,10" CornerRadius="10" Padding="10" ColumnSpacing="10"
+                        Background="{ThemeResource CardBackgroundFillColorDefault}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <HyperlinkButton NavigateUri="https://github.com/sedecillion/Windows_QOL"
+                                 ToolTipService.ToolTip="View Source"
+                                 Padding="3">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <FontIcon Glyph="&#xE943;" FontSize="12"/>
+                        <TextBlock Text="GitHub" FontSize="12"/>
                     </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                </HyperlinkButton>
+                <TextBlock Text="App Version: v1.0.0.0" Grid.Column="1" VerticalAlignment="Center"
+                           FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            </Grid>
+        </Grid>
     </Border>
 </UserControl>
