@@ -82,6 +82,34 @@ namespace settings_UI.Models
         public string TriggerKey { get; set; }
         public WindowFocusPayloadDto WindowFocusPayload { get; set; }
         public List<RemappedKeyPayloadDto> RemappedKeys { get; set; }
+        public ProfileSwitchPayloadDto ProfileSwitchPayload {  get; set; }
+        public InsertTextPayloadDto InsertTextPayload { get; set; }
+        public OpenFileFolderDto OpenFileFolderPayload { get; set; }
+        public RunCommandDto RunCommandPayload { get; set; }
+    }
+
+    public class ProfileSwitchPayloadDto
+    {
+        public int TargetIndex { get; set; }
+    }
+
+    public class InsertTextPayloadDto
+    {
+        public string Text { get; set; }
+    }
+    
+    public class OpenFileFolderDto
+    {
+        public string Path { get; set; }
+        public string TargetApp { get; set; }
+    }
+    
+    public class RunCommandDto
+    {
+        public string Command { get; set; }
+        public bool RunAsAdmin { get; set; }
+        public bool Hidden{ get; set; }
+
     }
 
     public class WindowFocusPayloadDto

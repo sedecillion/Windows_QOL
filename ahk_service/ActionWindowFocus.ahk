@@ -8,33 +8,7 @@ global SwitcherActive := false
 global SwitcherCanceled := false
 global SwitcherCurrentGroup := ""
 
-global TS_LastTabSwitch := 0
-global TS_TabSwitchCooldown := 30
-
-SetupCapsHotkeys() {
-    HotIf (*) => GetKeyState("CapsLock", "P")
-    
-    if (EnableCapsModifiers) {
-        for _, mapping in CapsModifierMappings {
-            key := mapping["TriggerKey"]
-            action := mapping["Action"]
-            
-            if (action == "WindowFocus" && mapping["WindowFocusPayload"] != "") {
-                Hotkey("*" . key, ExecuteCapsWindow.Bind(mapping["WindowFocusPayload"]))
-            }
-            else if (action == "ShortcutRemap" && mapping["RemappedKeys"] != "") {
-                Hotkey("*" . key, ExecuteCapsShortcut.Bind(key, mapping["RemappedKeys"]))
-            }
-        }
-    }
-    
-    HotIf
-}
-
-ExecuteCapsWindow(payload, *) {
-    if !EnableCapsModifiers
-        return
-
+ExecuteActionWindowFocus(payload) {
     success := SmartSwitch(payload["TargetExe"], payload["Command"], payload["RequiredTitle"], payload["ExcludeTitle"])
     
     if (!success && payload.Has("Fallback") && payload["Fallback"] != "") {
@@ -43,108 +17,8 @@ ExecuteCapsWindow(payload, *) {
     }
 }
 
-ExecuteCapsShortcut(key, payloadArray, *) {
-    if !EnableCapsModifiers
-        return
-
-    if (InStr(key, "Wheel") && !TS_CanSwitchTabs())
-        return
-        
-    for _, item in payloadArray {
-        criteria := item["TargetWindow"]
-        keysToSend := item["ShortcutToEmit"]
-        
-        if (criteria == "*")
-            continue
-        
-        checkStr := (SubStr(criteria, 1, 4) = "ahk_") ? criteria : "ahk_exe " . criteria
-        
-        if WinActive(checkStr) {
-            if (keysToSend != "")
-                Send(keysToSend)
-            return
-        }
-    }
-    
-    for _, item in payloadArray {
-        if (item["TargetWindow"] == "*") {
-            if (item["ShortcutToEmit"] != "")
-                Send(item["ShortcutToEmit"])
-            return
-        }
-    }
-}
-
-IsRecognizedWindow(hwnd) {
-    try {
-        exe := WinGetProcessName("ahk_id " hwnd)
-        cls := WinGetClass("ahk_id " hwnd)
-        
-        for _, mapping in CapsModifierMappings {
-            if (mapping["Action"] != "WindowFocus" || mapping["WindowFocusPayload"] == "")
-                continue
-
-            payload := mapping["WindowFocusPayload"]
-            criteria := payload["TargetExe"]
-            fallback := payload.Has("Fallback") ? payload["Fallback"] : ""
-            
-            if (criteria != "*") {
-                if (exe != "" && InStr(criteria, "ahk_exe " . exe))
-                    return true
-                    
-                if (cls != "" && InStr(criteria, "ahk_class " . cls))
-                    return true
-            }
-            
-            if (fallback != "") {
-                if (exe != "" && InStr(fallback, "ahk_exe " . exe))
-                    return true
-                    
-                if (cls != "" && InStr(fallback, "ahk_class " . cls))
-                    return true
-            }
-        }
-    }
-    return false
-}
-
-IsAltTabWindow(hwnd) {
-    title := WinGetTitle("ahk_id " hwnd)
-    cls := WinGetClass("ahk_id " hwnd)
-    
-    if (title == "" || cls == "Progman" || cls == "WorkerW" || cls == "Shell_TrayWnd")
-        return false
-    if !DllCall("IsWindowVisible", "Ptr", hwnd)
-        return false
-    if (WinGetExStyle("ahk_id " hwnd) & 0x00000080)
-        return false
-        
-    cloaked := 0
-    if (DllCall("dwmapi\DwmGetWindowAttribute", "Ptr", hwnd, "UInt", 14, "Int*", &cloaked, "UInt", 4) == 0)
-        if (cloaked != 0)
-            return false
-            
-    return true
-}
-
-TS_CanSwitchTabs() {
-    global TS_LastTabSwitch, TS_TabSwitchCooldown
-    now := A_TickCount
-    if (now - TS_LastTabSwitch < TS_TabSwitchCooldown)
-        return false
-    TS_LastTabSwitch := now
-    return true
-}
-
-#CapsLock:: {
-    SetCapsLockState(!GetKeyState("CapsLock", "T"))
-}
-
-*CapsLock:: {
-    KeyWait("CapsLock") 
-}
-
-*CapsLock up:: {
+; CapsDispatcher will call on caps lock release
+ActionWindowFocus_Confirm() {
     global SwitcherActive, SwitcherCanceled, SwitcherGUI, SwitcherHwnds, CurrentIndex
     
     if (SwitcherActive) {
@@ -159,8 +33,14 @@ TS_CanSwitchTabs() {
     }
 }
 
-$Esc:: {
+ActionWindowFocus_IsActive() {
+    global SwitcherActive
+    return SwitcherActive
+}
+
+ActionWindowFocus_Cancel() {
     global SwitcherActive, SwitcherCanceled, SwitcherGUI
+    
     if (SwitcherActive) {
         SwitcherCanceled := true
         SwitcherActive := false
@@ -168,8 +48,6 @@ $Esc:: {
             SwitcherGUI.Destroy()
             SwitcherGUI := ""
         }
-    } else {
-        Send("{Esc}")
     }
 }
 
@@ -308,4 +186,56 @@ CycleGUI() {
         CurrentIndex := 1
     }
     SwitcherCtrls[CurrentIndex].SetFont("cFAF9F6 w700")
+}
+
+IsRecognizedWindow(hwnd) {
+    try {
+        exe := WinGetProcessName("ahk_id " hwnd)
+        cls := WinGetClass("ahk_id " hwnd)
+        
+        for _, mapping in CapsModifierMappings {
+            if (mapping["Action"] != "WindowFocus" || !mapping.Has("WindowFocusPayload") || mapping["WindowFocusPayload"] == "")
+                continue
+
+            payload := mapping["WindowFocusPayload"]
+            criteria := payload["TargetExe"]
+            fallback := payload.Has("Fallback") ? payload["Fallback"] : ""
+            
+            if (criteria != "*") {
+                if (exe != "" && InStr(criteria, "ahk_exe " . exe))
+                    return true
+                    
+                if (cls != "" && InStr(criteria, "ahk_class " . cls))
+                    return true
+            }
+            
+            if (fallback != "") {
+                if (exe != "" && InStr(fallback, "ahk_exe " . exe))
+                    return true
+                    
+                if (cls != "" && InStr(fallback, "ahk_class " . cls))
+                    return true
+            }
+        }
+    }
+    return false
+}
+
+IsAltTabWindow(hwnd) {
+    title := WinGetTitle("ahk_id " hwnd)
+    cls := WinGetClass("ahk_id " hwnd)
+    
+    if (title == "" || cls == "Progman" || cls == "WorkerW" || cls == "Shell_TrayWnd")
+        return false
+    if !DllCall("IsWindowVisible", "Ptr", hwnd)
+        return false
+    if (WinGetExStyle("ahk_id " hwnd) & 0x00000080)
+        return false
+        
+    cloaked := 0
+    if (DllCall("dwmapi\DwmGetWindowAttribute", "Ptr", hwnd, "UInt", 14, "Int*", &cloaked, "UInt", 4) == 0)
+        if (cloaked != 0)
+            return false
+            
+    return true
 }

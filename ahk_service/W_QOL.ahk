@@ -17,15 +17,20 @@ LoadConfig() {
         MsgBox("config.json not found at: " configPath, "Error", 16)
         ExitApp
     }
-    
+
     rawJson := FileRead(configPath)
     parsed := JXON_Load(&rawJson)
-    
+
     activeIndex := parsed["ActiveProfileIndex"] + 1 
     if (activeIndex > parsed["Profiles"].Length) {
         MsgBox("Active profile index out of bounds.", "Error", 16)
         ExitApp
     }
+
+    profileName := parsed["Profiles"][activeIndex]["ProfileProperties"]["Name"]
+    
+    ToolTip("Running Profile: " profileName)
+    SetTimer(() => ToolTip(), -1500)
     
     profile := parsed["Profiles"][activeIndex]
     
@@ -36,7 +41,7 @@ LoadConfig() {
     global TerminalTriggerKey := profile["TerminalLaunch"]["TriggerKey"]
     
     global EnableScreenshotTool := profile["ScreenshotTool"]["IsEnabled"]
-    global ScreenshotTargetDir := profile["ScreenshotTool"]["TargetDir"]
+    global ScreenshotTargetDir := StrReplace(profile["ScreenshotTool"]["TargetDir"], "<A_UserName>", A_UserName)
     global ScreenshotTriggerKey := profile["ScreenshotTool"]["TriggerKey"]
     
     global EnableCalcInstance := profile["CalcSingleInstance"]["IsEnabled"]
@@ -61,7 +66,14 @@ LoadConfig() {
 
 LoadConfig()
 
-#Include caps_modifier.ahk
+
+#Include CapsDispatcher.ahk
+#Include ActionWindowFocus.ahk
+#Include ActionShortcutRemap.ahk
+#Include ActionProfileSwitch.ahk
+#Include ActionInsertText.ahk
+#Include ActionOpenFileFolder.ahk
+#Include ActionRunCommand.ahk
 #Include window_aware_remaps.ahk
 #Include misc_qol.ahk
 
@@ -75,7 +87,7 @@ SetupCapsHotkeys()
 SetupWindowAwareShortcuts()
 SetupMiscQOL()
 
-^!r:: {
+^!+Esc:: {
     if (A_IsCompiled) {
         Run('"' A_ScriptFullPath '" /restart')
         ExitApp()

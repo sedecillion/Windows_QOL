@@ -171,5 +171,83 @@ namespace settings_UI.Views
                 }
             }
         }
+
+        private async void PickPathFile_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuFlyoutItem menuItem && menuItem.DataContext is CapsKeyConfig config)
+            {
+                menuItem.IsEnabled = false;
+
+                var picker = new Windows.Storage.Pickers.FileOpenPicker();
+                IntPtr hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+                WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+                picker.CommitButtonText = "Pick File";
+                picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+                picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
+                picker.FileTypeFilter.Add("*");
+
+                var file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    config.OpenFileFolderPayload.Path = file.Path;
+                }
+
+                menuItem.IsEnabled = true;
+            }
+        }
+
+        private async void PickPathFolder_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuFlyoutItem menuItem && menuItem.DataContext is CapsKeyConfig config)
+            {
+                menuItem.IsEnabled = false;
+
+                var picker = new Windows.Storage.Pickers.FolderPicker();
+                IntPtr hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+                WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+                picker.CommitButtonText = "Pick Folder";
+                picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.ComputerFolder;
+                picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
+                picker.FileTypeFilter.Add("*");
+
+                var folder = await picker.PickSingleFolderAsync();
+                if (folder != null)
+                {
+                    config.OpenFileFolderPayload.Path = folder.Path;
+                }
+
+                menuItem.IsEnabled = true;
+            }
+        }
+
+        private async void PickTargetApp_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is CapsKeyConfig config)
+            {
+                button.IsEnabled = false;
+
+                var picker = new Windows.Storage.Pickers.FileOpenPicker();
+                IntPtr hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+                WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+                picker.CommitButtonText = "Pick App";
+                picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.ComputerFolder;
+                picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
+
+                picker.FileTypeFilter.Add(".exe");
+                picker.FileTypeFilter.Add(".bat");
+                picker.FileTypeFilter.Add(".lnk");
+
+                var file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    config.OpenFileFolderPayload.TargetApp = file.Path;
+                }
+
+                button.IsEnabled = true;
+            }
+        }
     }
 }

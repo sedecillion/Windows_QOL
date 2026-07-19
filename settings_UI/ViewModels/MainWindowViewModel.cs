@@ -191,7 +191,8 @@ namespace settings_UI.ViewModels
             var selectedProfileData = _configModel.CurrentConfig.Profiles[value];
 
             // call child view models
-            CapsVM.LoadFromLoadedConfig(selectedProfileData.CapsModifiers);
+            // the extra two params cause ProfileSwitch Action requires it
+            CapsVM.LoadFromLoadedConfig(selectedProfileData.CapsModifiers,_profiles,DisplayedProfileIndex);
             SCToolVM.LoadFromLoadedConfig(selectedProfileData.ScreenshotTool);
             RedactedPasteVM.LoadFromLoadedConfig(selectedProfileData.RedactedPaste);
             WAShortcutVM.LoadFromLoadedConfig(selectedProfileData.WindowAwareShortcutRemap);
@@ -372,6 +373,7 @@ namespace settings_UI.ViewModels
             OnDisplayedProfileIndexChanged(DisplayedProfileIndex);
 
             SaveSettings();
+            OnDisplayedProfileIndexChanged(DisplayedProfileIndex);
             RefreshAHK();
         }
 

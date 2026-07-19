@@ -39,7 +39,7 @@
             </Border>
 
             <InfoBar Margin="0,5,0,5"
-                IsOpen="{x:Bind CapsViewModel.CapslockOverriddenInfoBarVisibility, Mode=OneWay}"
+                IsOpen="{x:Bind CapsViewModel.CapslockOverriddenInfoBarVisibility, Mode=TwoWay}"
                 Severity="Informational"
                 Title="Note"
                 Message="CapsLock can be toggled by pressing [Win + CapsLock]" />
@@ -58,7 +58,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="vm:CapsKeyConfig">
                         <!--Content in expander-->
-                        <Expander IsExpanded="{x:Bind IsCardExapanded}"
+                        <Expander IsExpanded="{x:Bind IsCardExapanded, Mode=TwoWay}"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
                             Margin="0,0,0,10" CornerRadius="8"
@@ -94,9 +94,8 @@
 
                                     <ComboBox Grid.Row="0" Grid.Column="2"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                        ItemsSource="{x:Bind vm:CapsModifierViewModel.ActionDisplayNames}"
                                         SelectedIndex="{x:Bind ActionIndex, Mode=TwoWay}">
-                                        <ComboBoxItem Content="Window Focus" />
-                                        <ComboBoxItem Content="Shortcut Remap" />
                                     </ComboBox>
 
                                     <Button Grid.Column="4" HorizontalAlignment="Right" Click="DeleteCapsModifierEntry_Click">
@@ -109,7 +108,11 @@
                             </Expander.Header>
 
                             <Expander.Content>
+                                
                                 <StackPanel Spacing="10">
+                                    
+                                    
+                                    
                                     <!-- Action: Window Focus Layout -->
                                     <StackPanel x:Name="WindowFocus" x:Load="{x:Bind IsFocusMode, Mode=OneWay}" Spacing="12">
                                         <Grid ColumnSpacing="20" >
@@ -155,6 +158,8 @@
                                         <TextBox Header="Command Line (Fallback Launch)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.Command, Mode=TwoWay}" />
                                     </StackPanel>
 
+                                    
+                                    
                                     <!-- Action: Shortcut Remap Layout -->
                                     <StackPanel x:Name="ShortcutRemap" x:Load="{x:Bind IsRemapMode, Mode=OneWay}" Spacing="12">
                                         <ItemsControl ItemsSource="{x:Bind RemappedKeys, Mode=OneWay}">
@@ -219,7 +224,104 @@
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
+
+
+
+                                    <!-- Action: Profile Switch Layout -->
+                                    <StackPanel x:Name="ProfileSwitch" x:Load="{x:Bind IsProfileSwitchMode, Mode=OneWay}" Spacing="12">
+                                        <ComboBox Header="Target Profile"
+                                            ItemsSource="{x:Bind ProfileSwitchPayload.ProfileIndexNames, Mode=OneWay}"
+                                            SelectedItem="{x:Bind ProfileSwitchPayload.SelectedProfileItem, Mode=TwoWay}"
+                                            DisplayMemberPath="Name"
+                                            HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+
+
+
+                                    <!-- Action: Insert Text Layout -->
+                                    <StackPanel x:Name="InsertText" x:Load="{x:Bind IsInsertTextMode, Mode=OneWay}" Spacing="12">
+                                        <TextBox Header="Text to insert"
+                                                 IsSpellCheckEnabled="False"
+                                                 Text="{x:Bind InsertTextPayload.Text, Mode=TwoWay}"
+                                                 PlaceholderText="Type the text you want to paste..."
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
+                                                 MinHeight="100" />
+                                    </StackPanel>
+
+
+
+                                    <!-- Action: Open File Folder Layout -->
+                                    <StackPanel x:Name="OpenFileFolder" x:Load="{x:Bind IsOpenFileFolderMode, Mode=OneWay}" Spacing="12">
+                                        <Grid ColumnSpacing="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="140"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Header="Path (File, Folder, or URL)"
+                                                     IsSpellCheckEnabled="False"
+                                                     Text="{x:Bind OpenFileFolderPayload.Path, Mode=TwoWay}"
+                                                     PlaceholderText="C:\Users\Documents or https://google.com" />
+                                            <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                                    <FontIcon Glyph="&#xE8DA;"/>
+                                                    <TextBlock Text="Pick Item"/>
+                                                </StackPanel>
+                                                <Button.Flyout>
+                                                    <MenuFlyout>
+                                                        <MenuFlyoutItem Text="Pick File" Click="PickPathFile_Click" Icon="Document"/>
+                                                        <MenuFlyoutItem Text="Pick Folder" Click="PickPathFolder_Click" Icon="Folder"/>
+                                                    </MenuFlyout>
+                                                </Button.Flyout>
+                                            </Button>
+                                        </Grid>
+
+                                        <Grid ColumnSpacing="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="140"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Header="Target Application (Optional)"
+                                                 IsSpellCheckEnabled="False"
+                                                 Text="{x:Bind OpenFileFolderPayload.TargetApp, Mode=TwoWay}"
+                                                 PlaceholderText="notepad.exe(full path if not in env) (Leave blank to use default app)" />
+                                            <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Click="PickTargetApp_Click">
+                                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                                    <FontIcon Glyph="&#xE8A7;"/>
+                                                    <TextBlock Text="Choose app"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+                                    </StackPanel>
+
+
+
+                                    <!-- Action: Run Command Layout -->
+                                    <StackPanel x:Name="RunCommand" x:Load="{x:Bind IsRunCommandMode, Mode=OneWay}" Spacing="12">
+                                        <TextBox Header="Command Line"
+                                                 IsSpellCheckEnabled="False"
+                                                 Text="{x:Bind RunCommandPayload.Command, Mode=TwoWay}"
+                                                 PlaceholderText="cmd.exe /c echo Hello" />
+
+                                        <Grid ColumnSpacing="30">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <CheckBox Content="Run as Administrator" Grid.Column="0"
+                                                      IsChecked="{x:Bind RunCommandPayload.RunAsAdmin, Mode=TwoWay}" />
+
+                                            <CheckBox Content="Hidden Window" Grid.Column="1"
+                                                      IsChecked="{x:Bind RunCommandPayload.Hidden, Mode=TwoWay}" />
+                                        </Grid>
+                                    </StackPanel>
+
+
+
+
                                 </StackPanel>
+
                             </Expander.Content>
                         </Expander>
                     </DataTemplate>

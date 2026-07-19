@@ -84,12 +84,12 @@ namespace settings_UI.Models
       },
       ""TerminalLaunch"": {
         ""IsEnabled"": true,
-        ""StartPath"": ""C:\\\\Users\\\\<A_UserName>\\\\"",
+        ""StartPath"": ""C:\\Users\\<A_UserName>\\"",
         ""TriggerKey"": ""^!t""
       },
       ""ScreenshotTool"": {
         ""IsEnabled"": true,
-        ""TargetDir"": ""D:\\Pictures"",
+        ""TargetDir"": ""C:\\Users\\<A_UserName>\\Pictures\\Screenshots"",
         ""TriggerKey"": ""PrintScreen""
       },
       ""CalcSingleInstance"": {
@@ -126,18 +126,6 @@ namespace settings_UI.Models
         ""ModifierMappings"": [
           {
             ""Action"": ""WindowFocus"",
-            ""TriggerKey"": ""x"",
-            ""WindowFocusPayload"": {
-              ""TargetExe"": ""*"",
-              ""Command"": """",
-              ""RequiredTitle"": """",
-              ""ExcludeTitle"": """",
-              ""Fallback"": """"
-            },
-            ""RemappedKeys"": null
-          },
-          {
-            ""Action"": ""WindowFocus"",
             ""TriggerKey"": ""e"",
             ""WindowFocusPayload"": {
               ""TargetExe"": ""ahk_exe explorer.exe"",
@@ -145,8 +133,7 @@ namespace settings_UI.Models
               ""RequiredTitle"": """",
               ""ExcludeTitle"": """",
               ""Fallback"": """"
-            },
-            ""RemappedKeys"": null
+            }
           },
           {
             ""Action"": ""WindowFocus"",
@@ -157,49 +144,54 @@ namespace settings_UI.Models
               ""RequiredTitle"": """",
               ""ExcludeTitle"": """",
               ""Fallback"": """"
-            },
-            ""RemappedKeys"": null
+            }
           },
           {
             ""Action"": ""WindowFocus"",
             ""TriggerKey"": ""c"",
             ""WindowFocusPayload"": {
-              ""TargetExe"": ""ahk_exe Code.exe"",
-              ""Command"": """",
-              ""RequiredTitle"": """",
-              ""ExcludeTitle"": """",
-              ""Fallback"": ""ahk_exe devenv.exe""
-            },
-            ""RemappedKeys"": null
-          },
-          {
-            ""Action"": ""WindowFocus"",
-            ""TriggerKey"": ""r"",
-            ""WindowFocusPayload"": {
-              ""TargetExe"": ""ahk_exe chrome.exe"",
-              ""Command"": """",
-              ""RequiredTitle"": """",
-              ""ExcludeTitle"": """",
-              ""Fallback"": ""ahk_exe chrome.exe""
-            },
-            ""RemappedKeys"": null
-          },
-          {
-            ""Action"": ""WindowFocus"",
-            ""TriggerKey"": ""t"",
-            ""WindowFocusPayload"": {
-              ""TargetExe"": ""ahk_exe chrome.exe"",
-              ""Command"": ""\u0022C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\u0022 --profile-directory=\u0022Default\u0022 --incognito"",
+              ""TargetExe"": ""ahk_exe calc.exe"",
+              ""Command"": ""calc.exe"",
               ""RequiredTitle"": """",
               ""ExcludeTitle"": """",
               ""Fallback"": """"
-            },
-            ""RemappedKeys"": null
+            }
+          },
+          {
+            ""Action"": ""ShortcutRemap"",
+            ""TriggerKey"": ""Space"",
+            ""RemappedKeys"": [
+              {
+                ""TargetWindow"": ""ahk_exe explorer.exe"",
+                ""ShortcutToEmit"": ""!{Enter}""
+              },
+              {
+                ""TargetWindow"": ""ahk_exe notepad.exe"",
+                ""ShortcutToEmit"": ""{F5}""
+              },
+              {
+                ""TargetWindow"": ""ahk_exe chrome.exe"",
+                ""ShortcutToEmit"": ""{F12}""
+              },
+              {
+                ""TargetWindow"": ""ahk_exe msedge.exe"",
+                ""ShortcutToEmit"": ""{F12}""
+              }
+            ]
+          },
+          {
+            ""Action"": ""ShortcutRemap"",
+            ""TriggerKey"": ""r"",
+            ""RemappedKeys"": [
+              {
+                ""TargetWindow"": ""*"",
+                ""ShortcutToEmit"": ""#r""
+              }
+            ]
           },
           {
             ""Action"": ""ShortcutRemap"",
             ""TriggerKey"": ""LButton"",
-            ""WindowFocusPayload"": null,
             ""RemappedKeys"": [
               {
                 ""TargetWindow"": ""*"",
@@ -210,7 +202,6 @@ namespace settings_UI.Models
           {
             ""Action"": ""ShortcutRemap"",
             ""TriggerKey"": ""RButton"",
-            ""WindowFocusPayload"": null,
             ""RemappedKeys"": [
               {
                 ""TargetWindow"": ""*"",
@@ -220,30 +211,7 @@ namespace settings_UI.Models
           },
           {
             ""Action"": ""ShortcutRemap"",
-            ""TriggerKey"": ""XButton1"",
-            ""WindowFocusPayload"": null,
-            ""RemappedKeys"": [
-              {
-                ""TargetWindow"": ""*"",
-                ""ShortcutToEmit"": ""#d""
-              }
-            ]
-          },
-          {
-            ""Action"": ""ShortcutRemap"",
-            ""TriggerKey"": ""XButton2"",
-            ""WindowFocusPayload"": null,
-            ""RemappedKeys"": [
-              {
-                ""TargetWindow"": ""*"",
-                ""ShortcutToEmit"": ""!{F4}""
-              }
-            ]
-          },
-          {
-            ""Action"": ""ShortcutRemap"",
             ""TriggerKey"": ""MButton"",
-            ""WindowFocusPayload"": null,
             ""RemappedKeys"": [
               {
                 ""TargetWindow"": ""*"",
@@ -253,8 +221,27 @@ namespace settings_UI.Models
           },
           {
             ""Action"": ""ShortcutRemap"",
+            ""TriggerKey"": ""XButton1"",
+            ""RemappedKeys"": [
+              {
+                ""TargetWindow"": ""*"",
+                ""ShortcutToEmit"": ""^#{Left}""
+              }
+            ]
+          },
+          {
+            ""Action"": ""ShortcutRemap"",
+            ""TriggerKey"": ""XButton2"",
+            ""RemappedKeys"": [
+              {
+                ""TargetWindow"": ""*"",
+                ""ShortcutToEmit"": ""^#{Right}""
+              }
+            ]
+          },
+          {
+            ""Action"": ""ShortcutRemap"",
             ""TriggerKey"": ""WheelUp"",
-            ""WindowFocusPayload"": null,
             ""RemappedKeys"": [
               {
                 ""TargetWindow"": ""Code.exe"",
@@ -269,7 +256,6 @@ namespace settings_UI.Models
           {
             ""Action"": ""ShortcutRemap"",
             ""TriggerKey"": ""WheelDown"",
-            ""WindowFocusPayload"": null,
             ""RemappedKeys"": [
               {
                 ""TargetWindow"": ""Code.exe"",
@@ -282,29 +268,43 @@ namespace settings_UI.Models
             ]
           },
           {
-            ""Action"": ""ShortcutRemap"",
-            ""TriggerKey"": ""Space"",
-            ""WindowFocusPayload"": null,
-            ""RemappedKeys"": [
-              {
-                ""TargetWindow"": ""ahk_exe explorer.exe"",
-                ""ShortcutToEmit"": ""!{Up}""
-              },
-              {
-                ""TargetWindow"": ""Code.exe"",
-                ""ShortcutToEmit"": ""^{vkC0}""
-              },
-              {
-                ""TargetWindow"": ""chrome.exe"",
-                ""ShortcutToEmit"": ""{F12}""
-              }
-            ]
+            ""Action"": ""InsertText"",
+            ""TriggerKey"": ""1"",
+            ""InsertTextPayload"": {
+              ""Text"": ""demo_user@example.com""
+            }
+          },
+          {
+            ""Action"": ""RunCommand"",
+            ""TriggerKey"": ""Numpad1"",
+            ""RunCommandPayload"": {
+              ""Command"": ""ms-availablenetworks:"",
+              ""RunAsAdmin"": false,
+              ""Hidden"": false
+            }
+          },
+          {
+            ""Action"": ""OpenFileFolder"",
+            ""TriggerKey"": ""Numpad2"",
+            ""OpenFileFolderPayload"": {
+              ""Path"": ""C:\\Users"",
+              ""TargetApp"": """"
+            }
+          },
+          {
+            ""Action"": ""RunCommand"",
+            ""TriggerKey"": ""Numpad3"",
+            ""RunCommandPayload"": {
+              ""Command"": ""cmd.exe /k \""echo Step 1: Initializing... && timeout 1 >nul && echo Step 2: Dummy Executing... && timeout 2 >nul && echo Done. && exit\"""",
+              ""RunAsAdmin"": false,
+              ""Hidden"": false
+            }
           }
         ]
       }
     }
   ]
-}";
+}"; ; ;
 
             File.WriteAllText(_configFilePath, defaultJson);
         }
