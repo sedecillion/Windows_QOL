@@ -45,7 +45,10 @@ namespace settings_UI.Models
 
             try
             {
-                var options = new JsonSerializerOptions { WriteIndented = true };
+                var options = new JsonSerializerOptions { 
+                    WriteIndented = true,
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                };
                 string jsonOutput = JsonSerializer.Serialize(CurrentConfig, options);
 
                 string directory = Path.GetDirectoryName(_configFilePath);
@@ -55,8 +58,6 @@ namespace settings_UI.Models
                 }
 
                 File.WriteAllText(_configFilePath, jsonOutput);
-                InputSimulator saveInputTrigger = new();
-                saveInputTrigger.Keyboard.ModifiedKeyStroke([VirtualKeyCode.CONTROL, VirtualKeyCode.MENU, VirtualKeyCode.SHIFT], VirtualKeyCode.ESCAPE);
             }
             catch (Exception ex)
             {

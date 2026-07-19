@@ -34,14 +34,14 @@ namespace settings_UI.Views
         {
             if (MainViewModel != null)
             {
-                MainViewModel.ActiveProfileIndex = MainViewModel.DisplayedProfileIndex;
+                MainViewModel.ActivateProfile(MainViewModel.DisplayedProfileIndex);
             }
-            MainViewModel.SaveSettings();
         }
 
         private void MasterSaveButton_Click(object sender, RoutedEventArgs e)
         {
             MainViewModel?.SaveSettings();
+            MainViewModel.RefreshAHK();
         }
 
 

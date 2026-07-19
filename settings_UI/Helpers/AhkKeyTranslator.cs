@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Windows.System;
 
@@ -46,7 +47,37 @@ namespace settings_UI.Helpers
             { VirtualKey.Tab, "Tab" },
             { VirtualKey.Space, "Space" },
             { VirtualKey.Enter, "Enter" },
-            { VirtualKey.Back, "Backspace" }
+            { VirtualKey.Back, "Backspace" },
+            
+            // PrintScreen
+            { VirtualKey.Snapshot, "PrintScreen" },
+
+            { (VirtualKey)186, "vkBA" },
+            { (VirtualKey)187, "vkBB" },
+            { (VirtualKey)188, "vkBC" },
+            { (VirtualKey)189, "vkBD" },
+            { (VirtualKey)190, "vkBE" },
+            { (VirtualKey)191, "vkBF" },
+            { (VirtualKey)192, "vkC0" },
+            { (VirtualKey)219, "vkDB" },
+            { (VirtualKey)220, "vkDC" },
+            { (VirtualKey)221, "vkDD" },
+            { (VirtualKey)222, "vkDE" }
+        };
+
+        private static readonly Dictionary<string, string> VkToDisplayMap = new(StringComparer.OrdinalIgnoreCase)
+        {
+            { "vkBA", ";" },
+            { "vkBB", "=" },
+            { "vkBC", "," },
+            { "vkBD", "-" },
+            { "vkBE", "." },
+            { "vkBF", "/" },
+            { "vkC0", "`" },
+            { "vkDB", "[" },
+            { "vkDC", "\\" },
+            { "vkDD", "]" },
+            { "vkDE", "'" }
         };
 
         // Modifiers mapped to their AHK prefix symbols
@@ -77,8 +108,13 @@ namespace settings_UI.Helpers
 
         public static string GetUserFriendlyName(VirtualKey key)
         {
-            if (IsAlphaNumeric(key)) return key.ToString();
-            if (NamedKeysMap.TryGetValue(key, out var name)) return name;
+            if (IsAlphaNumeric(key)) return ((char)key).ToString();
+
+            if (NamedKeysMap.TryGetValue(key, out var name))
+            {
+                if (VkToDisplayMap.TryGetValue(name, out var display)) return display;
+                return name;
+            }
 
             if (key == VirtualKey.Control || key == VirtualKey.LeftControl || key == VirtualKey.RightControl) return "Ctrl";
             if (key == VirtualKey.Shift || key == VirtualKey.LeftShift || key == VirtualKey.RightShift) return "Shift";
@@ -117,27 +153,26 @@ namespace settings_UI.Helpers
 
             if (IsAlphaNumeric(mainKey))
             {
-                // ahk prefers lower case
-                ahkKeyName = mainKey.ToString().ToLower(); 
+                ahkKeyName = ((char)mainKey).ToString().ToLower();
                 needsBraces = false;
             }
             else if (NamedKeysMap.TryGetValue(mainKey, out var name))
             {
                 ahkKeyName = name;
-                needsBraces = true; // Named keys like Space, Enter, LButton need braces IF emitting
+                needsBraces = true; // Named keys and vk codes need braces IF emitting
             }
             else
             {
-                return ""; 
+                return "";
             }
 
             if (isEmitChord && needsBraces)
             {
-                return $"{modifiers}{{{ahkKeyName}}}"; //^{Space}
+                return $"{modifiers}{{{ahkKeyName}}}"; //^{Space} or ^{vkC0}
             }
             else
             {
-                return $"{modifiers}{ahkKeyName}"; //^Space or ^a
+                return $"{modifiers}{ahkKeyName}"; //^Space or ^vkC0
             }
         }
 
@@ -211,6 +246,13 @@ namespace settings_UI.Helpers
             if (string.IsNullOrEmpty(key)) return "";
             if (key.Length == 1) return key.ToUpper();
 
+            if (VkToDisplayMap.TryGetValue(key, out var display)) return display;
+
+            if (key.StartsWith("vk", StringComparison.OrdinalIgnoreCase) && key.Length == 4)
+            {
+                return "vk" + key.Substring(2).ToUpper();
+            }
+
             string formatted = char.ToUpper(key[0]) + key.Substring(1).ToLower();
 
             return formatted switch
@@ -225,6 +267,7 @@ namespace settings_UI.Helpers
                 "Mbutton" => "MButton",
                 "Xbutton1" => "XButton1",
                 "Xbutton2" => "XButton2",
+                "Printscreen" => "PrintScreen",
                 _ => formatted
             };
         }

@@ -81,14 +81,12 @@ public sealed partial class ManageProfilesModal : Window
 
     private void ViewProfile_Click(object sender, RoutedEventArgs e)
     {
-        ViewModel.SaveSettings();
         if (sender is Button btn && btn.DataContext is ProfileRowUI row)
         {
             int index = ViewModel.ProfileNames.IndexOf(row.ProfileName);
             if (index >= 0)
             {
-                ViewModel.DisplayedProfileIndex = index;
-                ViewModel.SaveSettings();
+                ViewModel.ChangeDisplayedProfile(index);
                 RefreshList();
             }
         }
@@ -96,15 +94,12 @@ public sealed partial class ManageProfilesModal : Window
 
     private void ActivateProfile_Click(object sender, RoutedEventArgs e)
     {
-        ViewModel.SaveSettings();
         if (sender is Button btn && btn.DataContext is ProfileRowUI row)
         {
             int index = ViewModel.ProfileNames.IndexOf(row.ProfileName);
             if (index >= 0)
             {
-                ViewModel.ActiveProfileIndex = index;
-                ViewModel.DisplayedProfileIndex = index;
-                ViewModel.SaveSettings();
+                ViewModel.ActivateProfile(index);
                 RefreshList();
             }
         }
@@ -133,7 +128,6 @@ public sealed partial class ManageProfilesModal : Window
             {
                 ViewModel.RenameProfile(index, inputTextBox.Text.Trim());
                 RefreshList();
-                ViewModel.SaveSettings();
             }
         }
     }
@@ -165,7 +159,6 @@ public sealed partial class ManageProfilesModal : Window
             {
                 ViewModel.DeleteProfile(index);
                 RefreshList();
-                ViewModel.SaveSettings();
             }
         }
     }

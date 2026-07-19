@@ -254,6 +254,7 @@ namespace settings_UI.ViewModels
 
         public void AddNewProfile()
         {
+            SaveSettings();
             string newName = "New Profile";
 
             int counter = 1;
@@ -267,10 +268,12 @@ namespace settings_UI.ViewModels
 
             _profiles.Add(newProfile);
             ProfileNames.Add(newName);
+            SaveSettings();
         }
 
         public void RenameProfile(int index, string newName)
         {
+            SaveSettings();
             if (index < 0 || index >= _profiles.Count) return;
 
             if (ProfileNames.Contains(newName) && ProfileNames.IndexOf(newName) != index)
@@ -281,12 +284,16 @@ namespace settings_UI.ViewModels
 
             if (index == DisplayedProfileIndex)
             {
-                OnPropertyChanged(nameof(DisplayedProfileName));
+                // so that the profile switch drop down can stay up to date
+                // but causes all the expanders to get shut since the UI is rebuilt
+                OnDisplayedProfileIndexChanged(index);
             }
+            SaveSettings();
         }
 
         public void DeleteProfile(int index)
         {
+            SaveSettings();
             if (index < 0 || index >= _profiles.Count || _profiles.Count <= 1) return;
 
             _profiles.RemoveAt(index);
@@ -309,8 +316,26 @@ namespace settings_UI.ViewModels
             {
                 DisplayedProfileIndex--;
             }
+            RefreshAHK();
+            //SaveSettings(); no need since it changes the DisplayProfileIndex and OnChanged hook will run
         }
 
+        public void ActivateProfile(int index)
+        {
+            SaveSettings();
+            ActiveProfileIndex = index;
+            DisplayedProfileIndex = index;
+            SaveSettings();
+            RefreshAHK();
+        }
+
+        public void ChangeDisplayedProfile(int index)
+        {
+            SaveSettings();
+            DisplayedProfileIndex = index;
+            SaveSettings();
+
+        }
         public void SaveSettings()
         {
             _configModel.CurrentConfig.ActiveProfileIndex = ActiveProfileIndex;
@@ -328,6 +353,7 @@ namespace settings_UI.ViewModels
 
         public string GetDisplayedProfileJson()
         {
+            SaveSettings();
             var profile = _configModel.CurrentConfig.Profiles[DisplayedProfileIndex];
 
             var options = new JsonSerializerOptions
@@ -346,6 +372,7 @@ namespace settings_UI.ViewModels
             OnDisplayedProfileIndexChanged(DisplayedProfileIndex);
 
             SaveSettings();
+            RefreshAHK();
         }
 
         public void OpenConfigFolder()
@@ -361,6 +388,12 @@ namespace settings_UI.ViewModels
                     Verb = "open"
                 });
             }
+        }
+
+        public void RefreshAHK()
+        {
+            InputSimulator saveInputTrigger = new();
+            saveInputTrigger.Keyboard.ModifiedKeyStroke([VirtualKeyCode.CONTROL, VirtualKeyCode.MENU, VirtualKeyCode.SHIFT], VirtualKeyCode.ESCAPE);
         }
     }
 }
