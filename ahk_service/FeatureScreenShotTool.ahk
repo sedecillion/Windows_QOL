@@ -1,72 +1,8 @@
 #Requires AutoHotkey v2.0
 
-SetupMiscQOL() {
-    if EnableTerminalLaunch && TerminalTriggerKey
-        Hotkey(TerminalTriggerKey, LaunchTerminal)
-
-    if EnableRedactedPaste && RedactedPasteTriggerKey
-        Hotkey(RedactedPasteTriggerKey, PasteRedacted)
-
+SetupScreenshotTool() {
     if EnableScreenshotTool && ScreenshotTriggerKey
         Hotkey(ScreenshotTriggerKey, CaptureScreenshot)
-}
-
-LaunchTerminal(HotkeyName) {
-    try {
-        Run("cmd.exe", TerminalStartPath)
-    }
-    catch Error as err {
-        ToolTip("Failed to launch Terminal: " . err.Message)
-        SetTimer(() => ToolTip(), -2000)
-    }
-}
-
-$Launch_App2::
-{
-    if !EnableCalcInstance
-        return
-
-    if WinExist("ahk_class CalcFrame") {
-        WinActivate("ahk_class CalcFrame")
-    } 
-    else if WinExist("ahk_exe CalculatorApp.exe") {
-        WinActivate("ahk_exe CalculatorApp.exe")
-    }
-    else if WinExist("ahk_exe Calculator.exe") {
-        WinActivate("ahk_exe Calculator.exe")
-    }
-    else if WinExist("Calculator ahk_class ApplicationFrameWindow") {
-        WinActivate("Calculator ahk_class ApplicationFrameWindow")
-    }
-    else {
-        Run("calc.exe")
-    }
-}
-
-PasteRedacted(HotkeyName) {
-    rawText := A_Clipboard
-    if (rawText = "")
-        return
-
-    cleanText := rawText
-    
-    for item in RedactedReplacements {
-        cleanText := StrReplace(cleanText, item["Dirty"], item["Clean"])
-    }
-
-    A_Clipboard := "" 
-    DllCall("OpenClipboard", "ptr", A_ScriptHwnd)
-    DllCall("EmptyClipboard")
-    
-    hMem := DllCall("GlobalAlloc", "uint", 0x42, "ptr", (StrLen(cleanText) + 1) * 2, "ptr")
-    pMem := DllCall("GlobalLock", "ptr", hMem, "ptr")
-    StrPut(cleanText, pMem, "UTF-16")
-    DllCall("GlobalUnlock", "ptr", hMem)
-    
-    DllCall("SetClipboardData", "uint", 13, "ptr", hMem)
-    DllCall("CloseClipboard")
-
-    Send("^v")
 }
 
 CaptureScreenshot(HotkeyName) {

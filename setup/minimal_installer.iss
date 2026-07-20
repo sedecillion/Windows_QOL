@@ -5,7 +5,7 @@ UninstallDisplayIcon={app}\WindowsQOL.exe
 AppName=Windows QOL
 AppVersion=1.0
 DefaultDirName={autopf}\Windows QOL
-OutputBaseFilename=WindowsQOL_Installer
+OutputBaseFilename=WindowsQOL_Installer_Minimal
 Compression=lzma2/ultra64
 SolidCompression=yes
 ArchitecturesAllowed=x64compatible
@@ -17,12 +17,12 @@ DisableProgramGroupPage=yes
 [Files]
 Source: "..\ahk_service\W_QOL.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\ahk_service\SignTool.exe"; DestDir: "{app}"; Flags: ignoreversion deleteafterinstall
-Source: "..\settings_UI\bin\win10-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "..\ahk_service\config.json"; DestDir: "{userappdata}\WindowsQOL"; Flags: onlyifdoesntexist
+Source: "..\ahk_service\WindowsQOL.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{commonprograms}\Windows QOL"; Filename: "{app}\WindowsQOL.exe"
 Name: "{commondesktop}\Windows QOL"; Filename: "{app}\WindowsQOL.exe"
-Name: "{commonprograms}\Uninstall Windows QOL"; Filename: "{uninstallexe}"
 
 [Run]
 Filename: "{app}\SignTool.exe"; Flags: runhidden waituntilterminated

@@ -27,14 +27,10 @@ CheckTargetWindows(targets, hotkeyName) {
         return false
 
     for _, criteria in targets {
-        ; Wildcard match - always intercept
         if (criteria == "*")
             return true
-            
-        ; Auto-prefix ahk_exe if not fully specified, matching your Caps logic
-        checkStr := (SubStr(criteria, 1, 4) == "ahk_") ? criteria : "ahk_exe " . criteria
         
-        if WinActive(checkStr)
+        if WinActive(criteria)
             return true
     }
     

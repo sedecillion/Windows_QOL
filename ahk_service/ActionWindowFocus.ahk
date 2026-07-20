@@ -70,7 +70,7 @@ SmartSwitch(winCriteria, runCmd := "", requireTitleMatch := "", ExcludeTitleMatc
     }
 
     oldMatchMode := A_TitleMatchMode
-    SetTitleMatchMode(2) 
+    SetTitleMatchMode(3) 
 
     SwitcherActive := true
     SwitcherCanceled := false

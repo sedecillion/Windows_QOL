@@ -67,15 +67,18 @@ LoadConfig() {
 LoadConfig()
 
 
-#Include CapsDispatcher.ahk
+#Include FeatureCapsModifier.ahk
 #Include ActionWindowFocus.ahk
 #Include ActionShortcutRemap.ahk
 #Include ActionProfileSwitch.ahk
 #Include ActionInsertText.ahk
 #Include ActionOpenFileFolder.ahk
 #Include ActionRunCommand.ahk
-#Include window_aware_remaps.ahk
-#Include misc_qol.ahk
+#Include FeatureWindowAwareShortcutRemaps.ahk
+#Include FeatureScreenShotTool.ahk
+#Include FeatureRedactedPaste.ahk
+#Include FeatureMisc.ahk
+#Include FeatureMisc.ahk
 
 if (SilentMode) {
     A_IconHidden := true
@@ -85,6 +88,8 @@ if (SilentMode) {
 
 SetupCapsHotkeys()
 SetupWindowAwareShortcuts()
+SetupScreenshotTool()
+SetupRedactedPaste()
 SetupMiscQOL()
 
 ^!+Esc:: {
