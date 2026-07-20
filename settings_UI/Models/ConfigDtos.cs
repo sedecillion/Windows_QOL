@@ -84,8 +84,10 @@ namespace settings_UI.Models
         public List<RemappedKeyPayloadDto> RemappedKeys { get; set; }
         public ProfileSwitchPayloadDto ProfileSwitchPayload {  get; set; }
         public InsertTextPayloadDto InsertTextPayload { get; set; }
-        public OpenFileFolderDto OpenFileFolderPayload { get; set; }
-        public RunCommandDto RunCommandPayload { get; set; }
+        public OpenFileFolderPayloadDto OpenFileFolderPayload { get; set; }
+        public RunCommandPayloadDto RunCommandPayload { get; set; }
+        public WindowControlsPayloadDto WindowControlsPayload { get; set; }
+        public MediaControlsPayloadDto MediaControlsPayload{ get; set; }
     }
 
     public class ProfileSwitchPayloadDto
@@ -98,13 +100,13 @@ namespace settings_UI.Models
         public string Text { get; set; }
     }
     
-    public class OpenFileFolderDto
+    public class OpenFileFolderPayloadDto
     {
         public string Path { get; set; }
         public string TargetApp { get; set; }
     }
     
-    public class RunCommandDto
+    public class RunCommandPayloadDto
     {
         public string Command { get; set; }
         public bool RunAsAdmin { get; set; }
@@ -112,6 +114,14 @@ namespace settings_UI.Models
 
     }
 
+    public class WindowControlsPayloadDto
+    {
+        public string ControlType { get; set; }
+    }
+    public class MediaControlsPayloadDto
+    {
+        public string ControlType { get; set; }
+    }
     public class WindowFocusPayloadDto
     {
         public string TargetExe { get; set; }

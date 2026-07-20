@@ -42,6 +42,14 @@ DispatchCapsAction(action, mapping, key, *) {
         Case "RunCommand":
             if (mapping.Has("RunCommandPayload") && mapping["RunCommandPayload"] != "")
                 ExecuteActionRunCommand(mapping["RunCommandPayload"])
+
+        Case "WindowControls":
+            if (mapping.Has("WindowControlsPayload") && mapping["WindowControlsPayload"] != "")
+                ExecuteActionWindowControls(mapping["WindowControlsPayload"])
+        
+        Case "MediaControls":
+            if (mapping.Has("MediaControlsPayload") && mapping["MediaControlsPayload"] != "")
+                ExecuteActionMediaControls(mapping["MediaControlsPayload"])
     }
 }
 

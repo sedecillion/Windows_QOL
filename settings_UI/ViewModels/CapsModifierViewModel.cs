@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using settings_UI.Helpers;
 using settings_UI.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,7 +16,40 @@ namespace settings_UI.ViewModels
         ProfileSwitch,
         InsertText,
         OpenFileFolder,
-        RunCommand
+        RunCommand,
+        WindowControls,
+        MediaControls
+    }
+
+    public enum WindowControlType
+    {
+        TransparencyPlus,
+        TransparencyMinus,
+        TogglePinOnTop,
+        ToggleClickThrough,
+        ToggleScriptMode
+    }
+
+    public enum MediaControlType
+    {
+        VolumePlus,
+        VolumeMinus,
+        MuteToggle,
+        Prev,
+        Next,
+        PlayPauseToggle
+    }
+
+    public class EnumDropdownItem<TEnum>
+    {
+        public TEnum Value { get; set; }
+        public string DisplayName { get; set; }
+
+        public EnumDropdownItem(TEnum value, string displayName)
+        {
+            Value = value;
+            DisplayName = displayName;
+        }
     }
 
     public partial class WindowFocusData : ObservableObject
@@ -101,6 +135,64 @@ namespace settings_UI.ViewModels
         [ObservableProperty] private bool _hidden;
     }
 
+    public partial class WindowControlsData : ObservableObject
+    {
+        public int ControlIndex
+        {
+            get => ControlTypeOptions.FindIndex(x => x.Value == ControlType);
+            set
+            {
+                if (value >= 0 && value < ControlTypeOptions.Count)
+                {
+                    var newControl = ControlTypeOptions[value].Value;
+                    if (ControlType != newControl) ControlType = newControl;
+                }
+            }
+        }
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(ControlIndex))]
+        private WindowControlType _controlType;
+
+        public static List<EnumDropdownItem<WindowControlType>> ControlTypeOptions { get; } =
+        [
+            new(WindowControlType.TransparencyPlus, "Increase Transparency"),
+            new(WindowControlType.TransparencyMinus, "Decrease Transparency"),
+            new(WindowControlType.TogglePinOnTop, "Toggle Pin on Top"),
+            new(WindowControlType.ToggleClickThrough, "Toggle Click Through"),
+            new(WindowControlType.ToggleScriptMode, "Toggle Script Mode")
+        ];
+    }
+
+    public partial class MediaControlsData : ObservableObject
+    {
+        public int ControlIndex
+        {
+            get => ControlTypeOptions.FindIndex(x => x.Value == ControlType);
+            set
+            {
+                if (value >= 0 && value < ControlTypeOptions.Count)
+                {
+                    var newControl = ControlTypeOptions[value].Value;
+                    if (ControlType != newControl) ControlType = newControl;
+                }
+            }
+        }
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(ControlIndex))]
+        private MediaControlType _controlType;
+
+        public static List<EnumDropdownItem<MediaControlType>> ControlTypeOptions { get; } =
+        [
+            new(MediaControlType.VolumePlus, "Volume Up"),
+            new(MediaControlType.VolumeMinus, "Volume Down"),
+            new(MediaControlType.MuteToggle, "Toggle Mute"),
+            new(MediaControlType.Prev, "Previous Track"),
+            new(MediaControlType.Next, "Next Track"),
+            new(MediaControlType.PlayPauseToggle, "Play/Pause")
+        ];
+    }
 
     // view model class for CapsModifiers
     public partial class CapsKeyConfig : ObservableObject
@@ -120,16 +212,21 @@ namespace settings_UI.ViewModels
         public InsertText InsertTextPayload { get; } = new();
         public OpenFileFolder OpenFileFolderPayload { get; } = new();
         public RunCommand RunCommandPayload { get; } = new();
+        public WindowControlsData WindowControlsPayload { get; } = new();
+        public MediaControlsData MediaControlsPayload { get; } = new();
 
         public int ActionIndex
         {
-            get => (int)Action;
+            get => CapsModifierViewModel.ActionOptions.FindIndex(x => x.Value == Action);
             set
             {
-                var newAction = (CapsActionType)value;
-                if (Action != newAction)
+                if (value >= 0 && value < CapsModifierViewModel.ActionOptions.Count)
                 {
-                    Action = newAction;
+                    var newAction = CapsModifierViewModel.ActionOptions[value].Value;
+                    if (Action != newAction)
+                    {
+                        Action = newAction;
+                    }
                 }
             }
         }
@@ -141,8 +238,11 @@ namespace settings_UI.ViewModels
         [NotifyPropertyChangedFor(nameof(IsInsertTextMode))]
         [NotifyPropertyChangedFor(nameof(IsOpenFileFolderMode))]
         [NotifyPropertyChangedFor(nameof(IsRunCommandMode))]
+        [NotifyPropertyChangedFor(nameof(IsWindowControlsMode))]
+        [NotifyPropertyChangedFor(nameof(IsMediaControlsMode))]
         [NotifyPropertyChangedFor(nameof(ActionIndex))]
         private CapsActionType _action;
+
 
         public bool IsFocusMode => Action == CapsActionType.WindowFocus;
         public bool IsRemapMode => Action == CapsActionType.ShortcutRemap;
@@ -150,13 +250,15 @@ namespace settings_UI.ViewModels
         public bool IsInsertTextMode => Action == CapsActionType.InsertText;
         public bool IsOpenFileFolderMode => Action == CapsActionType.OpenFileFolder;
         public bool IsRunCommandMode => Action == CapsActionType.RunCommand;
+        public bool IsWindowControlsMode => Action == CapsActionType.WindowControls;
+        public bool IsMediaControlsMode => Action == CapsActionType.MediaControls;
 
         // the extra two params cause ProfileSwitch Action requires it
         public void LoadFromLoadedConfig(ModifierMappingDto mappingEntry, List<ProfileDto> allProfiles, int currentDisplayIndex)
         {
             TriggerKey = mappingEntry.TriggerKey ?? "";
 
-            if (mappingEntry.Action == "WindowFocus")
+            if (mappingEntry.Action == CapsActionType.WindowFocus.ToString())
             {
                 Action = CapsActionType.WindowFocus;
                 if (mappingEntry.WindowFocusPayload != null)
@@ -168,7 +270,7 @@ namespace settings_UI.ViewModels
                     FocusPayload.Fallback = mappingEntry.WindowFocusPayload.Fallback ?? "";
                 }
             }
-            else if (mappingEntry.Action == "ShortcutRemap")
+            else if (mappingEntry.Action == CapsActionType.ShortcutRemap.ToString())
             {
                 Action = CapsActionType.ShortcutRemap;
                 RemappedKeys.Clear();
@@ -184,13 +286,13 @@ namespace settings_UI.ViewModels
                     }
                 }
             }
-            else if (mappingEntry.Action == "ProfileSwitch")
+            else if (mappingEntry.Action == CapsActionType.ProfileSwitch.ToString())
             {
                 Action = CapsActionType.ProfileSwitch;
                 ProfileSwitchPayload.ProfileIndex = mappingEntry.ProfileSwitchPayload.TargetIndex;
                 ProfileSwitchPayload.LoadFromLoadedConfig(allProfiles, currentDisplayIndex);
             }
-            else if (mappingEntry.Action == "InsertText")
+            else if (mappingEntry.Action == CapsActionType.InsertText.ToString())
             {
                 Action = CapsActionType.InsertText;
                 if (mappingEntry.InsertTextPayload != null)
@@ -198,7 +300,7 @@ namespace settings_UI.ViewModels
                     InsertTextPayload.Text = mappingEntry.InsertTextPayload.Text ?? "";
                 }
             }
-            else if (mappingEntry.Action == "OpenFileFolder")
+            else if (mappingEntry.Action == CapsActionType.OpenFileFolder.ToString())
             {
                 Action = CapsActionType.OpenFileFolder;
                 if (mappingEntry.OpenFileFolderPayload != null)
@@ -207,7 +309,7 @@ namespace settings_UI.ViewModels
                     OpenFileFolderPayload.TargetApp = mappingEntry.OpenFileFolderPayload.TargetApp ?? "";
                 }
             }
-            else if (mappingEntry.Action == "RunCommand")
+            else if (mappingEntry.Action == CapsActionType.RunCommand.ToString())
             {
                 Action = CapsActionType.RunCommand;
                 if (mappingEntry.RunCommandPayload != null)
@@ -215,6 +317,24 @@ namespace settings_UI.ViewModels
                     RunCommandPayload.Command = mappingEntry.RunCommandPayload.Command ?? "";
                     RunCommandPayload.RunAsAdmin = mappingEntry.RunCommandPayload.RunAsAdmin;
                     RunCommandPayload.Hidden = mappingEntry.RunCommandPayload.Hidden;
+                }
+            }
+            else if (mappingEntry.Action == CapsActionType.WindowControls.ToString())
+            {
+                Action = CapsActionType.WindowControls;
+                if (mappingEntry.WindowControlsPayload != null)
+                {
+                    if (Enum.TryParse(mappingEntry.WindowControlsPayload.ControlType, out WindowControlType parsedVal))
+                        WindowControlsPayload.ControlType = parsedVal;
+                }
+            }
+            else if (mappingEntry.Action == CapsActionType.MediaControls.ToString())
+            {
+                Action = CapsActionType.MediaControls;
+                if (mappingEntry.MediaControlsPayload != null)
+                {
+                    if (Enum.TryParse(mappingEntry.MediaControlsPayload.ControlType, out MediaControlType parsedVal))
+                        MediaControlsPayload.ControlType = parsedVal;
                 }
             }
         }
@@ -253,9 +373,9 @@ namespace settings_UI.ViewModels
             else if (Action == CapsActionType.ProfileSwitch)
             {
                 entryDto.ProfileSwitchPayload = new()
-                    {
-                        TargetIndex = ProfileSwitchPayload.ProfileIndex
-                    };
+                {
+                    TargetIndex = ProfileSwitchPayload.ProfileIndex
+                };
             }
             else if (Action == CapsActionType.InsertText)
             {
@@ -266,7 +386,7 @@ namespace settings_UI.ViewModels
             }
             else if (Action == CapsActionType.OpenFileFolder)
             {
-                entryDto.OpenFileFolderPayload = new OpenFileFolderDto
+                entryDto.OpenFileFolderPayload = new OpenFileFolderPayloadDto
                 {
                     Path = OpenFileFolderPayload.Path,
                     TargetApp = OpenFileFolderPayload.TargetApp
@@ -274,11 +394,25 @@ namespace settings_UI.ViewModels
             }
             else if (Action == CapsActionType.RunCommand)
             {
-                entryDto.RunCommandPayload = new RunCommandDto
+                entryDto.RunCommandPayload = new RunCommandPayloadDto
                 {
                     Command = RunCommandPayload.Command,
                     RunAsAdmin = RunCommandPayload.RunAsAdmin,
                     Hidden = RunCommandPayload.Hidden
+                };
+            }
+            else if (Action == CapsActionType.WindowControls)
+            {
+                entryDto.WindowControlsPayload = new WindowControlsPayloadDto
+                {
+                    ControlType = WindowControlsPayload.ControlType.ToString()
+                };
+            }
+            else if (Action == CapsActionType.MediaControls)
+            {
+                entryDto.MediaControlsPayload = new MediaControlsPayloadDto
+                {
+                    ControlType = MediaControlsPayload.ControlType.ToString()
                 };
             }
 
@@ -300,14 +434,16 @@ namespace settings_UI.ViewModels
 
         [ObservableProperty] private bool _capslockOverriddenInfoBarVisibility;
 
-        public static List<string> ActionDisplayNames { get; } =
+        public static List<EnumDropdownItem<CapsActionType>> ActionOptions { get; } =
         [
-            "Window Focus",
-            "Shortcut Remap",
-            "Profile Switch",
-            "Insert Text",
-            "Open File/Folder",
-            "Run Command"
+            new(CapsActionType.WindowFocus, "Window Focus"),
+            new(CapsActionType.ShortcutRemap, "Shortcut Remap"),
+            new(CapsActionType.ProfileSwitch, "Profile Switch"),
+            new(CapsActionType.InsertText, "Insert Text"),
+            new(CapsActionType.OpenFileFolder, "Open File/Folder"),
+            new(CapsActionType.RunCommand, "Run Command"),
+            new(CapsActionType.WindowControls, "Window Controls"),
+            new(CapsActionType.MediaControls, "Media Controls")
         ];
 
         public CapsModifierViewModel()

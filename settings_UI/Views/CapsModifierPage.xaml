@@ -94,7 +94,8 @@
 
                                     <ComboBox Grid.Row="0" Grid.Column="2"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                        ItemsSource="{x:Bind vm:CapsModifierViewModel.ActionDisplayNames}"
+                                        ItemsSource="{x:Bind vm:CapsModifierViewModel.ActionOptions}"
+                                        DisplayMemberPath="DisplayName"
                                         SelectedIndex="{x:Bind ActionIndex, Mode=TwoWay}">
                                     </ComboBox>
 
@@ -315,6 +316,27 @@
                                             <CheckBox Content="Hidden Window" Grid.Column="1"
                                                       IsChecked="{x:Bind RunCommandPayload.Hidden, Mode=TwoWay}" />
                                         </Grid>
+                                    </StackPanel>
+
+
+                                    <!-- Action: Window Controls Layout -->
+                                    <StackPanel x:Name="WindowControls" x:Load="{x:Bind IsWindowControlsMode, Mode=OneWay}" Spacing="12">
+                                        <ComboBox Header="Window Control Action"
+                                            ItemsSource="{x:Bind vm:WindowControlsData.ControlTypeOptions}"
+                                            DisplayMemberPath="DisplayName"
+                                            SelectedIndex="{x:Bind WindowControlsPayload.ControlIndex, Mode=TwoWay}"
+                                            HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+
+                                    
+                                    
+                                    <!-- Action: Media Controls Layout -->
+                                    <StackPanel x:Name="MediaControls" x:Load="{x:Bind IsMediaControlsMode, Mode=OneWay}" Spacing="12">
+                                        <ComboBox Header="Media Control Action"
+                                            ItemsSource="{x:Bind vm:MediaControlsData.ControlTypeOptions}"
+                                            DisplayMemberPath="DisplayName"
+                                            SelectedIndex="{x:Bind MediaControlsPayload.ControlIndex, Mode=TwoWay}"
+                                            HorizontalAlignment="Stretch" />
                                     </StackPanel>
 
 

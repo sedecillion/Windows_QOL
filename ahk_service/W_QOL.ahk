@@ -74,11 +74,13 @@ LoadConfig()
 #Include ActionInsertText.ahk
 #Include ActionOpenFileFolder.ahk
 #Include ActionRunCommand.ahk
+#Include ActionWindowControls.ahk
+#Include ActionMediaControls.ahk
 #Include FeatureWindowAwareShortcutRemaps.ahk
 #Include FeatureScreenShotTool.ahk
 #Include FeatureRedactedPaste.ahk
 #Include FeatureMisc.ahk
-#Include FeatureMisc.ahk
+
 
 if (SilentMode) {
     A_IconHidden := true
