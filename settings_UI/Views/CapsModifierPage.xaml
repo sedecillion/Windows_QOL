@@ -126,7 +126,7 @@
                                                     <ColumnDefinition Width="1*"></ColumnDefinition>
                                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBox Header="Target Window (* for all)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.TargetExe, Mode=TwoWay}"  />
+                                                <TextBox Header="Target Window (* for unregistered windows)" IsSpellCheckEnabled="False" Text="{x:Bind FocusPayload.TargetExe, Mode=TwoWay}"  />
                                                 <Button Grid.Column="1" VerticalAlignment="Bottom" 
                                                     Click="OpenPickWindow_Click" Tag="TargetExe"
                                                     ToolTipService.ToolTip="Open window picker">

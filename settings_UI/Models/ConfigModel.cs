@@ -125,6 +125,27 @@ namespace settings_UI.Models
         ""IsEnabled"": true,
         ""ModifierMappings"": [
           {
+            ""Action"": ""WindowControls"",
+            ""TriggerKey"": ""PgDn"",
+            ""WindowControlsPayload"": {
+              ""ControlType"": ""TransparencyMinus""
+            }
+          },
+          {
+            ""Action"": ""WindowControls"",
+            ""TriggerKey"": ""PgUp"",
+            ""WindowControlsPayload"": {
+              ""ControlType"": ""TransparencyPlus""
+            }
+          },
+          {
+            ""Action"": ""WindowControls"",
+            ""TriggerKey"": ""Insert"",
+            ""WindowControlsPayload"": {
+              ""ControlType"": ""ToggleScriptMode""
+            }
+          },
+          {
             ""Action"": ""WindowFocus"",
             ""TriggerKey"": ""e"",
             ""WindowFocusPayload"": {

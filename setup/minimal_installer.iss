@@ -17,7 +17,7 @@ DisableProgramGroupPage=yes
 [Files]
 Source: "..\ahk_service\W_QOL.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\ahk_service\SignTool.exe"; DestDir: "{app}"; Flags: ignoreversion deleteafterinstall
-Source: "..\ahk_service\config.json"; DestDir: "{userappdata}\WindowsQOL"; Flags: onlyifdoesntexist
+Source: "..\ahk_service\config.json"; DestDir: "{userappdata}\Windows_QOL"; Flags: onlyifdoesntexist uninsneveruninstall
 Source: "..\ahk_service\WindowsQOL.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
@@ -35,6 +35,3 @@ Filename: "certutil.exe"; Parameters: "-delstore Root ""WindowsQOL"""; Flags: ru
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: none; ValueName: "W_QOL_Service"; Flags: uninsdeletevalue
-
-[UninstallDelete]
-Type: filesandordirs; Name: "{userappdata}\WindowsQOL"
