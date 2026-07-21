@@ -24,7 +24,9 @@ CaptureScreenshot(HotkeyName) {
     tempFile := ScreenshotTargetDir . "\~temp_capture_" . A_TickCount . ".png"
     SaveScreenToDisk(X, Y, W, H, tempFile)
 
-    InputBoxObj := InputBox("Enter Screenshot file name `nClose this dialog box to discard screenshot", "Save Screenshot", "w400 h130")
+    timestamp := FormatTime(, "yyyy-MM-dd_HH_mm_ss")
+    defaultName := "Screenshot_" . timestamp
+    InputBoxObj := InputBox("Enter Screenshot file name `nClose this dialog box to discard screenshot", "Save Screenshot", "w400 h130", defaultName)
     
     if (InputBoxObj.Result = "Cancel" || InputBoxObj.Value == "") {
         if FileExist(tempFile)
