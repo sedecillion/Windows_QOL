@@ -19,17 +19,37 @@ For sample JSON refer:
 [config.json](ahk_service/config.json)
 
 
-# Screenshots
 
 # Feature Overview
 
 ## Profiles
 
-Create multiple independent profiles and switch between them without restarting the application.
+Create multiple independent profiles and switch between them either with hotkey or manually
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL8.png" width="960">
+</p>
+
+
+
+Import and export profiles
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL7.png" width="960">
+</p>
 
 ## Caps Modifiers
 
 Use **Caps Lock** as the modifier key to trigger different actions.
+
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL2.png" width="960">
+</p>
+
+
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL9.png" width="960">
+  </br>
+  <span>Minmal Alt+Tab like GUI for Action: Window Focus when there are multiple target windows</span>
+</p>
 
 Supported actions:
 
@@ -50,6 +70,10 @@ Likewise, any `Caps + {Key}` can be assigned to one of the supported actions.
 
 Assign different behavior to the same shortcut depending on the foreground application.
 
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL3.png" width="960">
+</p>
+
 **Example:** `Ctrl + Space` can send `Alt + Enter` in File Explorer while sending a different shortcut in another application.
 
 Or remap `Ctrl + Shift + W` to `Alt + F4` across all applications.
@@ -58,11 +82,25 @@ Or remap `Ctrl + Shift + W` to `Alt + F4` across all applications.
 
 Remove unwanted keywords from text before pasting.
 
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL5.png" width="960">
+</p>
+
 **Example:** Replace `yourname` with `demo_name` before pasting clipboard contents.
 
 ## Screenshot Tool
 
-Capture a screenshot, discard it, rename it, or save it to a configured folder.
+Capture a screenshot, discard it, rename it, save it to a configured folder in one go.
+
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL4.png" width="960">
+</p>
+
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL11.png" width="500">
+  </br>
+  <span>Dialog box after pressing trigger key</span>
+</p>
 
 ## Terminal Launch
 
@@ -73,6 +111,13 @@ Launch a terminal with a predefined starting directory.
 ## Calculator Single Instance
 
 Prevents multiple Calculator windows from opening when using the keyboard's dedicated Calculator (`LaunchApp2`) key.
+
+
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL6.png" width="500">
+  </br>
+  <span>Calculator Single Instance and Terminal Launch</span>
+</p>
 
 # Installation
 
@@ -87,6 +132,11 @@ Windows QOL can be used in two ways depending on how you want to manage the conf
 
 Includes the AutoHotkey background service and the WinUI 3 settings application.
 
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL1.png" width="960">
+  </br>
+</p>
+
 The settings application can be used to:
 
 - Create and manage profiles.
@@ -99,6 +149,11 @@ The settings application can be used to:
 ## Minimal Installation
 
 Includes the AutoHotkey background service and a lightweight management application.
+
+<p align="center">
+  <img src="Assets/demo_screenshots/WQOL10.png" width="500">
+  </br>
+</p>
 
 The minimal application can:
 
@@ -134,6 +189,6 @@ Refer Format here: [config.json](/ahk_service/config.md)
 
 # Info
 
-The core functionality is built using **AutoHotkey**.
+The core functionality is built using [AutoHotkey](https://www.autohotkey.com/).
 
-The Full Installation includes a **WinUI 3** settings application for configuring the runtime without manually editing the configuration file.
+The Full Installation includes a [WinUI 3](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/) settings application for configuring the runtime without manually editing the configuration file.
