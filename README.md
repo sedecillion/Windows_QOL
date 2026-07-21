@@ -128,6 +128,8 @@ Windows QOL can be used in two ways depending on how you want to manage the conf
 >
 > This is required to capture and emit shortcuts on top of system or elevated applications.
 
+Checkout [Releases](https://github.com/sedecillion/Windows_QOL/releases/) or read below
+
 ## Full Installation
 
 Includes the AutoHotkey background service and the WinUI 3 settings application.
@@ -146,6 +148,7 @@ The settings application can be used to:
 - Manage startup behavior.
 - Start or stop the background service.
 
+Download: [WindowsQOL-Full-v1.0.0.0.exe](https://github.com/sedecillion/Windows_QOL/releases/download/v1.0.0.0/WindowsQOL-Full-v1.0.0.0.exe)
 ## Minimal Installation
 
 Includes the AutoHotkey background service and a lightweight management application.
@@ -165,6 +168,8 @@ The minimal application can:
 Feature configuration is performed by manually editing `config.json`.
 
 See the notes below for the configuration format.
+
+Download: [WindowsQOL-Minimal-v1.0.0.0.exe](https://github.com/sedecillion/Windows_QOL/releases/download/v1.0.0.0/WindowsQOL-Minimal-v1.0.0.0.exe)
 
 # Important Notes
 
