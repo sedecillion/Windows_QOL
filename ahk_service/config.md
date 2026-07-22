@@ -2,7 +2,11 @@
 
 Every shortcut uses the AutoHotkey v2 key format.
 
-Note below formats used in some of the payloads of features
+Note the below formats used in some of the payloads of features
+
+Actual JSON structure format explanation [here](#root-structure)
+
+# Input Formats
 
 ## Command Format
 
@@ -135,6 +139,10 @@ ahk_class Notepad
 
 ahk_class ApplicationFrameWindow
 ```
+
+<br>
+<br>
+
 # Root Structure
 
 ```json
@@ -204,6 +212,10 @@ Example
 ]
 ```
 
+---
+
+<br>
+
 # Profile Structure
 
 Each profile contains the following sections.
@@ -227,6 +239,8 @@ Each profile contains the following sections.
     "WindowAwareShortcutRemap": { ... }
 }
 ```
+---
+<br>
 
 # ProfileProperties
 
@@ -286,7 +300,9 @@ Example
 "SilentMode": true
 ```
 
-Apart from `ProfileProperties`, every top-level section represents an independent feature.
+<br>
+
+> Apart from `ProfileProperties`, every top-level section represents an independent feature.
 
 Each feature contains an `IsEnabled` property which enables or disables that feature.
 
@@ -340,6 +356,9 @@ Example
     }
 }
 ```
+---
+
+<br>
 
 # CapsModifiers
 
@@ -463,6 +482,7 @@ Example
     "WindowFocusPayload": null
 }
 ```
+<br>
 
 # Caps Modifier Actions
 
@@ -483,6 +503,8 @@ Payload
 
 ---
 
+<br>
+
 ## OpenFileFolder
 
 Payload
@@ -497,10 +519,12 @@ Payload
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `Path` | String | File, folder, command or URI to open. Refer [Command Format](#command-format) |
+| `Path` | String | File, folder or URI to open |
 | `TargetApp` | String | Optional application used to open `Path`. |
 
 ---
+
+<br>
 
 ## ProfileSwitch
 
@@ -518,6 +542,8 @@ Payload
 | `TargetIndex` | Integer | Zero-based index inside the `Profiles` array. |
 
 ---
+
+<br>
 
 ## RunCommand
 
@@ -539,6 +565,8 @@ Payload
 | `Hidden` | Boolean | Starts the process hidden when supported. |
 
 ---
+
+<br>
 
 ## ShortcutRemap
 
@@ -573,6 +601,8 @@ Element
 
 ---
 
+<br>
+
 ## WindowFocus
 
 Payload
@@ -597,6 +627,8 @@ Payload
 | `Fallback` | String | Secondary window match checked before launching `Command`. |
 
 ---
+
+<br>
 
 ## WindowControls
 
@@ -625,6 +657,9 @@ ToggleScriptMode
 
 ---
 
+<br>
+
+
 ## MediaControls
 
 Payload
@@ -650,6 +685,10 @@ Prev
 Next
 PlayPauseToggle
 ```
+
+---
+
+<br>
 
 # WindowAwareShortcutRemap
 
@@ -704,9 +743,7 @@ Type
 String
 ```
 
-Format
-
-[Connected Shortcut](#connected-shortcut)
+Format: [Connected Shortcut](#connected-shortcut)
 
 ---
 
@@ -718,9 +755,7 @@ Type
 String
 ```
 
-Format
-
-[Connected Shortcut](#connected-shortcut)
+Format: [Connected Shortcut](#connected-shortcut)
 
 ---
 
@@ -738,21 +773,9 @@ Element
 String
 ```
 
-Supported Values
+Format : [Window Identifier Format](#window-identifier-format) or use * to target all windows
 
-```
-ahk_exe program.exe
 
-ahk_class WindowClass
-
-Window Title
-
-Window Title ahk_exe program.exe
-
-Window Title ahk_class WindowClass
-
-*
-```
 
 Behavior
 
@@ -857,9 +880,7 @@ Type
 String
 ```
 
-Format
-
-[Connected Shortcut](#connected-shortcut)
+Format: [Connected Shortcut](#connected-shortcut)
 
 ---
 
@@ -939,9 +960,7 @@ Type
 String
 ```
 
-Format
-
-[Connected Shortcut](#connected-shortcut)
+Format: [Connected Shortcut](#connected-shortcut)
 
 ---
 
@@ -966,6 +985,8 @@ C:\Users\<A_UserName>\Pictures\Screenshots
 
 ---
 
+<br>
+
 # TerminalLaunch
 
 Launches a terminal in a configured working directory.
@@ -987,9 +1008,7 @@ Type
 String
 ```
 
-Format
-
-[Connected Shortcut](#connected-shortcut)
+Format: [Connected Shortcut](#connected-shortcut)
 
 ---
 
@@ -1013,6 +1032,8 @@ C:\Users\<A_UserName>\
 ```
 
 ---
+
+<br>
 
 # CalcSingleInstance
 

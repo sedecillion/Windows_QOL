@@ -13,7 +13,7 @@ For Installation refer:
 - [Minimal Installation](#minimal-installation)
 
 For JSON format refer:
-[Config](ahk_service/config.md)
+[Config.md](ahk_service/config.md)
 
 For sample JSON refer:
 [config.json](ahk_service/config.json)
@@ -51,20 +51,42 @@ Use **Caps Lock** as the modifier key to trigger different actions.
   <span>Minmal Alt+Tab like GUI for Action: Window Focus when there are multiple target windows</span>
 </p>
 
-Supported actions:
+### Supported actions:
 
-- **Insert Text** — Insert predefined text into the active application.
-- **Open File, Folder or URL** — Open a file, folder or URI using its default or a specified application.
-- **Profile Switch** — Switch to another profile.
-- **Run Command** — Launch applications, commands, or URIs.
-- **Shortcut Remap** — Emit a different shortcut depending on the active window.
-- **Window Focus** — Focus an open window, apply filters, display a custom `Alt + Tab` style menu, or launch an application if no matching window is found.
-- **Window Controls** *(Transparency, Pin on Top, Click Through, Script Mode)* — Perform common window management actions.
-- **Media Controls** *(Volume, Mute, Previous, Next, Play/Pause)* — Control system media playback and volume.
+- **Insert Text**: Insert predefined text into the active application.
+- **Open File, Folder or URL**: Open a file, folder or URI using its default or a specified application.
+- **Profile Switch**: Switch to another profile using a hotkey.
+- **Run Command**: Launch applications, run commands, or open URIs.
+- **Shortcut Remap**: Emit a different shortcut depending on the active window.
+- **Window Focus**: Focus an open window, filter by window titles, display a custom `Alt + Tab` style menu for multiple matches, or launch an application if no matching window is found.
+- **Window Controls** *(Window Transparency, Pin on Top, Click Through, Script Mode)*: Perform common window management actions.
+- **Media Controls** *(Volume, Mute, Previous, Next, Play/Pause)*: Control system media playback and volume.
 
-**Example:** `Caps + E` can be mapped to **Window Focus** to focus File Explorer if it is already open or launch it otherwise.
+<br>
+
+### Examples
+`Caps + E` can be mapped to **Window Focus** to focus File Explorer if it is already open or launch it otherwise.
+
+`Caps + C` Open or Focus chrome with required title as _Gmail_ only window with Gmail tab will open, else run a command to open Gmail.
+
+`Caps + F2` Switch to Profile 2 with compeltely different set of all remappings.
+
+`Caps + Space` can go up one Folder in file explorer, open Terminal in VS Code, or open dev tools in browsers.
+
+`Caps + 1/2/3` paste predefined snippets, signatures
+
+`Caps + MouseButtons` use it to avoid hand movements across mouse and keyboard
+
+- `Caps + LeftButton` to Enter or Esc to quickly dismiss dialogue boxes
+- `Caps + RightButton` to Delete
+- `Caps + Forward/Back Button` to switch virtual dekstops, undo/redo, copy/paste, tabs forward backward depending on which app is in the foreground
+- `Caps + MouseWheel` set it to scroll tabs, switch virtual desktops, volume control.
+
+
 
 Likewise, any `Caps + {Key}` can be assigned to one of the supported actions.
+
+<br>
 
 ## Window Aware Shortcut Remapping
 
@@ -80,13 +102,13 @@ Or remap `Ctrl + Shift + W` to `Alt + F4` across all applications.
 
 ## Redacted Paste
 
-Remove unwanted keywords from text before pasting.
+Remove unwanted keywords from text when pasting.
 
 <p align="center">
   <img src="Assets/demo_screenshots/WQOL5.png" width="960">
 </p>
 
-**Example:** Replace `yourname` with `demo_name` before pasting clipboard contents.
+**Example:** Replace `yourname` with `demo_name` when pasting clipboard contents.
 
 ## Screenshot Tool
 
@@ -114,7 +136,7 @@ Prevents multiple Calculator windows from opening when using the keyboard's dedi
 
 
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL6.png" width="500">
+  <img src="Assets/demo_screenshots/WQOL6.png" width="960">
   </br>
   <span>Calculator Single Instance and Terminal Launch</span>
 </p>
@@ -179,7 +201,9 @@ The configuration file is located at
 %appdata%\Windows_QOL\config.json
 ```
 
-Refer Format here: [config.json](/ahk_service/config.md)
+Refer JSON Format: [Config.md](/ahk_service/config.md)
+
+Sample JSON Config: [config.json](/ahk_service/config.json)
 
 
 > [!warning]
