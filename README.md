@@ -319,7 +319,7 @@ Feel free to modify the default profile or create additional profiles to match y
 
 `Caps + Insert`
 - Toggle Script Mode for the active window
-  - Allows mouse clicks to pass through the window while keeping it pinned no top and making it transcluscent.
+  - Allows mouse clicks to pass through the window while keeping it pinned on top and making it transcluscent.
 
 
 
