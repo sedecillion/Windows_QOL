@@ -12,13 +12,15 @@ For Installation refer:
 
 - [Minimal Installation](#minimal-installation)
 
+<br>
+
 For JSON format refer:
 [Config.md](ahk_service/config.md)
 
 For sample JSON refer:
 [config.json](ahk_service/config.json)
 
-
+For Default Behavior refer: [Default Profile](#default-config-behavior)
 
 # Feature Overview
 
@@ -205,6 +207,123 @@ Refer JSON Format: [Config.md](/ahk_service/config.md)
 
 Sample JSON Config: [config.json](/ahk_service/config.json)
 
+
+## Default Config Behavior
+
+The default profile in the Full and Minimal versions is configured with the following shortcuts.
+
+Feel free to modify the default profile or create additional profiles to match your workflow.
+
+#### General
+
+`Ctrl + Alt + T`
+- Opens Windows Terminal in `C:\Users\<A_UserName>\`
+
+`PrintScreen`
+- Takes screenshot and asks for filename and whether to save or discard screenshot
+
+`Ctrl + Shift + W`
+- Closes the active window (`Alt + F4`)
+
+`Ctrl + Alt + V`
+- Pastes clipboard text after applying Redacted Paste replacements
+- Default replacements:
+  - `fullname` → *(empty)*
+  - `<A_UserName>` → `user1`
+
+---
+
+#### Caps Modifiers
+
+##### Window Focus
+
+`Caps + E`
+- Focus File Explorer if already open, otherwise launch it
+
+`Caps + D`
+- Focus Notepad if already open, otherwise launch it
+
+`Caps + C`
+- Focus Calculator if already open, otherwise launch it
+
+---
+
+##### Context Aware Shortcut Remaps
+
+`Caps + Space`
+- File Explorer → `Alt + Enter` (Properties)
+- Notepad → `F5` (Insert current date and time)
+- Microsoft Edge / Google Chrome → `F12` (Developer Tools)
+
+`Caps + R`
+- Opens the Run dialog (`Win + R`)
+
+`Caps + Left Mouse Button`
+- Emits `Enter`
+
+`Caps + Right Mouse Button`
+- Emits `Delete`
+
+`Caps + Middle Mouse Button`
+- Opens Task Manager (`Ctrl + Shift + Esc`)
+
+`Caps + Mouse Wheel Up`
+- VS Code → `Ctrl + PgUp` (Previous editor tab)
+- Other applications → `Ctrl + Shift + Tab`
+
+`Caps + Mouse Wheel Down`
+- VS Code → `Ctrl + PgDn` (Next editor tab)
+- Other applications → `Ctrl + Tab`
+
+`Caps + Back Mouse Button (XButton1)`
+- Switch to the virtual desktop on the left (`Ctrl + Win + Left`)
+
+`Caps + Forward Mouse Button (XButton2)`
+- Switch to the virtual desktop on the right (`Ctrl + Win + Right`)
+
+---
+
+##### Insert Text
+
+`Caps + 1`
+- Inserts:
+  ```
+  demo_user@example.com
+  ```
+
+---
+
+##### Run Command / Open File
+
+`Caps + Numpad1`
+- Opens the Windows Available Wi-Fi Networks flyout
+
+`Caps + Numpad2`
+- Opens:
+  ```
+  C:\Users
+  ```
+
+`Caps + Numpad3`
+- Runs a sample command demonstrating the Run Command action
+
+---
+
+##### Window Controls
+
+`Caps + PgUp`
+- Increase transparency of the active window
+
+`Caps + PgDn`
+- Decrease transparency of the active window
+
+`Caps + Insert`
+- Toggle Script Mode for the active window
+  - Allows mouse clicks to pass through the window while keeping it pinned no top and making it transcluscent.
+
+
+
+<br>
 
 > [!warning]
 >
