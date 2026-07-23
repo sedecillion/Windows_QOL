@@ -33,11 +33,21 @@
             
             <Grid VerticalAlignment="Bottom" Margin="10,10,10,10" CornerRadius="10" Padding="10" ColumnSpacing="10"
                         Background="{ThemeResource CardBackgroundFillColorDefault}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <HyperlinkButton NavigateUri="https://github.com/sedecillion/Windows_QOL"
+                <HyperlinkButton Grid.ColumnSpan="2" HorizontalAlignment="Center" NavigateUri="https://github.com/sedecillion/Windows_QOL/releases/" >
+                    <StackPanel Orientation="Horizontal" Spacing="5"> 
+                        <FontIcon Glyph="&#xE71B;" FontSize="14" />
+                        <TextBlock Text="View Latest Release" FontSize="14" />
+                    </StackPanel>
+                </HyperlinkButton>
+                <HyperlinkButton Grid.Row="2" NavigateUri="https://github.com/sedecillion/Windows_QOL"
                                  ToolTipService.ToolTip="View Source"
                                  Padding="3">
                     <StackPanel Orientation="Horizontal" Spacing="5">
@@ -45,7 +55,7 @@
                         <TextBlock Text="GitHub" FontSize="12"/>
                     </StackPanel>
                 </HyperlinkButton>
-                <TextBlock Text="App Version: v1.0.0.0" Grid.Column="1" VerticalAlignment="Center"
+                <TextBlock Text="App Version: v1.0.2.0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
                            FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
             </Grid>
         </Grid>

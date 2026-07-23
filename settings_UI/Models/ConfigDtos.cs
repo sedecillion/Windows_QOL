@@ -17,6 +17,7 @@ namespace settings_UI.Models
         public WindowAwareShortcutRemapDto WindowAwareShortcutRemap { get; set; }
         public RedactedPasteDto RedactedPaste { get; set; }
         public CapsModifierDto CapsModifiers { get; set; }
+        public FileExplorerTweaksDto FileExplorerTweaks { get; set; }
     }
 
     public class ProfilePropertiesDto
@@ -30,6 +31,7 @@ namespace settings_UI.Models
         public bool IsEnabled { get; set; }
         public string StartPath { get; set; }
         public string TriggerKey { get; set; }
+        public bool OpenInExplorerTabPath { get; set; } = true;
     }
 
     public class ScreenshotToolDto
@@ -37,6 +39,7 @@ namespace settings_UI.Models
         public bool IsEnabled { get; set; }
         public string TargetDir { get; set; }
         public string TriggerKey { get; set; }
+        public bool FullScreenModeOnly { get; set; } = true;
     }
 
     public class CalcSingleInstanceDto
@@ -135,5 +138,11 @@ namespace settings_UI.Models
     {
         public string TargetWindow { get; set; }
         public string ShortcutToEmit { get; set; }
+    }
+
+    public class FileExplorerTweaksDto
+        {
+        public bool IsEnabled { get; set; }
+        public string TriggerKey { get; set; }
     }
 }

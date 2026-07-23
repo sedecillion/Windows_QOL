@@ -196,7 +196,7 @@ namespace settings_UI.ViewModels
             SCToolVM.LoadFromLoadedConfig(selectedProfileData.ScreenshotTool);
             RedactedPasteVM.LoadFromLoadedConfig(selectedProfileData.RedactedPaste);
             WAShortcutVM.LoadFromLoadedConfig(selectedProfileData.WindowAwareShortcutRemap);
-            MiscVM.LoadFromLoadedConfig(selectedProfileData.CalcSingleInstance, selectedProfileData.TerminalLaunch);
+            MiscVM.LoadFromLoadedConfig(selectedProfileData.CalcSingleInstance, selectedProfileData.TerminalLaunch,selectedProfileData.FileExplorerTweaks);
 
             OnPropertyChanged(nameof(DisplayedProfileName));
         }
@@ -231,9 +231,10 @@ namespace settings_UI.ViewModels
             return new ProfileDto
             {
                 ProfileProperties = new ProfilePropertiesDto { Name = profileName, SilentMode = true },
-                TerminalLaunch = new TerminalLaunchDto { IsEnabled = true, StartPath = @"C:\Windows\System32", TriggerKey = "^!t" },
-                ScreenshotTool = new ScreenshotToolDto { IsEnabled = true, TargetDir = @"D:\Pictures", TriggerKey= "PrintScreen" },
+                TerminalLaunch = new TerminalLaunchDto { IsEnabled = true, StartPath = @"C:\Windows\System32", TriggerKey = "^!t", OpenInExplorerTabPath = true },
+                ScreenshotTool = new ScreenshotToolDto { IsEnabled = true, TargetDir = @"D:\Pictures", TriggerKey= "PrintScreen", FullScreenModeOnly = true },
                 CalcSingleInstance = new CalcSingleInstanceDto { IsEnabled = true },
+                FileExplorerTweaks = new FileExplorerTweaksDto { IsEnabled = true, TriggerKey = "^n" },
                 WindowAwareShortcutRemap = new WindowAwareShortcutRemapDto
                 {
                     IsEnabled = true,
@@ -348,6 +349,7 @@ namespace settings_UI.ViewModels
             _configModel.CurrentConfig.Profiles[DisplayedProfileIndex].WindowAwareShortcutRemap = WAShortcutVM.GetPackedSettings();
             _configModel.CurrentConfig.Profiles[DisplayedProfileIndex].CalcSingleInstance = MiscVM.GetPackedCalcSingleInstance();
             _configModel.CurrentConfig.Profiles[DisplayedProfileIndex].TerminalLaunch = MiscVM.GetPackedTerminalLaunch();
+            _configModel.CurrentConfig.Profiles[DisplayedProfileIndex].FileExplorerTweaks = MiscVM.GetPackedFileExplorerTweaks();
 
             _configModel.SaveConfig();
         }

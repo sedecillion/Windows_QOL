@@ -36,31 +36,55 @@
 
                     <MenuFlyoutSeparator />
 
-                    <Grid ColumnSpacing="10">
+                    <Grid ColumnSpacing="10" RowSpacing="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
                         <Grid ColumnSpacing="10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBox Header="Trigger Key" Text="{x:Bind ViewModel.TerminalLaunchTriggerKey, Mode=TwoWay}" />
-                            <Button Grid.Column="1"
-                            VerticalAlignment="Bottom"
-                            Click="TerminalLaunchTriggerKeyCapture_Click">
-                                <StackPanel Orientation="Horizontal" Spacing="3">
-                                    <FontIcon Glyph="&#xE92E;"/>
-                                    <TextBlock Text="Capture Input"/>
-                                </StackPanel>
-                            </Button>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                Spacing="5">
+                                <TextBlock Text="Trigger Key: " FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <Button Padding="12,8"
+                                    BorderThickness="2" CornerRadius="10" Background="Transparent"
+                                    BorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                                    Click="TerminalLaunchTriggerKeyCapture_Click"
+                                    HorizontalAlignment="Stretch">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                                        <FontIcon Glyph="&#xE765;" FontSize="16" />
+                                        <TextBlock Text="{x:Bind ViewModel.DisplayTerminalLaunchTriggerKey, Mode=OneWay}" 
+                                            FontWeight="Bold" 
+                                            VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+
+                            </StackPanel>
                         </Grid>
                         <StackPanel Spacing="8" Grid.Column="1">
-                            <TextBlock Text="Start Path (Use &lt;A_UserName&gt; for current OS username)" FontWeight="SemiBold" />
+                            <TextBlock TextWrapping="Wrap">
+                                <Run Text="Start Path " 
+                                     FontWeight="SemiBold" />
+                                <Run Text="(Use &lt;A_UserName&gt; for current OS username)" 
+                                     Foreground="{ThemeResource TextFillColorSecondaryBrush }" 
+                                     FontWeight="Normal" />
+                            </TextBlock>
                             <TextBox Text="{x:Bind ViewModel.TerminalStartPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                      PlaceholderText="e.g., C:\Users\&lt;A_UserName&gt;\" />
                         </StackPanel>
+
+                        <CheckBox Grid.Row="1" Grid.ColumnSpan="2"
+                            Content="Open terminal in the Current Folder if File Explorer is in foreground"
+                            IsChecked="{x:Bind ViewModel.OpenInExplorerTabPath, Mode=TwoWay}">
+                            
+                        </CheckBox>
                         
                     </Grid>
                 </StackPanel>
@@ -88,6 +112,55 @@
                                   MinWidth="0" 
                                   OnContent="{x:Null}" 
                                   OffContent="{x:Null}"/>
+                </Grid>
+            </Border>
+            
+            <!-- File Explorer Tweaks -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                    BorderThickness="1" CornerRadius="8" Padding="20">
+                <Grid RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="File Explorer New File Hotkey" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock Text="Create new file in File Explorer shortcut" 
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12" Margin="0,4,0,0" />
+                    </StackPanel>
+
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsFileExplorerTweaksEnabled, Mode=TwoWay}" 
+                        Grid.Column="1" 
+                        Margin="0" 
+                        MinWidth="0" 
+                        OnContent="{x:Null}" 
+                        OffContent="{x:Null}"/>
+
+                    <MenuFlyoutSeparator Margin="0" Grid.Row="1" Grid.ColumnSpan="2"/>
+
+                    <StackPanel Grid.Row="2" HorizontalAlignment="Left" MinWidth="200" Spacing="5">
+                        <TextBlock Text="Trigger Key: " FontWeight="SemiBold"/>
+                        <Button Padding="12,8"
+                                BorderThickness="2" CornerRadius="10" Background="Transparent"
+                                BorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                                Click="ChangeFileExplorerTweaksTriggerKey_Click"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                                <FontIcon Glyph="&#xE765;" FontSize="16" />
+                                <TextBlock Text="{x:Bind ViewModel.DisplayFileExplorerTweaksTriggerKey, Mode=OneWay}" 
+                                    FontWeight="Bold" 
+                                    VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
                 </Grid>
             </Border>
 

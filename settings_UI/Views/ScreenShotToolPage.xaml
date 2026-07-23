@@ -41,27 +41,34 @@
             </Border>
 
             <Grid Background="{ThemeResource CardBackgroundFillColorDefault}"
-                  CornerRadius="8" Padding="10,10,10,10" Margin="0,12,0,0" ColumnSpacing="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Grid ColumnSpacing="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <TextBox Header="Trigger Key" Text="{x:Bind SC_ToolViewModel.TriggerKey, Mode=TwoWay}" />
-                    <Button Grid.Column="1"
-                        VerticalAlignment="Bottom"
-                        Click="SC_ToolTriggerKeyPicker_Click">
-                        <StackPanel Orientation="Horizontal" Spacing="3">
-                            <FontIcon Glyph="&#xE92E;"/>
-                            <TextBlock Text="Capture Input"/>
-                        </StackPanel>
-                    </Button>
-                </Grid>
-                <Grid ColumnSpacing="10" Grid.Column="1">
+                  CornerRadius="8" Padding="20,10,10,10" Margin="0,12,0,0" RowSpacing="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel HorizontalAlignment="Left" MinWidth="100" Spacing="5">
+                    <TextBlock Text="Trigger Key: " FontWeight="SemiBold"/>
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <Button Padding="12,8"
+                            BorderThickness="2" CornerRadius="10" Background="Transparent"
+                            BorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                            Click="SC_ToolTriggerKeyPicker_Click"
+                            HorizontalAlignment="Stretch">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                                <FontIcon Glyph="&#xE765;" FontSize="16" />
+                                <TextBlock Text="{x:Bind SC_ToolViewModel.DisplayTriggerKey, Mode=OneWay}" 
+                                    FontWeight="Bold" 
+                                    VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Content="Use PrtScr" FontWeight="SemiBold" Click="TriggerKeyChangePrintScreen_Click"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+                <Grid ColumnSpacing="10" Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -74,6 +81,49 @@
                         </StackPanel>
                     </Button>
                 </Grid>
+
+                <MenuFlyoutSeparator Grid.Row="2"/>
+                
+                <StackPanel Grid.Row="3" Spacing="12" Margin="0,0,0,10" Padding="0,0,0,10">
+                    <TextBlock Text="Capture Behavior" FontWeight="SemiBold" />
+
+                    <StackPanel Spacing="16">
+                        <!-- Option 1: Snipping Tool Flow -->
+                        <StackPanel Spacing="4">
+                            <RadioButton Content="Interactive Mode (Region &amp; Full Screen)" 
+                                GroupName="ScreenshotMode" 
+                                IsChecked="{x:Bind SC_ToolViewModel.IsInteractiveMode, Mode=TwoWay}"
+                                />
+                            <TextBlock Text="Opens the Windows Snipping Tool Overlay for partial captures. Press ENTER to capture fullscreen instantly. "
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
+                                FontSize="14" 
+                                TextWrapping="Wrap" 
+                                Margin="32,0,0,0" />
+                            <TextBlock Text="Relies on the Win+Shift+S shortcut triggering snipping tool. You might want to turn off notifications for snipping tool"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
+                                FontSize="14" 
+                                TextWrapping="Wrap" 
+                                Margin="32,0,0,0" />
+                        </StackPanel>
+
+                        <!-- Option 2: Full Screen Flow -->
+                        <StackPanel Spacing="4">
+                            <RadioButton Content="Basic Mode (Full Screen Only)" 
+                                GroupName="ScreenshotMode" 
+                                IsChecked="{x:Bind SC_ToolViewModel.IsBasicMode, Mode=TwoWay}"/>
+                            <TextBlock Text="Instantly captures the entire screen in one go."
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
+                                FontSize="14" 
+                                TextWrapping="Wrap" 
+                                Margin="32,0,0,0" />
+                            <TextBlock Text="Standalone, and no requirement of Snipping tool or Win+Shift+S."
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
+                                FontSize="14" 
+                                TextWrapping="Wrap" 
+                                Margin="32,0,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
             </Grid>
         </StackPanel>
     </ScrollViewer>

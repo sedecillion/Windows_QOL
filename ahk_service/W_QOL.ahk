@@ -39,10 +39,15 @@ LoadConfig() {
     global EnableTerminalLaunch := profile["TerminalLaunch"]["IsEnabled"]
     global TerminalStartPath := StrReplace(profile["TerminalLaunch"]["StartPath"], "<A_UserName>", A_UserName)
     global TerminalTriggerKey := profile["TerminalLaunch"]["TriggerKey"]
+    global OpenInExplorerTabPath := profile["TerminalLaunch"].Has("OpenInExplorerTabPath") ? profile["TerminalLaunch"]["OpenInExplorerTabPath"] : true
+
+    global EnableFileExplorerTweaks := profile.Has("FileExplorerTweaks") && profile["FileExplorerTweaks"].Has("IsEnabled") ? profile["FileExplorerTweaks"]["IsEnabled"] : true
+    global FileExplorerTweaksTriggerKey := profile.Has("FileExplorerTweaks") && profile["FileExplorerTweaks"].Has("TriggerKey") ? profile["FileExplorerTweaks"]["TriggerKey"] : "^n"
     
     global EnableScreenshotTool := profile["ScreenshotTool"]["IsEnabled"]
     global ScreenshotTargetDir := StrReplace(profile["ScreenshotTool"]["TargetDir"], "<A_UserName>", A_UserName)
     global ScreenshotTriggerKey := profile["ScreenshotTool"]["TriggerKey"]
+    global ScreenshotFullScreenModeOnly := profile["ScreenshotTool"].Has("FullScreenModeOnly") ? profile["ScreenshotTool"]["FullScreenModeOnly"] : true
     
     global EnableCalcInstance := profile["CalcSingleInstance"]["IsEnabled"]
     

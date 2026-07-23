@@ -45,5 +45,22 @@ namespace settings_UI.Views
                 ViewModel.TerminalLaunchTriggerKey = capturedShortcut;
             }
         }
+
+        private async void ChangeFileExplorerTweaksTriggerKey_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            var captureConfig = new CaptureConfiguration
+            {
+                SingleKeyOnly = false,
+                AllowKeyboard = true,
+                AllowMouse = true,
+                IsEmitChord = false
+            };
+            ShortcutCaptureModal modal = new ShortcutCaptureModal(App.MainWindow, captureConfig);
+            string capturedShortcut = await modal.ShowAsync();
+            if (!string.IsNullOrEmpty(capturedShortcut))
+            {
+                ViewModel.FileExplorerTweaksTriggerKey = capturedShortcut;
+            }
+        }
     }
 }

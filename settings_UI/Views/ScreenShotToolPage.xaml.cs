@@ -80,5 +80,12 @@ namespace settings_UI.Views
             }
 
         }
+
+        private void TriggerKeyChangePrintScreen_Click(object sender, RoutedEventArgs e)
+        {
+            SC_ToolViewModel.TriggerKey = "PrintScreen";
+        }
+
+        
     }
 }

@@ -37,26 +37,27 @@
                                   OffContent="{x:Null}"/>
                 </Grid>
             </Border>
-            
-            
+
+
             <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" 
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
                     BorderThickness="1" CornerRadius="8" Margin="0,0,0,20" Padding="16,12">
-                <Grid ColumnSpacing="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <TextBox Header="Trigger Key" Text="{x:Bind ViewModel.TriggerKey, Mode=TwoWay}" />
-                    <Button Grid.Column="1"
-                        VerticalAlignment="Bottom"
-                        Click="RedactedPasteTriggerKeyPicker_Click">
-                        <StackPanel Orientation="Horizontal" Spacing="3">
-                            <FontIcon Glyph="&#xE92E;"/>
-                            <TextBlock Text="Capture Input"/>
+                <StackPanel HorizontalAlignment="Left" MinWidth="200" Spacing="5">
+                    <TextBlock Text="Trigger Key: " FontWeight="SemiBold"/>
+                    <Button Padding="12,8"
+                        BorderThickness="2" CornerRadius="10" Background="Transparent"
+                        BorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                        Click="RedactedPasteTriggerKeyPicker_Click"
+                        HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                            <FontIcon Glyph="&#xE765;" FontSize="16" />
+                            <TextBlock Text="{x:Bind ViewModel.DisplayTriggerKey, Mode=OneWay}" 
+                                FontWeight="Bold" 
+                                VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
-                </Grid>
+
+                </StackPanel>
             </Border>
 
             <Button Click="AddReplacement_Click">
@@ -84,8 +85,44 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBox Header="Target Text (Use &lt;A_UserName&gt; for current OS username)" Text="{x:Bind Dirty, Mode=TwoWay}" Grid.Column="0" />
-                                <TextBox Header="Replacement (Leave blank to remove Target Text)" Text="{x:Bind Clean, Mode=TwoWay}" Grid.Column="1" />
+                                <TextBox Grid.Column="0" 
+                                     Text="{x:Bind Dirty, Mode=TwoWay}"
+                                     HorizontalAlignment="Stretch">
+                                    <TextBox.HeaderTemplate>
+                                        <DataTemplate>
+                                            <ContentPresenter HorizontalAlignment="Stretch" 
+                                                  HorizontalContentAlignment="Stretch">
+
+                                                <TextBlock TextWrapping="Wrap" 
+                                                    HorizontalAlignment="Stretch">
+                                                        <Run Text="Target Text " />
+                                                        <Run Text="(Use &lt;A_UserName&gt; for current OS username)" 
+                                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                              FontSize="14" />
+                                                </TextBlock>
+                                            </ContentPresenter>
+                                        </DataTemplate>
+                                    </TextBox.HeaderTemplate>
+                                </TextBox>
+
+                                <TextBox Grid.Column="1" 
+                                     Text="{x:Bind Clean, Mode=TwoWay}"
+                                     HorizontalAlignment="Stretch">
+                                    <TextBox.HeaderTemplate>
+                                        <DataTemplate>
+                                            <ContentPresenter HorizontalAlignment="Stretch" 
+                                                HorizontalContentAlignment="Stretch">
+                                                <TextBlock TextWrapping="Wrap" 
+                                                   HorizontalAlignment="Stretch">
+                                                    <Run Text="Replacement " />
+                                                    <Run Text="(Leave blank to remove Target Text)" 
+                                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                                </TextBlock>
+                                            </ContentPresenter>
+                                        </DataTemplate>
+                                    </TextBox.HeaderTemplate>
+                                </TextBox>
+
 
                                 <Button Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,0,2" 
                                         Click="DeleteReplacement_Click" ToolTipService.ToolTip="Delete Replacement">
