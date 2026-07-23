@@ -1,3 +1,4 @@
+;@Ahk2Exe-SetVersion 1.0.2.0
 ;@Ahk2Exe-UpdateManifest 0, , , 1
 ;@Ahk2Exe-SetMainIcon ..\settings_UI\Assets\app_icon.ico
 
