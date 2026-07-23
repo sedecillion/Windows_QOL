@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 ExecuteActionWindowControls(payload) {
-    static ScriptModeWindows := Map()
+    global ScriptModeWindows
     
     if !payload.Has("ControlType") || payload["ControlType"] == ""
         return
@@ -79,7 +79,7 @@ ExecuteActionWindowControls(payload) {
                 
                 ScriptModeWindows.Delete(hwnd)
                 ToolTip("Script Mode Disabled")
-                SetTimer(() => ToolTip(), -1000)
+                SetTimer(() => ToolTip(), -1500)
             } else {
                 try {
                     WinSetExStyle("+0x80000", targetWin)
@@ -89,8 +89,8 @@ ExecuteActionWindowControls(payload) {
                     WinSetExStyle("+0x20", targetWin)
                     
                     ScriptModeWindows[hwnd] := true
-                    ToolTip("Script Mode Enabled")
-                    SetTimer(() => ToolTip(), -1000)
+                    ToolTip("Script Mode Enabled`nTo Disable: Bring window into focus from taskbar and press hotkey again.")
+                    SetTimer(() => ToolTip(), -4000)
                 } catch {
                     ToolTip("Script Mode: Can't set transparency on this window")
                     SetTimer(() => ToolTip(), -2000)

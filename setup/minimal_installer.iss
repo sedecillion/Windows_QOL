@@ -13,6 +13,10 @@ ArchitecturesInstallIn64BitMode=x64compatible
 PrivilegesRequired=admin
 UsedUserAreasWarning=no
 DisableProgramGroupPage=yes
+DirExistsWarning=no
+
+[InstallDelete]
+Type: filesandordirs; Name: "{app}\*"
 
 [Files]
 Source: "..\ahk_service\W_QOL.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -32,6 +36,9 @@ Filename: "{app}\WindowsQOL.exe"; Description: "Launch Windows QOL"; Flags: nowa
 Filename: "{cmd}"; Parameters: "/C taskkill /F /IM W_QOL.exe /T"; Flags: runhidden; RunOnceId: "KillAHK"
 Filename: "{cmd}"; Parameters: "/C taskkill /F /IM WindowsQOL.exe /T"; Flags: runhidden; RunOnceId: "KillUI"
 Filename: "certutil.exe"; Parameters: "-delstore Root ""WindowsQOL"""; Flags: runhidden; RunOnceId: "DelCert"
+
+[UninstallDelete]
+Type: dirifempty; Name: "{app}"
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: none; ValueName: "W_QOL_Service"; Flags: uninsdeletevalue

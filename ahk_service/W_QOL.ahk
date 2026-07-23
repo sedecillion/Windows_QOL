@@ -99,7 +99,31 @@ SetupScreenshotTool()
 SetupRedactedPaste()
 SetupMiscQOL()
 
+
+; Global things for sub FeatureScreenShotTool
+
+; so ctrl + backspace in MsgBox dosen't insert that delete character
+#HotIf WinActive("WQOL ahk_class #32770")
+^Backspace::Send("^+{Left}{Backspace}")
+#HotIf
+
+; exiting apps should toggle all script mode apps to normal
+Global ScriptModeWindows := Map()
+
+CleanupScriptModeWindows() {
+    for hwnd, _ in ScriptModeWindows {
+        targetWin := "ahk_id " hwnd
+        if WinExist(targetWin) {
+            try WinSetTransparent("Off", targetWin)
+            try WinSetAlwaysOnTop(0, targetWin)
+            try WinSetExStyle("-0x20", targetWin)
+        }
+    }
+    ScriptModeWindows.Clear()
+}
+
 ^!+Esc:: {
+    CleanupScriptModeWindows()
     if (A_IsCompiled) {
         Run('"' A_ScriptFullPath '" /restart')
         ExitApp()
@@ -108,4 +132,7 @@ SetupMiscQOL()
     }
 }
 
-#Esc::ExitApp
+#Esc:: {
+    CleanupScriptModeWindows()
+    ExitApp()
+}
