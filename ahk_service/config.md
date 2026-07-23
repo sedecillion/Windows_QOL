@@ -655,6 +655,39 @@ ToggleClickThrough
 ToggleScriptMode
 ```
 
+### Actions
+
+#### `TransparencyPlus`
+Increases the transparency level of the active window.
+
+#### `TransparencyMinus`
+Decreases the transparency level of the active window.
+
+#### `TogglePinOnTop`
+Toggles the active window between normal and always-on-top.
+
+#### `ToggleClickThrough`
+Toggles click-through mode for the active window.
+
+- The window must already have transparency applied. Fully opaque windows cannot be made click-through.
+- While click-through is enabled, the window cannot be clicked or focused with the mouse.
+- Use **Alt + Tab** or the taskbar to bring the window back into the foreground, then trigger the hotkey again to disable click-through.
+
+#### `ToggleScriptMode`
+
+Enables or disables a ghost like behavior for window, staying completely uninteractable by mouse and staying on top
+
+When enabled, it:
+- Sets the window transparency to 70% opacity (180/255).
+- Pins the window on top of all other windows.
+- Enables click-through mode.
+
+> [!warning]
+>
+> Because the window becomes click-through, it cannot be focused using the mouse. Use **Alt + Tab** or the taskbar to activate it again, then trigger the hotkey to restore the window to its normal state.
+
+If the application exits while Script Mode is enabled, all windows where Script Mode is was active is automatically restored to its normal state.
+
 ---
 
 <br>
@@ -948,7 +981,8 @@ Captures screenshots to a configured directory.
 {
     "IsEnabled": true,
     "TriggerKey": "^!s",
-    "TargetDir": "..."
+    "TargetDir": "...",
+    "FullScreenModeOnly": true
 }
 ```
 
@@ -983,6 +1017,24 @@ Example
 C:\Users\<A_UserName>\Pictures\Screenshots
 ```
 
+## FullScreenModeOnly
+
+Called as Immersive Mode/Basic Mode In UI
+
+Type
+
+```
+Boolean
+```
+
+Behavior
+- If `true` then captures full screen screenshot and instantly offers the option to save, rename and discard it. You don't get to choose how much of screen area will be captured but is fully standalone
+- If `false` then trigger Snipping Tool via Win+Shift+S, user captures the screenshot the usual way through snipping tool overlay or press enter on that overlay to capture fullscreen.
+
+    This requires snipping tool be installed and Win+Shift+S isn't overridden by other application
+
+
+
 ---
 
 <br>
@@ -996,7 +1048,8 @@ Launches a terminal in a configured working directory.
 {
     "IsEnabled": true,
     "TriggerKey": "^!t",
-    "StartPath": "..."
+    "StartPath": "...",
+    "OpenInExplorerTabPath": true
 }
 ```
 
@@ -1031,6 +1084,21 @@ Example
 C:\Users\<A_UserName>\
 ```
 
+## OpenInExplorerPathTab
+Type
+
+```
+Boolean
+```
+
+Behavior
+
+- `true` : If File explorer is in the foreground and a valid folder is open (is in some drive or folder and is not libary, Home, This PC) the terminal will open in that folder, aka its working directory will be set to that folder
+
+    If its not a valid folder it terminal will open in the usual `StartPath` provided
+
+- `false` : Terminal will launch in the usual `StartPath` provided
+
 ---
 
 <br>
@@ -1050,3 +1118,28 @@ Behavior
 
 - When enabled, launching Calculator using the Calculator key reuses an existing Calculator window instead of creating a new one.
 - If no Calculator window exists, a new instance is launched.
+
+---
+
+<br>
+
+# FileExplorerTweaks
+
+Adds quality-of-life shortcuts for File Explorer.
+
+```json
+"FileExplorerTweaks":
+{
+    "IsEnabled": true,
+    "TriggerKey": "^n"
+}
+```
+
+Behavior
+
+- Works only when the active window is File Explorer.
+- Requires the current Explorer window to be displaying a valid filesystem folder.
+- Locations such as **Home**, **This PC**, **Libraries**, **Network**, **Recycle Bin**, and other virtual Explorer pages are not supported.
+- Pressing the trigger key opens a dialogue box which asks for a valid file name with extension.
+- After providing it will create that file and refresh the explorer view
+- Works in Windows 11 file explorer tabs
