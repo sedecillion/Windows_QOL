@@ -1,16 +1,21 @@
 # Windows QOL
 
-Windows QOL is a Windows desktop utility built around AutoHotkey.
+Windows QOL is a desktop utility built around AutoHotkey.
 
-It includes Caps Lock modifiers, window switching, shortcut remapping, screenshot capture, terminal launching, profile management, and other keyboard-driven utilities.
+It includes taking Actions having Caps Lock as the modifier key, Window Switching, Window Aware Shortcut Remapping, Quick Screenshot Capture, Terminal launching, and other keyboard/mouse driven utilities.
 
-Running in background, uses **<2.6 MB** of RAM.
-
-For Installation refer: [Installation](#installation)
-
-For Default Behavior refer: [Default Profile](#default-config-behavior)
+Running in background, uses **~3MB** of RAM and **~0%** CPU.
 
 <br>
+
+Installation guide: [Installation](#installation)
+
+Want to see what the default configuration includes? Check out the **[Default Profile](#default-config-behavior)**
+
+For feature explanation and usecase examples continue reading
+
+<br>
+
 
 For JSON format refer:
 [Config.md](ahk_service/config.md)
@@ -20,20 +25,6 @@ For sample JSON refer:
 
 
 # Feature Overview
-
-## Profiles
-
-Create multiple independent profiles and switch between them either with hotkey or manually
-<p align="center">
-  <img src="Assets/demo_screenshots/manage_profiles.png" width="600">
-</p>
-
-
-
-Import and export profiles
-<p align="center">
-  <img src="Assets/demo_screenshots/import_export_profile.png" width="600">
-</p>
 
 ## Caps Modifiers
 
@@ -52,17 +43,21 @@ Use **Caps Lock** as the modifier key to trigger different actions.
 
 ### Supported actions:
 
-- **Insert Text**: Insert predefined text into the active application.
-- **Open File, Folder or URL**: Open a file, folder or URI using its default or a specified application.
-- **Profile Switch**: Switch to another profile using a hotkey.
-- **Run Command**: Launch applications, run commands, or open URIs.
-- **Shortcut Remap**: Emit a different shortcut depending on the active window.
-- **Window Focus**: Focus an open window, filter by window titles, display a custom `Alt + Tab` style menu for multiple matches, or launch an application if no matching window is found.
+- **Window Focus**:
+  - Focus an open window
+  - Apply filters on window title
+  - Launch an app or run a command if app not open
+  - Display a custom `Alt + Tab` style menu for multiple matches
+- **Window Aware Shortcut Remap**: Emit a different shortcut depending on the active window.
 - **Window Controls**: Perform common window management actions.
   - Window Transparency control
   - Pin Window on Top
   - Mouse Click Through
   - **Script Mode** (More on script mode [here](ahk_service/config.md#togglescriptmode))
+- **Profile Switch**: Switch to another profile using a hotkey.
+- **Insert Text**: Insert predefined text into the active application.
+- **Open File, Folder or URL**: Open a file, folder or URI using its default or a specified application.
+- **Run Command**: Launch applications, run commands, or open URIs.
 - **Media Controls** *(Volume, Mute, Previous, Next, Play/Pause)*: Control system media playback and volume.
 
 <br>
@@ -72,11 +67,11 @@ Use **Caps Lock** as the modifier key to trigger different actions.
 
 `Caps + C` Open or Focus chrome with required title as _Gmail_ only window with Gmail tab will open, else run a command to open Gmail.
 
-`Caps + F2` Switch to Profile 2 with compeltely different set of all remappings.
+`Caps + F2` Switch to Profile 2 with compeltely different set of remappings.
 
-`Caps + Space` can go up one Folder in file explorer, open Terminal in VS Code, or open dev tools in browsers.
+`Caps + Space` Can go up one Folder in file explorer, Open Terminal in VS Code, or open dev tools in browsers.
 
-`Caps + 1/2/3` paste predefined snippets, signatures
+`Caps + 1/2/3` Paste predefined snippets, signatures
 
 `Caps + MouseButtons` use it to avoid hand movements across mouse and keyboard
 
@@ -115,7 +110,7 @@ Remove unwanted keywords from text when pasting.
 
 ## Screenshot Tool
 
-Capture a screenshot, discard it, rename it, save it to a configured folder in one go.
+Capture a Screenshot, Rename it, Save it to a configured folder or Discard it all in one go.
 
 <p align="center">
   <img src="Assets/demo_screenshots/screenshot_tool.png" width="960">
@@ -133,7 +128,25 @@ https://github.com/user-attachments/assets/77a63a28-faae-4be4-ac12-fb62c39ba58c
 
 Launch a terminal with a predefined starting directory.
 
-**Example:** Open Windows Terminal directly in `C:\Projects`.
+If in File explorer the terminal will open in the active folder 
+
+**Example:** Open Windows Terminal directly in `C:\Projects` or inside a project folder in file explorer will open windows terminal directly withing that folder
+
+## Profiles
+
+Create multiple independent profiles and switch between them either with hotkey or manually
+<p align="center">
+  <img src="Assets/demo_screenshots/manage_profiles.png" width="600">
+</p>
+
+
+
+Import and export your profiles
+<p align="center">
+  <img src="Assets/demo_screenshots/import_export_profile.png" width="600">
+</p>
+
+
 
 ## Calculator Single Instance
 
@@ -185,7 +198,7 @@ The settings application can be used to:
 - Manage startup behavior.
 - Start or stop the background service.
 
-Download: [WindowsQOL-Full-v1.0.0.0.exe](https://github.com/sedecillion/Windows_QOL/releases/download/v1.0.0.0/WindowsQOL-Full-v1.0.0.0.exe)
+Download: [WindowsQOL_Installer_Full_v1.0.2.0.exe](https://github.com/sedecillion/Windows_QOL/releases/download/1.0.2.0/WindowsQOL_Installer_Full_v1.0.2.0.exe)
 ## Minimal Installation
 
 Includes the AutoHotkey background service and a lightweight management application.
@@ -206,7 +219,7 @@ Feature configuration is performed by manually editing `config.json`.
 
 See the notes below for the configuration format.
 
-Download: [WindowsQOL-Minimal-v1.0.0.0.exe](https://github.com/sedecillion/Windows_QOL/releases/download/v1.0.0.0/WindowsQOL-Minimal-v1.0.0.0.exe)
+Download: [WindowsQOL_Installer_Minimal_v1.0.2.0.exe](https://github.com/sedecillion/Windows_QOL/releases/download/1.0.2.0/WindowsQOL_Installer_Minimal_v1.0.2.0.exe)
 
 # Important Notes
 
