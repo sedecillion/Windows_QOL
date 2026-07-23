@@ -85,12 +85,18 @@ namespace settings_UI.Models
       ""TerminalLaunch"": {
         ""IsEnabled"": true,
         ""StartPath"": ""C:\\Users\\<A_UserName>\\"",
-        ""TriggerKey"": ""^!t""
+        ""TriggerKey"": ""^!t"",
+        ""OpenInExplorerTabPath"": true
+      },
+      ""FileExplorerTweaks"": {
+        ""IsEnabled"": true,
+        ""TriggerKey"": ""^n""
       },
       ""ScreenshotTool"": {
         ""IsEnabled"": true,
         ""TargetDir"": ""C:\\Users\\<A_UserName>\\Pictures\\Screenshots"",
-        ""TriggerKey"": ""PrintScreen""
+        ""TriggerKey"": ""PrintScreen"",
+        ""FullScreenModeOnly"": true
       },
       ""CalcSingleInstance"": {
         ""IsEnabled"": true
@@ -325,7 +331,7 @@ namespace settings_UI.Models
       }
     }
   ]
-}"; ; ;
+}";
 
             File.WriteAllText(_configFilePath, defaultJson);
         }

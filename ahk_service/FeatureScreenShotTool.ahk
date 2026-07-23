@@ -1,98 +1,225 @@
-#Requires AutoHotkey v2.0
+global IsWaiting := false
+global FullScreenHBM := 0
 
 SetupScreenshotTool() {
     if EnableScreenshotTool && ScreenshotTriggerKey
         Hotkey(ScreenshotTriggerKey, CaptureScreenshot)
 }
 
+
+; main trigger
 CaptureScreenshot(HotkeyName) {
-    static isCapturing := false
-    if (isCapturing)
+    global IsWaiting, FullScreenHBM, ScreenshotFullScreenModeOnly
+    if IsWaiting
         return
-    isCapturing := true
+    
+    ;ShowTip("Triggered: Capturing full screen to memory...", 1000)
+    
+    FullScreenHBM := CaptureScreenToHBITMAP()
+    if !FullScreenHBM {
+        ShowTip("Error: Failed to capture screen to memory.", 2000)
+        return
+    }
 
+    if ScreenshotFullScreenModeOnly {
+        ProcessAndSaveHBITMAP(FullScreenHBM)
+        
+        DllCall("DeleteObject", "ptr", FullScreenHBM)
+        FullScreenHBM := 0
+        return
+    }
+
+    IsWaiting := true
+    A_Clipboard := ""
+    
+    ;ShowTip("Summoning Snipping Tool...", 2000)
+    Send "#+s"
+    
+    if !WinWaitActive("ahk_class XamlWindow ahk_exe SnippingTool.exe",, 3) {
+        ShowTip("Error: Couldn't properly hook to snipping tool. Try Again.", 2000)
+        CleanupState()
+        return
+    }
+
+    ShowTip("Press Enter to snip FullScreen. Escape to cancel", 2000)
+    ; register clipboard changeed hook
+    OnClipboardChange ClipChanged
+
+    ; poll for active window 
+    SetTimer MonitorWindow, 50
+}
+
+
+; resolved to enter - user wants a FullScreen snippet
+#HotIf IsWaiting && WinActive("ahk_class XamlWindow ahk_exe SnippingTool.exe")
+Enter:: {
+    global IsWaiting, FullScreenHBM
+    IsWaiting := false
+    SetTimer MonitorWindow, 0
+    OnClipboardChange ClipChanged, 0
+    SetTimer DelayedCleanup, 0
+    
+    ShowTip("FullScreen Screenshot captured.", 1000)
+    Send "{Esc}"
+
+    ProcessAndSaveHBITMAP(FullScreenHBM)
+    
+    DllCall("DeleteObject", "ptr", FullScreenHBM)
+    FullScreenHBM := 0
+}
+#HotIf
+
+
+; resovled to: screnshot taken by snipping tool
+ClipChanged(DataType) {
+    global IsWaiting, FullScreenHBM
+    if !IsWaiting || DataType != 2
+        return
+
+    IsWaiting := false
+    SetTimer MonitorWindow, 0
+    SetTimer DelayedCleanup, 0
+    OnClipboardChange ClipChanged, 0
+    
+    ;ShowTip("Clipboard updated: Processing partial snip.", 2000)
+
+    if FullScreenHBM {
+        DllCall("DeleteObject", "ptr", FullScreenHBM)
+        FullScreenHBM := 0
+    }
+
+    Sleep 250
+    SaveClipboardImage()
+}
+
+
+; resolved to : cancelled
+MonitorWindow() {
+    global IsWaiting
+
+    ; this should not happen usually, it this func ishalf way executing
+    ; and clipboard changed was fired it can continue execution here.
+    if !IsWaiting
+        return
+
+    if !WinActive("ahk_class XamlWindow ahk_exe SnippingTool.exe") {
+        SetTimer MonitorWindow, 0
+        ;ShowTip("Overlay closed. Waiting 1.5s for clipboard data...", 1500)
+        SetTimer DelayedCleanup, -1500 
+    }
+}
+
+DelayedCleanup() {
+    global IsWaiting
+    if !IsWaiting
+        return
+    ;ShowTip("Timeout/Cancel: Cleaning up state.", 2000)
+    CleanupState()
+}
+
+CleanupState() {
+    global IsWaiting, FullScreenHBM
+    IsWaiting := false
+    SetTimer MonitorWindow, 0
+    SetTimer DelayedCleanup, 0
+    OnClipboardChange ClipChanged, 0
+    
+    if FullScreenHBM {
+        DllCall("DeleteObject", "ptr", FullScreenHBM)
+        FullScreenHBM := 0
+    }
+}
+
+
+
+CaptureScreenToHBITMAP() {
     DllCall("SetThreadDpiAwarenessContext", "ptr", -3)
+    X := SysGet(76)
+    Y := SysGet(77)
+    W := SysGet(78)
+    H := SysGet(79)
 
-    X := SysGet(76) ; SM_XVIRTUALSCREEN
-    Y := SysGet(77) ; SM_YVIRTUALSCREEN
-    W := SysGet(78) ; SM_CXVIRTUALSCREEN
-    H := SysGet(79) ; SM_CYVIRTUALSCREEN
+    HDC := DllCall("GetDC", "ptr", 0, "ptr")
+    CDC := DllCall("CreateCompatibleDC", "ptr", HDC, "ptr")
+    HBM := DllCall("CreateCompatibleBitmap", "ptr", HDC, "int", W, "int", H, "ptr")
+    OBM := DllCall("SelectObject", "ptr", CDC, "ptr", HBM, "ptr")
+    
+    DllCall("BitBlt", "ptr", CDC, "int", 0, "int", 0, "int", W, "int", H, "ptr", HDC, "int", X, "int", Y, "uint", 0x00CC0020)
+    
+    DllCall("SelectObject", "ptr", CDC, "ptr", OBM)
+    DllCall("DeleteDC", "ptr", CDC)
+    DllCall("ReleaseDC", "ptr", 0, "ptr", HDC)
+    
+    return HBM
+}
 
+SaveClipboardImage() {
+    if !DllCall("IsClipboardFormatAvailable", "uint", 2) {
+        ShowTip("Error: No image format in clipboard.", 2000)
+        return
+    }
+    if !DllCall("OpenClipboard", "ptr", 0) {
+        ShowTip("Error: Could not open clipboard.", 2000)
+        return
+    }
+    
+    hBitmap := DllCall("GetClipboardData", "uint", 2, "ptr")
+    if !hBitmap {
+        DllCall("CloseClipboard")
+        ShowTip("Error: Could not get clipboard data.", 2000)
+        return
+    }
+
+    ProcessAndSaveHBITMAP(hBitmap)
+    DllCall("CloseClipboard")
+}
+
+ProcessAndSaveHBITMAP(hBitmap) {
+    global ScreenshotTargetDir
+    
     if (!DirExist(ScreenshotTargetDir))
         DirCreate(ScreenshotTargetDir)
 
-    tempFile := ScreenshotTargetDir . "\~temp_capture_" . A_TickCount . ".png"
-    SaveScreenToDisk(X, Y, W, H, tempFile)
-
     timestamp := FormatTime(, "yyyy-MM-dd_HH_mm_ss")
-    defaultName := "Screenshot_" . timestamp
-    InputBoxObj := InputBox("Enter Screenshot file name `nClose this dialog box to discard screenshot", "Save Screenshot", "w400 h130", defaultName)
+    defaultName := "Screenshot_" timestamp
     
+    InputBoxObj := InputBox("Enter file name or Close to discard", "WQOL - Save Screenshot", "w400 h130", defaultName)
     if (InputBoxObj.Result = "Cancel" || InputBoxObj.Value == "") {
-        if FileExist(tempFile)
-            FileDelete(tempFile)
-        ToolTip("Screenshot Discarded.")
-        SetTimer(() => ToolTip(), -1500)
-        isCapturing := false
+        ShowTip("Screenshot Discarded.", 2000)
         return
     }
+        
+    sanitizedName := RegExReplace(InputBoxObj.Value, '[\\/:*?"<>|]', '_')
+    targetPath := ScreenshotTargetDir "\" sanitizedName ".png"
     
-    SanitizedName := RegExReplace(InputBoxObj.Value, '[\\/:*?"<>|]', '_')
-    TargetFile := ScreenshotTargetDir . "\" . SanitizedName . ".png"
-    
-    if FileExist(TargetFile) {
-        epochTimestamp := DateDiff(A_NowUTC, "19700101000000", "Seconds")
-        TargetFile := ScreenshotTargetDir . "\" . SanitizedName . "_" . epochTimestamp . ".png"
+    if FileExist(targetPath) {
+        epoch := DateDiff(A_NowUTC, "19700101000000", "Seconds")
+        targetPath := ScreenshotTargetDir "\" sanitizedName "_" epoch ".png"
     }
 
-    try {
-        FileMove(tempFile, TargetFile, 1)
-        ToolTip("Saved: " . TargetFile)
-    } catch {
-        ToolTip("Error: Could not rename file.")
-    }
+    hGdiPlus := DllCall("LoadLibrary", "str", "gdiplus", "ptr")
+    SI := Buffer(24, 0)
+    NumPut("uint", 1, SI)
+    DllCall("gdiplus\GdiplusStartup", "ptr*", &pToken:=0, "ptr", SI, "ptr", 0)
+
+    DllCall("gdiplus\GdipCreateBitmapFromHBITMAP", "ptr", hBitmap, "ptr", 0, "ptr*", &pBitmap:=0)
+
+    CLSID := Buffer(16)
+    DllCall("ole32\CLSIDFromString", "wstr", "{557CF406-1A04-11D3-9A73-0000F81EF32E}", "ptr", CLSID)
     
-    SetTimer(() => ToolTip(), -2000)
-    isCapturing := false
+    status := DllCall("gdiplus\GdipSaveImageToFile", "ptr", pBitmap, "wstr", targetPath, "ptr", CLSID, "ptr", 0)
+
+    DllCall("gdiplus\GdipDisposeImage", "ptr", pBitmap)
+    DllCall("gdiplus\GdiplusShutdown", "ptr", pToken)
+    DllCall("FreeLibrary", "ptr", hGdiPlus)
+
+    if status == 0
+        ShowTip("Screenshot saved to: " targetPath, 3000)
+    else
+        ShowTip("Save failed (GDI+ Error: " status ")", 3000)
 }
 
-SaveScreenToDisk(X, Y, W, H, TargetPath) {
-    hGdiPlus := DllCall("LoadLibrary", "Str", "gdiplus.dll", "Ptr")
-    if !hGdiPlus
-        return false
-
-    GDIPToken := 0
-    SI := Buffer(24, 0)
-    NumPut("UInt", 1, SI)
-    
-    status := DllCall("gdiplus\GdiplusStartup", "Ptr*", &GDIPToken, "Ptr", SI, "Ptr", 0)
-    if (status != 0) {
-        DllCall("FreeLibrary", "Ptr", hGdiPlus)
-        return false
-    }
-    
-    HDC := DllCall("GetDC", "Ptr", 0, "Ptr")
-    CDC := DllCall("CreateCompatibleDC", "Ptr", HDC, "Ptr")
-    HBM := DllCall("CreateCompatibleBitmap", "Ptr", HDC, "Int", W, "Int", H, "Ptr")
-    OBM := DllCall("SelectObject", "Ptr", CDC, "Ptr", HBM, "Ptr")
-    DllCall("BitBlt", "Ptr", CDC, "Int", 0, "Int", 0, "Int", W, "Int", H, "Ptr", HDC, "Int", X, "Int", Y, "UInt", 0x00CC0020)
-    
-    pBitmap := 0
-    DllCall("gdiplus\GdipCreateBitmapFromHBITMAP", "Ptr", HBM, "Ptr", 0, "Ptr*", &pBitmap)
-    
-    CLSID := Buffer(16)
-    DllCall("ole32\CLSIDFromString", "WStr", "{557CF406-1A04-11D3-9A73-0000F81EF32E}", "Ptr", CLSID)
-    
-    DllCall("gdiplus\GdipSaveImageToFile", "Ptr", pBitmap, "WStr", TargetPath, "Ptr", CLSID, "Ptr", 0)
-    
-    DllCall("gdiplus\GdipDisposeImage", "Ptr", pBitmap)
-    DllCall("SelectObject", "Ptr", CDC, "Ptr", OBM)
-    DllCall("DeleteObject", "Ptr", HBM)
-    DllCall("DeleteDC", "Ptr", CDC)
-    DllCall("ReleaseDC", "Ptr", 0, "Ptr", HDC)
-    
-    DllCall("gdiplus\GdiplusShutdown", "Ptr", GDIPToken)
-    DllCall("FreeLibrary", "Ptr", hGdiPlus)
-    
-    return true
+ShowTip(msg, timeout) {
+    ToolTip(msg)
+    SetTimer(() => ToolTip(), -timeout)
 }

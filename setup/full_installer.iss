@@ -3,7 +3,8 @@ AppId={{9F5B3A1C-2496-4EAF-8900-ABC585451781}
 AppPublisher=sedecillion
 UninstallDisplayIcon={app}\WindowsQOL.exe
 AppName=Windows QOL
-AppVersion=1.0
+AppVersion=1.0.2.0
+VersionInfoVersion=1.0.2.0
 DefaultDirName={autopf}\Windows QOL
 OutputBaseFilename=WindowsQOL_Installer_Full
 Compression=lzma2/ultra64
@@ -13,6 +14,10 @@ ArchitecturesInstallIn64BitMode=x64compatible
 PrivilegesRequired=admin
 UsedUserAreasWarning=no
 DisableProgramGroupPage=yes
+DirExistsWarning=no
+
+[InstallDelete]
+Type: filesandordirs; Name: "{app}\*"
 
 [Files]
 Source: "..\ahk_service\W_QOL.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -32,6 +37,9 @@ Filename: "{app}\WindowsQOL.exe"; Description: "Launch Windows QOL"; Flags: nowa
 Filename: "{cmd}"; Parameters: "/C taskkill /F /IM W_QOL.exe /T"; Flags: runhidden; RunOnceId: "KillAHK"
 Filename: "{cmd}"; Parameters: "/C taskkill /F /IM WindowsQOL.exe /T"; Flags: runhidden; RunOnceId: "KillUI"
 Filename: "certutil.exe"; Parameters: "-delstore Root ""WindowsQOL"""; Flags: runhidden; RunOnceId: "DelCert"
+
+[UninstallDelete]
+Type: dirifempty; Name: "{app}"
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: none; ValueName: "W_QOL_Service"; Flags: uninsdeletevalue

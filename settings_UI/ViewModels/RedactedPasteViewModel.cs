@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using settings_UI.Helpers;
 using settings_UI.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,7 +11,10 @@ namespace settings_UI.ViewModels
         [ObservableProperty] private bool _isEnabled;
 
         public ObservableCollection<ReplacementEntryDto> redactedPasteReplacements { get; } = [];
-        [ObservableProperty] private string _triggerKey;
+        [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayTriggerKey))] private string _triggerKey;
+
+        public string DisplayTriggerKey => string.IsNullOrEmpty(TriggerKey) ? "Click to Set" : AhkKeyTranslator.AhkKeysToString(TriggerKey, false);
+
 
         public void LoadFromLoadedConfig(RedactedPasteDto redactedPaste)
         {
