@@ -6,11 +6,9 @@ It includes Caps Lock modifiers, window switching, shortcut remapping, screensho
 
 Running in background, uses **<2.6 MB** of RAM.
 
-For Installation refer:
+For Installation refer: [Installation](#installation)
 
-- [Full Installation](#full-installation)
-
-- [Minimal Installation](#minimal-installation)
+For Default Behavior refer: [Default Profile](#default-config-behavior)
 
 <br>
 
@@ -20,7 +18,6 @@ For JSON format refer:
 For sample JSON refer:
 [config.json](ahk_service/config.json)
 
-For Default Behavior refer: [Default Profile](#default-config-behavior)
 
 # Feature Overview
 
@@ -28,14 +25,14 @@ For Default Behavior refer: [Default Profile](#default-config-behavior)
 
 Create multiple independent profiles and switch between them either with hotkey or manually
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL8.png" width="960">
+  <img src="Assets/demo_screenshots/manage_profiles.png" width="600">
 </p>
 
 
 
 Import and export profiles
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL7.png" width="960">
+  <img src="Assets/demo_screenshots/import_export_profile.png" width="600">
 </p>
 
 ## Caps Modifiers
@@ -43,12 +40,12 @@ Import and export profiles
 Use **Caps Lock** as the modifier key to trigger different actions.
 
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL2.png" width="960">
+  <img src="Assets/demo_screenshots/caps_modifiers.png" width="960">
 </p>
 
 
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL9.png" width="960">
+  <img src="Assets/demo_screenshots/alt_tab_styles_menu.png" width="960">
   </br>
   <span>Minmal Alt+Tab like GUI for Action: Window Focus when there are multiple target windows</span>
 </p>
@@ -61,7 +58,11 @@ Use **Caps Lock** as the modifier key to trigger different actions.
 - **Run Command**: Launch applications, run commands, or open URIs.
 - **Shortcut Remap**: Emit a different shortcut depending on the active window.
 - **Window Focus**: Focus an open window, filter by window titles, display a custom `Alt + Tab` style menu for multiple matches, or launch an application if no matching window is found.
-- **Window Controls** *(Window Transparency, Pin on Top, Click Through, Script Mode)*: Perform common window management actions.
+- **Window Controls**: Perform common window management actions.
+  - Window Transparency control
+  - Pin Window on Top
+  - Mouse Click Through
+  - **Script Mode** (More on script mode [here](ahk_service/config.md#togglescriptmode))
 - **Media Controls** *(Volume, Mute, Previous, Next, Play/Pause)*: Control system media playback and volume.
 
 <br>
@@ -95,7 +96,7 @@ Likewise, any `Caps + {Key}` can be assigned to one of the supported actions.
 Assign different behavior to the same shortcut depending on the foreground application.
 
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL3.png" width="960">
+  <img src="Assets/demo_screenshots/shortcut_remap.png" width="960">
 </p>
 
 **Example:** `Ctrl + Space` can send `Alt + Enter` in File Explorer while sending a different shortcut in another application.
@@ -107,7 +108,7 @@ Or remap `Ctrl + Shift + W` to `Alt + F4` across all applications.
 Remove unwanted keywords from text when pasting.
 
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL5.png" width="960">
+  <img src="Assets/demo_screenshots/redacted_paste.png" width="960">
 </p>
 
 **Example:** Replace `yourname` with `demo_name` when pasting clipboard contents.
@@ -117,13 +118,15 @@ Remove unwanted keywords from text when pasting.
 Capture a screenshot, discard it, rename it, save it to a configured folder in one go.
 
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL4.png" width="960">
+  <img src="Assets/demo_screenshots/screenshot_tool.png" width="960">
 </p>
 
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL11.png" width="500">
-  </br>
-  <span>Dialog box after pressing trigger key</span>
+
+
+https://github.com/user-attachments/assets/77a63a28-faae-4be4-ac12-fb62c39ba58c
+
+  <span>Taking screenshot renaming it and saving it in custom folder</span>
 </p>
 
 ## Terminal Launch
@@ -136,11 +139,21 @@ Launch a terminal with a predefined starting directory.
 
 Prevents multiple Calculator windows from opening when using the keyboard's dedicated Calculator (`LaunchApp2`) key.
 
+## File Explorer New File Hotkey
+
+Quickly create a new file in file explorer
+
+
+https://github.com/user-attachments/assets/9d6fc397-8cca-48f1-97f7-24493f8a3b7a
+
+---
+
+<br>
 
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL6.png" width="960">
+  <img src="Assets/demo_screenshots/misc_features.png" width="960">
   </br>
-  <span>Calculator Single Instance and Terminal Launch</span>
+  <span>Calculator Single Instance and Terminal Launch and file explorer create new file</span>
 </p>
 
 # Installation
@@ -159,7 +172,7 @@ Checkout [Releases](https://github.com/sedecillion/Windows_QOL/releases/) or rea
 Includes the AutoHotkey background service and the WinUI 3 settings application.
 
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL1.png" width="960">
+  <img src="Assets/demo_screenshots/main_screen.png" width="960">
   </br>
 </p>
 
@@ -178,7 +191,7 @@ Download: [WindowsQOL-Full-v1.0.0.0.exe](https://github.com/sedecillion/Windows_
 Includes the AutoHotkey background service and a lightweight management application.
 
 <p align="center">
-  <img src="Assets/demo_screenshots/WQOL10.png" width="500">
+  <img src="Assets/demo_screenshots/minimal_app.png" width="500">
   </br>
 </p>
 
@@ -212,12 +225,13 @@ Sample JSON Config: [config.json](/ahk_service/config.json)
 
 The default profile in the Full and Minimal versions is configured with the following shortcuts.
 
-Feel free to modify the default profile or create additional profiles to match your workflow.
+You can modify the default profile or create additional profiles to match your workflow.
 
 #### General
 
 `Ctrl + Alt + T`
 - Opens Windows Terminal in `C:\Users\<A_UserName>\`
+- If inside file explorer opens a terminal in that current folder
 
 `PrintScreen`
 - Takes screenshot and asks for filename and whether to save or discard screenshot
@@ -230,6 +244,9 @@ Feel free to modify the default profile or create additional profiles to match y
 - Default replacements:
   - `fullname` → *(empty)*
   - `<A_UserName>` → `user1`
+
+`Ctrl + N` and Inside File explorer
+  - Create new file dialogue
 
 ---
 
