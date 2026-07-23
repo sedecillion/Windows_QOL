@@ -122,9 +122,10 @@ Capture a screenshot, discard it, rename it, save it to a configured folder in o
 </p>
 
 <p align="center">
-  <video src="Assets/demo_screenshots/quick_screenshot.mp4" controls muted playsinline width="800">
-  </video>
-  </br>
+
+
+https://github.com/user-attachments/assets/77a63a28-faae-4be4-ac12-fb62c39ba58c
+
   <span>Taking screenshot renaming it and saving it in custom folder</span>
 </p>
 
@@ -142,9 +143,12 @@ Prevents multiple Calculator windows from opening when using the keyboard's dedi
 
 Quickly create a new file in file explorer
 
-<video src="Assets/demo_screenshots/new_file.mp4" controls muted playsinline width="800">
-</video>
 
+https://github.com/user-attachments/assets/9d6fc397-8cca-48f1-97f7-24493f8a3b7a
+
+---
+
+<br>
 
 <p align="center">
   <img src="Assets/demo_screenshots/misc_features.png" width="960">
