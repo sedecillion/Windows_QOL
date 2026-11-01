@@ -19,31 +19,38 @@ namespace settings_UI.ViewModels
         public string DisplayTriggerKey => string.IsNullOrEmpty(TriggerKey) ? "Click to Set" : AhkKeyTranslator.AhkKeysToString(TriggerKey, false);
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsInteractiveMode))]
-        [NotifyPropertyChangedFor(nameof(IsBasicMode))]
-        private bool _fullScreenModeOnly = true;
+        [NotifyPropertyChangedFor(nameof(IsFullScreenMode))]
+        [NotifyPropertyChangedFor(nameof(IsRectangleMode))]
+        [NotifyPropertyChangedFor(nameof(IsWindowMode))]
+        [NotifyPropertyChangedFor(nameof(IsFreeformMode))]
+        private int _screenshotMode = 0;
 
-        public bool IsInteractiveMode
+        public bool? IsFullScreenMode
         {
-            get => !FullScreenModeOnly;
-            set
-            {
-                if (value) FullScreenModeOnly = false;
-            }
+            get => ScreenshotMode == 0;
+            set { if (value == true) ScreenshotMode = 0; }
         }
 
-        public bool IsBasicMode
+        public bool? IsRectangleMode
         {
-            get => FullScreenModeOnly;
-            set
-            {
-                if (value) FullScreenModeOnly = true;
-            }
+            get => ScreenshotMode == 1;
+            set { if (value == true) ScreenshotMode = 1; }
+        }
+
+        public bool? IsWindowMode
+        {
+            get => ScreenshotMode == 2;
+            set { if (value == true) ScreenshotMode = 2; }
+        }
+
+        public bool? IsFreeformMode
+        {
+            get => ScreenshotMode == 3;
+            set { if (value == true) ScreenshotMode = 3; }
         }
 
         public ScreenShotToolViewModel()
         {
-
         }
 
         public void LoadFromLoadedConfig(ScreenshotToolDto screenshotToolDto)
@@ -51,9 +58,9 @@ namespace settings_UI.ViewModels
             IsEnabled = screenshotToolDto.IsEnabled;
             Target_Dir = screenshotToolDto.TargetDir;
             TriggerKey = screenshotToolDto.TriggerKey;
-            FullScreenModeOnly = screenshotToolDto.FullScreenModeOnly;
+            ScreenshotMode = screenshotToolDto.ScreenshotMode;
         }
-        
+
         public ScreenshotToolDto GetPackedSettings()
         {
             ScreenshotToolDto screenshotToolDto = new()
@@ -61,7 +68,7 @@ namespace settings_UI.ViewModels
                 IsEnabled = IsEnabled,
                 TargetDir = Target_Dir,
                 TriggerKey = TriggerKey,
-                FullScreenModeOnly = FullScreenModeOnly
+                ScreenshotMode = ScreenshotMode
             };
             return screenshotToolDto;
         }

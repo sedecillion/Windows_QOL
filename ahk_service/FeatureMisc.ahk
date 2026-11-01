@@ -44,21 +44,31 @@ CreateFileInExplorer(HotkeyName) {
         return
     }
 
+    defExt := FileExplorerTweaksDefaultFileExtension
+    if (defExt != "" && SubStr(defExt, 1, 1) != ".") {
+        defExt := "." defExt
+    }
+
     timestamp := FormatTime(, "yyyy-MM-dd_HH_mm_ss")
-    defaultName := "New Text Document (" timestamp ").txt"
+    defaultName := "New Document (" timestamp ")" defExt
 
     ib := InputBox("Enter full file name with extension:", "WQOL - Create File", "w400 h130", defaultName)
     if (ib.Result != "OK" || ib.Value == "")
         return
 
-    sanitizedName := RegExReplace(ib.Value, '[\\/:*?"<>|]', '_')
+    fileName := ib.Value
 
+    if (!RegExMatch(fileName, "\.[a-zA-Z0-9]+$")) {
+        fileName .= defExt
+    }
+
+    sanitizedName := RegExReplace(fileName, '[\\/:*?"<>|]', '_')
 
     fullPath := targetPath "\" sanitizedName
 
     if FileExist(fullPath) {
         ToolTip("File already exists.")
-        SetTimer(ToolTip,-1500)
+        SetTimer(() => ToolTip(), -1500)
         return
     }
 

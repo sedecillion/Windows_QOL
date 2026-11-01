@@ -1,27 +1,28 @@
 global IsWaiting := false
 global FullScreenHBM := 0
+global SavedUserClipboard := ""
 
 SetupScreenshotTool() {
     if EnableScreenshotTool && ScreenshotTriggerKey
         Hotkey(ScreenshotTriggerKey, CaptureScreenshot)
 }
 
-
-; main trigger
 CaptureScreenshot(HotkeyName) {
-    global IsWaiting, FullScreenHBM, ScreenshotFullScreenModeOnly
+    global IsWaiting, FullScreenHBM, ScreenshotMode, SavedUserClipboard
     if IsWaiting
         return
     
     ;ShowTip("Triggered: Capturing full screen to memory...", 1000)
     
+    ; we capture it regardless in case user presses the enter key we immediately have
+    ; the full screen data to save
     FullScreenHBM := CaptureScreenToHBITMAP()
     if !FullScreenHBM {
         ShowTip("Error: Failed to capture screen to memory.", 2000)
         return
     }
 
-    if ScreenshotFullScreenModeOnly {
+    if ScreenshotMode == 0 {
         ProcessAndSaveHBITMAP(FullScreenHBM)
         
         DllCall("DeleteObject", "ptr", FullScreenHBM)
@@ -30,10 +31,18 @@ CaptureScreenshot(HotkeyName) {
     }
 
     IsWaiting := true
+    SavedUserClipboard := ClipboardAll()
     A_Clipboard := ""
     
     ;ShowTip("Summoning Snipping Tool...", 2000)
-    Send "#+s"
+    if ScreenshotMode == 1
+        Run("ms-screenclip:?clippingMode=Rectangle")
+    else if ScreenshotMode == 2
+        Run("ms-screenclip:?clippingMode=Window")
+    else if ScreenshotMode == 3
+        Run("ms-screenclip:?clippingMode=Freeform")
+    else
+        Run("ms-screenclip:?clippingMode=Rectangle") ; Fallback
     
     if !WinWaitActive("ahk_class XamlWindow ahk_exe SnippingTool.exe",, 3) {
         ShowTip("Error: Couldn't properly hook to snipping tool. Try Again.", 2000)
@@ -49,11 +58,9 @@ CaptureScreenshot(HotkeyName) {
     SetTimer MonitorWindow, 50
 }
 
-
-; resolved to enter - user wants a FullScreen snippet
-#HotIf IsWaiting && WinActive("ahk_class XamlWindow ahk_exe SnippingTool.exe")
+#HotIf IsWaiting && (WinActive("ahk_class XamlWindow ahk_exe SnippingTool.exe"))
 Enter:: {
-    global IsWaiting, FullScreenHBM
+    global IsWaiting, FullScreenHBM, SavedUserClipboard
     IsWaiting := false
     SetTimer MonitorWindow, 0
     OnClipboardChange ClipChanged, 0
@@ -66,13 +73,14 @@ Enter:: {
     
     DllCall("DeleteObject", "ptr", FullScreenHBM)
     FullScreenHBM := 0
+    
+    A_Clipboard := SavedUserClipboard
+    SavedUserClipboard := ""
 }
 #HotIf
 
-
-; resovled to: screnshot taken by snipping tool
 ClipChanged(DataType) {
-    global IsWaiting, FullScreenHBM
+    global IsWaiting, FullScreenHBM, SavedUserClipboard
     if !IsWaiting || DataType != 2
         return
 
@@ -90,10 +98,11 @@ ClipChanged(DataType) {
 
     Sleep 250
     SaveClipboardImage()
+    
+    A_Clipboard := SavedUserClipboard
+    SavedUserClipboard := ""
 }
 
-
-; resolved to : cancelled
 MonitorWindow() {
     global IsWaiting
 
@@ -102,7 +111,7 @@ MonitorWindow() {
     if !IsWaiting
         return
 
-    if !WinActive("ahk_class XamlWindow ahk_exe SnippingTool.exe") {
+    if !WinActive("ahk_class XamlWindow ahk_exe SnippingTool.exe") && !WinActive("ahk_exe ScreenClippingHost.exe") {
         SetTimer MonitorWindow, 0
         ;ShowTip("Overlay closed. Waiting 1.5s for clipboard data...", 1500)
         SetTimer DelayedCleanup, -1500 
@@ -118,7 +127,7 @@ DelayedCleanup() {
 }
 
 CleanupState() {
-    global IsWaiting, FullScreenHBM
+    global IsWaiting, FullScreenHBM, SavedUserClipboard
     IsWaiting := false
     SetTimer MonitorWindow, 0
     SetTimer DelayedCleanup, 0
@@ -128,9 +137,12 @@ CleanupState() {
         DllCall("DeleteObject", "ptr", FullScreenHBM)
         FullScreenHBM := 0
     }
+    
+    if SavedUserClipboard != "" {
+        A_Clipboard := SavedUserClipboard
+        SavedUserClipboard := ""
+    }
 }
-
-
 
 CaptureScreenToHBITMAP() {
     DllCall("SetThreadDpiAwarenessContext", "ptr", -3)

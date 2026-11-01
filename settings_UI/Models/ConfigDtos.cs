@@ -5,6 +5,11 @@ namespace settings_UI.Models
     public class RootConfigDto
     {
         public int ActiveProfileIndex { get; set; }
+        public string AppVersion
+        {
+            get => ConfigModel.AppVersion;
+            set { }
+        }
         public List<ProfileDto> Profiles { get; set; } = [];
     }
 
@@ -39,7 +44,7 @@ namespace settings_UI.Models
         public bool IsEnabled { get; set; }
         public string TargetDir { get; set; }
         public string TriggerKey { get; set; }
-        public bool FullScreenModeOnly { get; set; } = true;
+        public int ScreenshotMode { get; set; }
     }
 
     public class CalcSingleInstanceDto
@@ -144,5 +149,6 @@ namespace settings_UI.Models
         {
         public bool IsEnabled { get; set; }
         public string TriggerKey { get; set; }
+        public string DefaultFileExtension { get; set; }
     }
 }

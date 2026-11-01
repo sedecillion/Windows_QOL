@@ -1,0 +1,36 @@
+﻿<UserControl
+    x:Class="settings_UI.Views.Modals.AboutDialogContent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StackPanel Spacing="16" MinWidth="300" Margin="0,5,0,0">
+        
+        <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" Margin="0,0,0,4" />
+        
+        <!-- App Version -->
+        <StackPanel Orientation="Horizontal" Spacing="12" Margin="12,0" VerticalAlignment="Center">
+            <FontIcon Glyph="&#xE946;" FontSize="16" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            <TextBlock Text="App Version:" FontWeight="SemiBold" />
+            <TextBlock Text="{x:Bind AppVersion, Mode=OneTime}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+
+        <!-- Divider -->
+
+        <!-- Links -->
+        <StackPanel Spacing="4">
+            <HyperlinkButton NavigateUri="https://github.com/sedecillion/Windows_QOL/releases/" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <FontIcon Glyph="&#xE71B;" FontSize="16" />
+                    <TextBlock Text="View Latest Release" />
+                </StackPanel>
+            </HyperlinkButton>
+
+            <HyperlinkButton NavigateUri="https://github.com/sedecillion/Windows_QOL" HorizontalAlignment="Left" ToolTipService.ToolTip="View Source">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <FontIcon Glyph="&#xE943;" FontSize="16"/>
+                    <TextBlock Text="GitHub Source Code" />
+                </StackPanel>
+            </HyperlinkButton>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

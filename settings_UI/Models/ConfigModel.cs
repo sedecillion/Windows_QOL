@@ -9,6 +9,7 @@ namespace settings_UI.Models
     {
         private const string FolderName = "Windows_QOL";
         private const string FileName = "config.json";
+        public const string AppVersion= "1.0.3.0";
 
         public readonly string _configFilePath;
 
@@ -90,13 +91,14 @@ namespace settings_UI.Models
       },
       ""FileExplorerTweaks"": {
         ""IsEnabled"": true,
-        ""TriggerKey"": ""^n""
+        ""TriggerKey"": ""^n"",
+        ""DefaultFileExtension"": "".txt""
       },
       ""ScreenshotTool"": {
         ""IsEnabled"": true,
         ""TargetDir"": ""C:\\Users\\<A_UserName>\\Pictures\\Screenshots"",
         ""TriggerKey"": ""PrintScreen"",
-        ""FullScreenModeOnly"": true
+        ""ScreenshotMode"": 0
       },
       ""CalcSingleInstance"": {
         ""IsEnabled"": true

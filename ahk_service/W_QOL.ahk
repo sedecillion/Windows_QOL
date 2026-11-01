@@ -1,4 +1,4 @@
-;@Ahk2Exe-SetVersion 1.0.2.0
+;@Ahk2Exe-SetVersion 1.0.3.0
 ;@Ahk2Exe-UpdateManifest 0, , , 1
 ;@Ahk2Exe-SetMainIcon ..\settings_UI\Assets\app_icon.ico
 
@@ -30,7 +30,7 @@ LoadConfig() {
 
     profileName := parsed["Profiles"][activeIndex]["ProfileProperties"]["Name"]
     
-    ToolTip("Running Profile: " profileName)
+    ToolTip("Windows QOL | Active Profile: " profileName)
     SetTimer(() => ToolTip(), -1500)
     
     profile := parsed["Profiles"][activeIndex]
@@ -44,11 +44,13 @@ LoadConfig() {
 
     global EnableFileExplorerTweaks := profile.Has("FileExplorerTweaks") && profile["FileExplorerTweaks"].Has("IsEnabled") ? profile["FileExplorerTweaks"]["IsEnabled"] : true
     global FileExplorerTweaksTriggerKey := profile.Has("FileExplorerTweaks") && profile["FileExplorerTweaks"].Has("TriggerKey") ? profile["FileExplorerTweaks"]["TriggerKey"] : "^n"
+    global FileExplorerTweaksDefaultFileExtension := profile.Has("FileExplorerTweaks") && profile["FileExplorerTweaks"].Has("DefaultFileExtension") ? profile["FileExplorerTweaks"]["DefaultFileExtension"] : ""
     
     global EnableScreenshotTool := profile["ScreenshotTool"]["IsEnabled"]
     global ScreenshotTargetDir := StrReplace(profile["ScreenshotTool"]["TargetDir"], "<A_UserName>", A_UserName)
     global ScreenshotTriggerKey := profile["ScreenshotTool"]["TriggerKey"]
     global ScreenshotFullScreenModeOnly := profile["ScreenshotTool"].Has("FullScreenModeOnly") ? profile["ScreenshotTool"]["FullScreenModeOnly"] : true
+    global ScreenshotMode := profile["ScreenshotTool"].Has("ScreenshotMode") ? profile["ScreenshotTool"]["ScreenshotMode"] : 2
     
     global EnableCalcInstance := profile["CalcSingleInstance"]["IsEnabled"]
     

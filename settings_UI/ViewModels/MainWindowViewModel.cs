@@ -21,6 +21,7 @@ namespace settings_UI.ViewModels
     {
         private ConfigModel _configModel = new();
 
+        public string AppVersion { get; set; }
         public CapsModifierViewModel CapsVM { get; } = new();
         public ScreenShotToolViewModel SCToolVM { get; } = new();
         public RedactedPasteViewModel RedactedPasteVM { get; } = new();
@@ -118,6 +119,8 @@ namespace settings_UI.ViewModels
             {
                 ProfileNames.Add(profile.ProfileProperties.Name);
             }
+
+            AppVersion = ConfigModel.AppVersion;
 
             ActiveProfileIndex = _configModel.CurrentConfig.ActiveProfileIndex;
 
@@ -232,9 +235,9 @@ namespace settings_UI.ViewModels
             {
                 ProfileProperties = new ProfilePropertiesDto { Name = profileName, SilentMode = true },
                 TerminalLaunch = new TerminalLaunchDto { IsEnabled = true, StartPath = @"C:\Windows\System32", TriggerKey = "^!t", OpenInExplorerTabPath = true },
-                ScreenshotTool = new ScreenshotToolDto { IsEnabled = true, TargetDir = @"D:\Pictures", TriggerKey= "PrintScreen", FullScreenModeOnly = true },
+                ScreenshotTool = new ScreenshotToolDto { IsEnabled = true, TargetDir = @"D:\Pictures", TriggerKey= "PrintScreen", ScreenshotMode = 0 },
                 CalcSingleInstance = new CalcSingleInstanceDto { IsEnabled = true },
-                FileExplorerTweaks = new FileExplorerTweaksDto { IsEnabled = true, TriggerKey = "^n" },
+                FileExplorerTweaks = new FileExplorerTweaksDto { IsEnabled = true, TriggerKey = "^n", DefaultFileExtension = ".txt" },
                 WindowAwareShortcutRemap = new WindowAwareShortcutRemapDto
                 {
                     IsEnabled = true,

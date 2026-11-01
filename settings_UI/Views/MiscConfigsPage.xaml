@@ -145,22 +145,41 @@
 
                     <MenuFlyoutSeparator Margin="0" Grid.Row="1" Grid.ColumnSpan="2"/>
 
-                    <StackPanel Grid.Row="2" HorizontalAlignment="Left" MinWidth="200" Spacing="5">
-                        <TextBlock Text="Trigger Key: " FontWeight="SemiBold"/>
-                        <Button Padding="12,8"
-                                BorderThickness="2" CornerRadius="10" Background="Transparent"
-                                BorderBrush="{ThemeResource ControlElevationBorderBrush}"
-                                Click="ChangeFileExplorerTweaksTriggerKey_Click"
-                                HorizontalAlignment="Stretch">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
-                                <FontIcon Glyph="&#xE765;" FontSize="16" />
-                                <TextBlock Text="{x:Bind ViewModel.DisplayFileExplorerTweaksTriggerKey, Mode=OneWay}" 
-                                    FontWeight="Bold" 
-                                    VerticalAlignment="Center" />
-                            </StackPanel>
-                        </Button>
+                    <Grid Grid.Row="2" Grid.ColumnSpan="2" ColumnSpacing="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
 
-                    </StackPanel>
+                        <StackPanel HorizontalAlignment="Left" MinWidth="200" Spacing="5">
+                            <TextBlock Text="Trigger Key: " FontWeight="SemiBold"/>
+                            <Button Padding="12,8"
+                                    BorderThickness="2" CornerRadius="10" Background="Transparent"
+                                    BorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                                    Click="ChangeFileExplorerTweaksTriggerKey_Click"
+                                    HorizontalAlignment="Stretch">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                                    <FontIcon Glyph="&#xE765;" FontSize="16" />
+                                    <TextBlock Text="{x:Bind ViewModel.DisplayFileExplorerTweaksTriggerKey, Mode=OneWay}" 
+                                        FontWeight="Bold" 
+                                        VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Left" MinWidth="200" Spacing="5">
+                            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
+                                <TextBlock Text="Default File Extension:" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text="(Appended if none is typed)" 
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
+                                   VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <TextBox Text="{x:Bind ViewModel.DefaultFileExtension, Mode=TwoWay}"
+                                 PlaceholderText=".txt"
+                                 HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
 
