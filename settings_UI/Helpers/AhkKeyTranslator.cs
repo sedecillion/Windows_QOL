@@ -128,10 +128,32 @@ namespace settings_UI.Helpers
         {
             if (keys == null || keys.Count == 0) return "";
 
+            if (isEmitChord)
+            {
+                // EMIT CHORD: Build a sequential macro string
+                string result = "";
+                foreach (var key in keys)
+                {
+                    if (IsModifier(key))
+                    {
+                        result += ModifierSymbols[key]; // e.g., ^ or +
+                    }
+                    else if (IsAlphaNumeric(key))
+                    {
+                        result += ((char)key).ToString().ToLower(); // e.g., a, b, c
+                    }
+                    else if (NamedKeysMap.TryGetValue(key, out var name))
+                    {
+                        result += $"{{{name}}}"; // e.g., {End}, {vkBA}
+                    }
+                }
+                return result;
+            }
+
+            // TRIGGER KEY: Strict modifiers + 1 main key
             string modifiers = "";
             VirtualKey mainKey = VirtualKey.None;
 
-            // Separate modifiers from the main key
             foreach (var key in keys)
             {
                 if (IsModifier(key))
@@ -145,35 +167,21 @@ namespace settings_UI.Helpers
             }
 
             modifiers = new string(modifiers.Distinct().ToArray());
-
             if (mainKey == VirtualKey.None) return modifiers;
 
             string ahkKeyName;
-            bool needsBraces = false;
-
             if (IsAlphaNumeric(mainKey))
             {
                 ahkKeyName = ((char)mainKey).ToString().ToLower();
-                needsBraces = false;
+                return $"{modifiers}{ahkKeyName}";
             }
             else if (NamedKeysMap.TryGetValue(mainKey, out var name))
             {
                 ahkKeyName = name;
-                needsBraces = true; // Named keys and vk codes need braces IF emitting
-            }
-            else
-            {
-                return "";
+                return $"{modifiers}{ahkKeyName}";
             }
 
-            if (isEmitChord && needsBraces)
-            {
-                return $"{modifiers}{{{ahkKeyName}}}"; //^{Space} or ^{vkC0}
-            }
-            else
-            {
-                return $"{modifiers}{ahkKeyName}"; //^Space or ^vkC0
-            }
+            return "";
         }
 
         public static string AhkKeysToString(string ahkString, bool isEmitChord)
