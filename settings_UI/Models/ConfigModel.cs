@@ -90,7 +90,8 @@ namespace settings_UI.Models
       },
       ""FileExplorerTweaks"": {
         ""IsEnabled"": true,
-        ""TriggerKey"": ""^n""
+        ""TriggerKey"": ""^n"",
+        ""DefaultFileExtension"": "".txt""
       },
       ""ScreenshotTool"": {
         ""IsEnabled"": true,

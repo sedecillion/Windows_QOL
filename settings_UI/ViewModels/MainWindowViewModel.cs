@@ -234,7 +234,7 @@ namespace settings_UI.ViewModels
                 TerminalLaunch = new TerminalLaunchDto { IsEnabled = true, StartPath = @"C:\Windows\System32", TriggerKey = "^!t", OpenInExplorerTabPath = true },
                 ScreenshotTool = new ScreenshotToolDto { IsEnabled = true, TargetDir = @"D:\Pictures", TriggerKey= "PrintScreen", FullScreenModeOnly = true },
                 CalcSingleInstance = new CalcSingleInstanceDto { IsEnabled = true },
-                FileExplorerTweaks = new FileExplorerTweaksDto { IsEnabled = true, TriggerKey = "^n" },
+                FileExplorerTweaks = new FileExplorerTweaksDto { IsEnabled = true, TriggerKey = "^n", DefaultFileExtension = ".txt" },
                 WindowAwareShortcutRemap = new WindowAwareShortcutRemapDto
                 {
                     IsEnabled = true,

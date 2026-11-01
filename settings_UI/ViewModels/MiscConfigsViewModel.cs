@@ -18,6 +18,7 @@ namespace settings_UI.ViewModels
         [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayFileExplorerTweaksTriggerKey))] private string _fileExplorerTweaksTriggerKey = "^n";
         public string DisplayFileExplorerTweaksTriggerKey => string.IsNullOrEmpty(FileExplorerTweaksTriggerKey) ? "Click to Set" : AhkKeyTranslator.AhkKeysToString(FileExplorerTweaksTriggerKey, false);
 
+        [ObservableProperty] private string _defaultFileExtension = ".txt";
 
         public void LoadFromLoadedConfig(CalcSingleInstanceDto calcConfig, TerminalLaunchDto terminalConfig, FileExplorerTweaksDto fileExplorerTweaks)
         {
@@ -37,6 +38,7 @@ namespace settings_UI.ViewModels
             {
                 IsFileExplorerTweaksEnabled = fileExplorerTweaks.IsEnabled;
                 FileExplorerTweaksTriggerKey = fileExplorerTweaks.TriggerKey;
+                DefaultFileExtension = fileExplorerTweaks.DefaultFileExtension;
             }
         }
 
@@ -64,7 +66,8 @@ namespace settings_UI.ViewModels
             return new FileExplorerTweaksDto
             {
                 IsEnabled = IsFileExplorerTweaksEnabled,
-                TriggerKey = FileExplorerTweaksTriggerKey
+                TriggerKey = FileExplorerTweaksTriggerKey,
+                DefaultFileExtension = DefaultFileExtension
             };
         }
     }

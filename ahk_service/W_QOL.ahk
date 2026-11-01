@@ -44,6 +44,7 @@ LoadConfig() {
 
     global EnableFileExplorerTweaks := profile.Has("FileExplorerTweaks") && profile["FileExplorerTweaks"].Has("IsEnabled") ? profile["FileExplorerTweaks"]["IsEnabled"] : true
     global FileExplorerTweaksTriggerKey := profile.Has("FileExplorerTweaks") && profile["FileExplorerTweaks"].Has("TriggerKey") ? profile["FileExplorerTweaks"]["TriggerKey"] : "^n"
+    global FileExplorerTweaksDefaultFileExtension := profile.Has("FileExplorerTweaks") && profile["FileExplorerTweaks"].Has("DefaultFileExtension") ? profile["FileExplorerTweaks"]["DefaultFileExtension"] : ""
     
     global EnableScreenshotTool := profile["ScreenshotTool"]["IsEnabled"]
     global ScreenshotTargetDir := StrReplace(profile["ScreenshotTool"]["TargetDir"], "<A_UserName>", A_UserName)
