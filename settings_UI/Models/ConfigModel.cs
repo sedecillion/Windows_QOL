@@ -9,6 +9,7 @@ namespace settings_UI.Models
     {
         private const string FolderName = "Windows_QOL";
         private const string FileName = "config.json";
+        public const string AppVersion= "1.0.3.0";
 
         public readonly string _configFilePath;
 

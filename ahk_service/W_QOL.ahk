@@ -30,7 +30,7 @@ LoadConfig() {
 
     profileName := parsed["Profiles"][activeIndex]["ProfileProperties"]["Name"]
     
-    ToolTip("Running Profile: " profileName)
+    ToolTip("Windows QOL | Active Profile: " profileName)
     SetTimer(() => ToolTip(), -1500)
     
     profile := parsed["Profiles"][activeIndex]

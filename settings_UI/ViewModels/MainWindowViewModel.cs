@@ -21,6 +21,7 @@ namespace settings_UI.ViewModels
     {
         private ConfigModel _configModel = new();
 
+        public string AppVersion { get; set; }
         public CapsModifierViewModel CapsVM { get; } = new();
         public ScreenShotToolViewModel SCToolVM { get; } = new();
         public RedactedPasteViewModel RedactedPasteVM { get; } = new();
@@ -118,6 +119,8 @@ namespace settings_UI.ViewModels
             {
                 ProfileNames.Add(profile.ProfileProperties.Name);
             }
+
+            AppVersion = ConfigModel.AppVersion;
 
             ActiveProfileIndex = _configModel.CurrentConfig.ActiveProfileIndex;
 

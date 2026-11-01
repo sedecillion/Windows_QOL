@@ -31,17 +31,23 @@
             </ListView>
 
             
-            <Grid VerticalAlignment="Bottom" Margin="10,10,10,10" CornerRadius="10" Padding="10" ColumnSpacing="10"
-                        Background="{ThemeResource CardBackgroundFillColorDefault}">
+            <Grid VerticalAlignment="Bottom" Margin="10,10,10,10" CornerRadius="0"
+                        >
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <HyperlinkButton Grid.ColumnSpan="2" HorizontalAlignment="Center" NavigateUri="https://github.com/sedecillion/Windows_QOL/releases/" >
+                <Button Click="ShowAboutDialog_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Padding="20,7"
+                        Background="Transparent" CornerRadius="10" BorderThickness="2" >
+                    <StackPanel Orientation="Horizontal" Spacing="15" HorizontalAlignment="Left" >
+                        <FontIcon Glyph="&#xE946;" FontSize="16" />
+                        <TextBlock Text="About" FontSize="14" />
+                    </StackPanel>
+                </Button>
+                <!--<HyperlinkButton Grid.ColumnSpan="2" HorizontalAlignment="Center" NavigateUri="https://github.com/sedecillion/Windows_QOL/releases/" >
                     <StackPanel Orientation="Horizontal" Spacing="5"> 
                         <FontIcon Glyph="&#xE71B;" FontSize="14" />
                         <TextBlock Text="View Latest Release" FontSize="14" />
@@ -55,8 +61,11 @@
                         <TextBlock Text="GitHub" FontSize="12"/>
                     </StackPanel>
                 </HyperlinkButton>
-                <TextBlock Text="App Version: v1.0.2.0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
-                           FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
+                           FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" >
+                    <Run Text="AppVersion: " />
+                    <Run Text="{x:Bind MainViewModel.AppVersion, Mode=OneTime}" />
+                </TextBlock>-->
             </Grid>
         </Grid>
     </Border>
