@@ -144,5 +144,6 @@ namespace settings_UI.Models
         {
         public bool IsEnabled { get; set; }
         public string TriggerKey { get; set; }
+        public string DefaultFileExtension { get; set; }
     }
 }

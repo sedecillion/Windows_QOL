@@ -97,7 +97,7 @@ namespace settings_UI.Models
         ""IsEnabled"": true,
         ""TargetDir"": ""C:\\Users\\<A_UserName>\\Pictures\\Screenshots"",
         ""TriggerKey"": ""PrintScreen"",
-        ""FullScreenModeOnly"": true
+        ""ScreenshotMode"": 0
       },
       ""CalcSingleInstance"": {
         ""IsEnabled"": true

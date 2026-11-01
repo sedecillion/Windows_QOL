@@ -50,6 +50,7 @@ LoadConfig() {
     global ScreenshotTargetDir := StrReplace(profile["ScreenshotTool"]["TargetDir"], "<A_UserName>", A_UserName)
     global ScreenshotTriggerKey := profile["ScreenshotTool"]["TriggerKey"]
     global ScreenshotFullScreenModeOnly := profile["ScreenshotTool"].Has("FullScreenModeOnly") ? profile["ScreenshotTool"]["FullScreenModeOnly"] : true
+    global ScreenshotMode := profile["ScreenshotTool"].Has("ScreenshotMode") ? profile["ScreenshotTool"]["ScreenshotMode"] : 2
     
     global EnableCalcInstance := profile["CalcSingleInstance"]["IsEnabled"]
     

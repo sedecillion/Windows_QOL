@@ -232,7 +232,7 @@ namespace settings_UI.ViewModels
             {
                 ProfileProperties = new ProfilePropertiesDto { Name = profileName, SilentMode = true },
                 TerminalLaunch = new TerminalLaunchDto { IsEnabled = true, StartPath = @"C:\Windows\System32", TriggerKey = "^!t", OpenInExplorerTabPath = true },
-                ScreenshotTool = new ScreenshotToolDto { IsEnabled = true, TargetDir = @"D:\Pictures", TriggerKey= "PrintScreen", FullScreenModeOnly = true },
+                ScreenshotTool = new ScreenshotToolDto { IsEnabled = true, TargetDir = @"D:\Pictures", TriggerKey= "PrintScreen", ScreenshotMode = 0 },
                 CalcSingleInstance = new CalcSingleInstanceDto { IsEnabled = true },
                 FileExplorerTweaks = new FileExplorerTweaksDto { IsEnabled = true, TriggerKey = "^n", DefaultFileExtension = ".txt" },
                 WindowAwareShortcutRemap = new WindowAwareShortcutRemapDto

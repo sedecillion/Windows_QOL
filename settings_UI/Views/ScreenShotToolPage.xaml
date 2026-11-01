@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <ScrollViewer Padding="30,0,30,0">
+    <ScrollViewer Padding="30,0,30,30">
 
         <StackPanel>
             <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" 
@@ -88,39 +88,52 @@
                     <TextBlock Text="Capture Behavior" FontWeight="SemiBold" />
 
                     <StackPanel Spacing="16">
-                        <!-- Option 1: Snipping Tool Flow -->
+                        <!-- Option 0: Basic Mode (Standalone) -->
                         <StackPanel Spacing="4">
-                            <RadioButton Content="Interactive Mode (Region &amp; Full Screen)" 
+                            <RadioButton Content="Basic Mode (Full Screen Only)" 
                                 GroupName="ScreenshotMode" 
-                                IsChecked="{x:Bind SC_ToolViewModel.IsInteractiveMode, Mode=TwoWay}"
-                                />
-                            <TextBlock Text="Opens the Windows Snipping Tool Overlay for partial captures. Press ENTER to capture fullscreen instantly. "
+                                IsChecked="{x:Bind SC_ToolViewModel.IsFullScreenMode, Mode=TwoWay}"/>
+                                            <TextBlock Text="Instantly captures the entire screen in one go."
                                 Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
                                 FontSize="14" 
                                 TextWrapping="Wrap" 
                                 Margin="32,0,0,0" />
-                            <TextBlock Text="Relies on the Win+Shift+S shortcut triggering snipping tool. You might want to turn off notifications for snipping tool"
+                                <TextBlock Text="Standalone, no requirement of Snipping tool."
                                 Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
                                 FontSize="14" 
                                 TextWrapping="Wrap" 
                                 Margin="32,0,0,0" />
                         </StackPanel>
 
-                        <!-- Option 2: Full Screen Flow -->
-                        <StackPanel Spacing="4">
-                            <RadioButton Content="Basic Mode (Full Screen Only)" 
-                                GroupName="ScreenshotMode" 
-                                IsChecked="{x:Bind SC_ToolViewModel.IsBasicMode, Mode=TwoWay}"/>
-                            <TextBlock Text="Instantly captures the entire screen in one go."
-                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
-                                FontSize="14" 
-                                TextWrapping="Wrap" 
-                                Margin="32,0,0,0" />
-                            <TextBlock Text="Standalone, and no requirement of Snipping tool or Win+Shift+S."
-                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
-                                FontSize="14" 
-                                TextWrapping="Wrap" 
-                                Margin="32,0,0,0" />
+                        <!-- Visual Separator -->
+                        <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" Margin="0,4,0,4" />
+
+                        <!-- Snipping Tool Modes Group -->
+                        <StackPanel Spacing="12">
+                            <!-- Shared Description -->
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Snipping Tool Modes" 
+                                    FontWeight="SemiBold" />
+                                                <TextBlock Text="Requires Windows Snipping Tool. Press ENTER during selection to capture fullscreen."
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
+                                    FontSize="14" 
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+
+                            <!-- Snipping Tool RadioButtons (Indented) -->
+                            <StackPanel Spacing="8" Margin="16,0,0,0">
+                                <RadioButton Content="Rectangle Mode" 
+                                    GroupName="ScreenshotMode" 
+                                    IsChecked="{x:Bind SC_ToolViewModel.IsRectangleMode, Mode=TwoWay}" />
+
+                                                <RadioButton Content="Window Mode" 
+                                    GroupName="ScreenshotMode" 
+                                    IsChecked="{x:Bind SC_ToolViewModel.IsWindowMode, Mode=TwoWay}" />
+
+                                                <RadioButton Content="Freeform Mode" 
+                                    GroupName="ScreenshotMode" 
+                                    IsChecked="{x:Bind SC_ToolViewModel.IsFreeformMode, Mode=TwoWay}" />
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
